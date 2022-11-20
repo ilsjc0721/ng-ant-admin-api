@@ -11,9 +11,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/ng-ant-admin-api?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
-    username: root
-    password: root
+    url: jdbc:mysql://remotemysql.com:3306/y0l9VGvPO5?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: y0l9VGvPO5
+    password: vS5QEVZZVK
     type: com.alibaba.druid.pool.DruidDataSource
     #########  druid连接池配置  #########
     druid:

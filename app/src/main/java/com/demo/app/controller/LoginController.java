@@ -10,15 +10,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import result.Result;
 
-/**
- * @program: fire_control
- * @description:
- * @author: fbl
- * @create: 2021-01-12 07:52
- **/
 @RestController
 @Validated
-@Api(value = "LoginController",tags = "登录管理")
+@Api(value = "LoginController",tags = "登入管理")
 @RequestMapping("/api")
 public class LoginController {
 
@@ -26,21 +20,20 @@ public class LoginController {
     LoginService loginService;
 
     @PostMapping("/login")
-    @ApiOperation(value = "用户登录")
+    @ApiOperation(value = "用戶登入")
     public Result login(@RequestBody @Validated UserDto user){
         return loginService.login(user);
     }
 
-
-    @PostMapping("/captcha")
-    @ApiOperation(value = "获取验证码")
-    public Result captcha(){
-        return loginService.captcha();
-    }
-
-    @GetMapping("/sessionTimeOut")
-    @ApiOperation(value = "模拟登陆超时")
-    public Result sessionTimeOut(){
-        return Result.failure(ErrorCodeEnum.SYS_ERR_TOKEN_EXPIRE);
-    }
+//    @PostMapping("/captcha")
+//    @ApiOperation(value = "获取验证码")
+//    public Result captcha(){
+//        return loginService.captcha();
+//    }
+//
+//    @GetMapping("/sessionTimeOut")
+//    @ApiOperation(value = "模拟登陆超时")
+//    public Result sessionTimeOut(){
+//        return Result.failure(ErrorCodeEnum.SYS_ERR_TOKEN_EXPIRE);
+//    }
 }

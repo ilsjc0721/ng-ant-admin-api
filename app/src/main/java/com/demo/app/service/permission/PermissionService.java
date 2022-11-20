@@ -25,23 +25,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * 权限表Service业务层处理
- *
- * @author fbl
- * @date 2022-03-31
- */
 @Service
 public class PermissionService {
     @Autowired
     PermissionMapper permissionMapper;
 
-    /**
-     * 查询权限表列表
-     *
-     * @param searchFilter
-     * @return
-     */
     public Result selectSysPermissionList(SearchFilter searchFilter) {
         PageHelper.startPage(searchFilter.getPageNum(),searchFilter.getPageSize());
         JSONObject filters = searchFilter.getFilters();
@@ -56,28 +44,21 @@ public class PermissionService {
             if(Objects.nonNull(visible)){
                 permissionQueryWrapper.eq("visible",visible);
             }
+            Boolean status = filters.getBoolean("status");
+            if(Objects.nonNull(status)){
+                permissionQueryWrapper.eq("status",status);
+            }
         }
         List<SysPermission> SysPermission = permissionMapper.selectList(permissionQueryWrapper);
         PageInfo<SysPermission> permissionVoPageInfo = new PageInfo<>(SysPermission);
         return Result.success(permissionVoPageInfo);
     }
-    /**
-     * 查询权限表
-     *
-     * @param id 权限表ID
-     * @return 权限表
-     */
+
     public Result selectSysPermissionById(Integer id) {
         SysPermission SysPermission = permissionMapper.selectById(id);
         return Result.success(SysPermission);
     }
 
-    /**
-     * 新增权限表
-     *
-     * @param permissionDto 权限表
-     * @return 结果
-     */
     public Result insertSysPermission(InsertPermissionDto permissionDto) {
         String menuType = permissionDto.getMenuType();
         String path = permissionDto.getPath();
@@ -99,12 +80,6 @@ public class PermissionService {
         return Result.success();
     }
 
-    /**
-     * 修改权限表
-     *
-     * @param permissionDto 权限表
-     * @return 结果
-     */
     public Result updateSysPermission(UpdatePermissionDto permissionDto) {
         String menuType = permissionDto.getMenuType();
         String path = permissionDto.getPath();
@@ -125,13 +100,7 @@ public class PermissionService {
         }
         return Result.success();
     }
-
-    /**
-     * 批量删除权限表
-     *
-     * @param ids 需要删除的权限表ID
-     * @return 结果
-     */
+    
     public Result deleteSysPermissionByIds(List<Integer> ids) {
         Integer id = ids.get(0);
         List<SysPermission> SysPermission = permissionMapper.selectList(new QueryWrapper<>());

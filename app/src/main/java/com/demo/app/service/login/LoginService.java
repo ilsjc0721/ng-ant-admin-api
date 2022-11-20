@@ -71,13 +71,6 @@ public class LoginService {
     @Value("${fbl.captchaType}")
     private String captchaType;
 
-    /**
-     * @return UserRoleDto
-     * @Author fbl
-     * @Description 登录
-     * @Date 9:39 2021/1/18
-     * @Param userInfo
-     */
     public Result login(UserDto user) {
         String code = user.getCode();
         if (Objects.nonNull(code)) {

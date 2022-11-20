@@ -542,33 +542,27 @@ CREATE TABLE `sys_permission`  (
   `father_id` int(11) NULL DEFAULT 0 COMMENT '父级菜单id 默认为0',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `code_idx`(`code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_permission
 -- ----------------------------
-INSERT INTO `sys_permission` VALUES (1, 'Dashboard', '0001', 1, 0);
-INSERT INTO `sys_permission` VALUES (2, '表单页', '0002', 1, 0);
-INSERT INTO `sys_permission` VALUES (3, '列表页', '0003', 1, 0);
-INSERT INTO `sys_permission` VALUES (4, '详情页', '0004', 1, 0);
-INSERT INTO `sys_permission` VALUES (5, '结果页', '0005', 1, 0);
-INSERT INTO `sys_permission` VALUES (6, '异常页', '0006', 1, 0);
-INSERT INTO `sys_permission` VALUES (7, '个人页', '0007', 1, 0);
-INSERT INTO `sys_permission` VALUES (8, '内部管理', '0008', 1, 0);
-INSERT INTO `sys_permission` VALUES (9, '角色管理', '0018', 2, 8);
-INSERT INTO `sys_permission` VALUES (10, '新增', '0118', 3, 9);
-INSERT INTO `sys_permission` VALUES (11, '编辑', '0218', 3, 9);
-INSERT INTO `sys_permission` VALUES (12, '删除', '0318', 3, 9);
-INSERT INTO `sys_permission` VALUES (13, '设置权限', '0418', 3, 9);
-INSERT INTO `sys_permission` VALUES (14, '部门管理', '0028', 2, 8);
-INSERT INTO `sys_permission` VALUES (15, '用户管理', '0038', 2, 8);
-INSERT INTO `sys_permission` VALUES (17, '查看详情', '0138', 3, 15);
-INSERT INTO `sys_permission` VALUES (18, '编辑', '0238', 3, 15);
-INSERT INTO `sys_permission` VALUES (19, '批量删除', '0518', 3, 9);
-INSERT INTO `sys_permission` VALUES (20, '日志管理', '0009', 1, 0);
-INSERT INTO `sys_permission` VALUES (21, '考试管理', '0010', 1, 0);
-INSERT INTO `sys_permission` VALUES (22, '题库管理', '0110', 2, 21);
-INSERT INTO `sys_permission` VALUES (23, '试题管理', '0210', 2, 21);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('系統管理'    , '0000', 1, 0);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('角色管理'    , '0100', 2, 1);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('菜單管理'    , '0200', 2, 1);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('内部管理'    , '1000', 1, 0);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('帳號管理'    , '1100', 2, 4);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('課程創建'    , '1200', 2, 4);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('課程排定'    , '1300', 2, 4);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('學費總表'    , '1400', 2, 4);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('學員功能'    , '2000', 1, 0);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('修改資料'    , '2100', 2, 8);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('課程學費查詢' , '2200', 2, 8);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('教練功能'    , '3000', 1, 0);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('帳號資料'    , '3100', 2, 11);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('課程排定'    , '3200', 2, 11);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('到課確認'    , '3300', 2, 11);
+INSERT INTO `sys_permission` (menu_name, code, menu_grade, father_id) VALUES ('教練費查詢'   , '3400', 2, 11);
 
 -- ----------------------------
 -- Table structure for sys_role
