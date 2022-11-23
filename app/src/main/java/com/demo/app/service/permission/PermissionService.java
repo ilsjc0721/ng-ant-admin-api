@@ -100,7 +100,7 @@ public class PermissionService {
         }
         return Result.success();
     }
-    
+
     public Result deleteSysPermissionByIds(List<Integer> ids) {
         Integer id = ids.get(0);
         List<SysPermission> SysPermission = permissionMapper.selectList(new QueryWrapper<>());

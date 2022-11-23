@@ -19,7 +19,7 @@ import result.Result;
  **/
 @RestController
 @Validated
-@Api(value = "RolePermissionController", tags = "角色配置权限管理")
+@Api(value = "RolePermissionController", tags = "角色權限配置")
 @RequestMapping("/api/permission")
 public class RolePermissionController {
 
@@ -28,14 +28,14 @@ public class RolePermissionController {
 
     @GetMapping("/{roleId}")
     @PreAuthorize("@ss.hasPer('default:system:role-manager')")
-    @ApiOperation(value = "展示角色权限码")
+    @ApiOperation(value = "取得角色權限")
     public Result userPermission(@PathVariable Integer roleId) {
         return rolePermissionService.userPermission(roleId);
     }
 
     @PutMapping
     @PreAuthorize("@ss.hasPer('default:system:role-manager:set-role')")
-    @ApiOperation(value = "设置角色权限信息")
+    @ApiOperation(value = "設定角色權限")
     public Result updatePermission(@RequestBody @Validated UpdateRolePermissionDto updatePermissionDto) {
         return rolePermissionService.updatePermission(updatePermissionDto);
     }

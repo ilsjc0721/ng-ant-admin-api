@@ -199,6 +199,7 @@ public class UserService {
         Timestamp beginTime = jsonObject.getTimestamp("beginTime");
         Timestamp endTime = jsonObject.getTimestamp("endTime");
         Integer departmentId = jsonObject.getInteger("departmentId");
+        Integer roleID = jsonObject.getInteger("roleID");
 
         if (Objects.nonNull(userName)) {
             searchUserDto.setUserName(userName);
@@ -218,6 +219,10 @@ public class UserService {
         if (Objects.nonNull(departmentId)) {
             searchUserDto.setDepartmentId(departmentId);
         }
+        if (Objects.nonNull(roleID)) {
+            searchUserDto.setRoleID(roleID);
+        }
+
         return searchUserDto;
     }
 

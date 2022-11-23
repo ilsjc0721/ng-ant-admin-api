@@ -19,4 +19,5 @@ public class SearchUserDto {
     private Timestamp beginTime;
     private Timestamp endTime;
     private Integer departmentId;
+    private Integer roleID;
 }

@@ -31,7 +31,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/list")
-    @ApiOperation(value = "展示所有用户信息")
+    @ApiOperation(value = "取得用戶清單")
     @PreAuthorize("@ss.hasPer('default:system:account')")
     public Result listUser(@RequestBody @Validated SearchFilter searchFilter) {
         return userService.listUser(searchFilter);
