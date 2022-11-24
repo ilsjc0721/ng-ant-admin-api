@@ -33,6 +33,5 @@ public class InsertUserDto {
 
     private String email;
 
-    @NotNull
     private Integer departmentId;
 }

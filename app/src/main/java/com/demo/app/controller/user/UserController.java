@@ -38,21 +38,21 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "展示用户详情")
+    @ApiOperation(value = "取得用戶明細")
     @PreAuthorize("@ss.hasPer('default:system:account')")
     public Result userDetail(@PathVariable Integer id) {
         return userService.userDetail(id);
     }
 
     @PostMapping
-    @ApiOperation(value = "注册新用户")
+    @ApiOperation(value = "註冊新用戶")
     @PreAuthorize("@ss.hasPer('default:system:account:add')")
     public Result insertUser(@RequestBody @Validated InsertUserDto insertUserDto) {
         return userService.insertUser(insertUserDto);
     }
 
     @PutMapping
-    @ApiOperation(value = "修改用户信息")
+    @ApiOperation(value = "修改用戶明細")
     @PreAuthorize("@ss.hasPer('default:system:account:edit')")
     public Result updateUser(@RequestBody @Validated UpdateUserDto updateUserDto) {
         return userService.updateUser(updateUserDto);

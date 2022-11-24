@@ -31,6 +31,8 @@ public class DetailUserVo {
     private List<Integer> roleId;
 
     private String departmentName;
+
     private Integer departmentId;
 
+    private String createTime;
 }

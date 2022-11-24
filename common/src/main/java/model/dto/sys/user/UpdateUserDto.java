@@ -34,7 +34,7 @@ public class UpdateUserDto implements Serializable {
     private String telephone;
 
     private String email;
-    @NotNull
+
     private Integer departmentId;
 
 }

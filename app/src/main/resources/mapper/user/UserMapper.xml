@@ -53,20 +53,21 @@
             user.email,
             user.address,
             user.is_available AS available,
-            user.sex,
+<!--            user.sex,-->
             user.mobile,
             user.telephone,
             user.emergency_contact_person AS emergencyContactPerson ,
             user.emergency_contact_relationship AS emergencyContactRelationship,
             user.emergency_contact_phone AS emergencyContactPhone,
             user.last_login_time AS lastLoginTime,
-            user.create_time AS createTime ,
-            user.department_id AS departmentId,
-            dept.department_name AS departmentName
+            user.create_time AS createTime
+<!--            ,-->
+<!--            user.department_id AS departmentId,-->
+<!--            dept.department_name AS departmentName-->
         FROM
             sys_user user
-        LEFT JOIN
-            sys_department dept on su.department_id = dept.id
+<!--        LEFT JOIN-->
+<!--            sys_department dept on su.department_id = dept.id-->
         WHERE
             user.id = #{id}
     </select>
