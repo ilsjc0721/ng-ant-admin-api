@@ -16,23 +16,23 @@ public class DetailUserVo {
 
     private String userName;
 
+    private String userChName;
+
+    private String userEnName;
+
+    private String email;
+
+    private String address;
+
     private Boolean available;
 
     private List<String> roleName;
 
-    private Integer sex;
-
-    private Long mobile;
-
-    private String email;
-
-    private String telephone;
-
     private List<Integer> roleId;
 
-    private String departmentName;
+    private String bankCode;
 
-    private Integer departmentId;
+    private String bankAccount;
 
     private String createTime;
 }

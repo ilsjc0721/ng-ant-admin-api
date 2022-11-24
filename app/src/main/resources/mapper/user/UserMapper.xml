@@ -13,9 +13,6 @@
             last_login_time lastLoginTime,
             su.create_time createTime ,
             telephone
-<!--        ,-->
-<!--            department_id departmentId,-->
-<!--            department_name  departmentName-->
         FROM
             sys_user su
 <!--        left join-->
@@ -49,25 +46,20 @@
         SELECT DISTINCT
             user.id,
             user.user_name AS userName,
+            user.user_name_ch AS userChName,
             user.user_name_en AS userEnName,
             user.email,
             user.address,
             user.is_available AS available,
-<!--            user.sex,-->
-            user.mobile,
-            user.telephone,
+            user.bank_code AS bankCode,
+            user.bank_account AS bankAccount,
             user.emergency_contact_person AS emergencyContactPerson ,
             user.emergency_contact_relationship AS emergencyContactRelationship,
             user.emergency_contact_phone AS emergencyContactPhone,
             user.last_login_time AS lastLoginTime,
             user.create_time AS createTime
-<!--            ,-->
-<!--            user.department_id AS departmentId,-->
-<!--            dept.department_name AS departmentName-->
         FROM
             sys_user user
-<!--        LEFT JOIN-->
-<!--            sys_department dept on su.department_id = dept.id-->
         WHERE
             user.id = #{id}
     </select>

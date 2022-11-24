@@ -8,23 +8,21 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-
-
-/**
- * @program: fire_control
- * @description: 用户实体类
- * @author: fbl
- * @create: 2021-01-12 08:28
- **/
+import java.util.List;
 @Data
 @TableName("sys_user")
 public class SysUser implements Serializable {
-
     @TableId(type = IdType.AUTO)
     private Integer id;
 
     @TableField("user_name")
     private String userName;
+
+    @TableField("user_name_ch")
+    private String userChName;
+
+    @TableField("user_name_en")
+    private String userEnName;
 
     private String password;
 
@@ -37,20 +35,17 @@ public class SysUser implements Serializable {
     @TableField("update_time")
     private Timestamp updateTime;
 
-    private Integer sex;
-
-    private Long mobile;
+    private String address;
 
     private String email;
 
     @TableField("last_login_time")
     private Timestamp lastLoginTime;
 
-    private Integer education;
+    @TableField("bank_code")
+    private String bankCode;
 
-    private String telephone;
-
-    @TableField("department_id")
-    private Integer departmentId;
+    @TableField("bank_account")
+    private String bankAccount;
 
 }
