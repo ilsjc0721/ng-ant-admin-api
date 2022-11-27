@@ -27,14 +27,21 @@ public class UpdateUserDto implements Serializable {
 
     private List<Integer> roleId;
 
-    private Integer sex;
+    private String userChName;
 
-    private Long mobile;
-
-    private String telephone;
+    private String userEnName;
 
     private String email;
 
-    private Integer departmentId;
+    private String address;
 
+    private String bankCode;
+
+    private String bankAccount;
+
+    private String emergencyContactPerson;
+
+    private String emergencyContactPhone;
+
+    private String emergencyContactRelationship;
 }

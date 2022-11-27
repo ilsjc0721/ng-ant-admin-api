@@ -35,4 +35,10 @@ public class DetailUserVo {
     private String bankAccount;
 
     private String createTime;
+
+    private String emergencyContactPerson;
+
+    private String emergencyContactPhone;
+
+    private String emergencyContactRelationship;
 }

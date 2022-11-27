@@ -4,42 +4,37 @@
 
     <select id="listUser" resultType="model.vo.sys.SelectUserVo">
         SELECT DISTINCT
-            su.id ,
-            su.user_name userName,
-            su.is_available available,
-            sex,
-            mobile,
-            email,
-            last_login_time lastLoginTime,
-            su.create_time createTime ,
-            telephone
+            user.id,
+            user.user_name AS userName,
+            user.user_name_ch AS userChName,
+            user.user_name_en AS userEnName,
+            user.email,
+            user.address,
+            user.is_available AS available,
+            user.last_login_time AS lastLoginTime,
+            user.create_time AS createTime
         FROM
-            sys_user su
-<!--        left join-->
-<!--        sys_department on su.department_id = sys_department.id-->
+            sys_user user
         WHERE
         1 = 1
         <if test="userName != null and userName != ''">
-            and su.user_name like concat('%',#{userName},'%')
+            and user.user_name_ch like concat('%',#{userName},'%')
         </if>
         <if test="available != null">
             and is_available = #{available}
         </if>
         <if test="mobile != null">
-            and su.mobile like concat('%',#{mobile},'%')
+            and user.user_name like concat('%',#{mobile},'%')
         </if>
         <if test="roleID != null">
             AND EXISTS (
                 SELECT 1
                 FROM user_role ur
-                WHERE ur.user_id = su.id
+                WHERE ur.user_id = user.id
                 AND ur.role_id = #{roleID} )
         </if>
-<!--        <if test="departmentId != null">-->
-<!--            and su.department_id = #{departmentId}-->
-<!--        </if>-->
         ORDER BY
-            su.create_time desc
+            user.create_time desc
     </select>
 
     <select id="selectUserVoById" resultType="model.vo.sys.DetailUserVo">

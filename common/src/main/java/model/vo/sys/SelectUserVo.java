@@ -20,22 +20,21 @@ public class SelectUserVo {
 
     private String userName;
 
+    private String userChName;
+
+    private String userEnName;
+
     private Boolean available;
+
+    private List<Integer> roleId;
 
     private List<String> roleName;
 
-    private Integer sex;
-
-    private Long mobile;
-
     private String email;
+
+    private String address;
 
     private Timestamp lastLoginTime;
 
     private Timestamp createTime;
-
-    private String telephone;
-
-    private Integer departmentId;
-    private String departmentName;
 }

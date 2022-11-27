@@ -35,8 +35,10 @@ public class SysUser implements Serializable {
     @TableField("update_time")
     private Timestamp updateTime;
 
+    @TableField("address")
     private String address;
 
+    @TableField("email")
     private String email;
 
     @TableField("last_login_time")
@@ -47,5 +49,14 @@ public class SysUser implements Serializable {
 
     @TableField("bank_account")
     private String bankAccount;
+
+    @TableField("emergency_contact_person")
+    private String emergencyContactPerson;
+
+    @TableField("emergency_contact_phone")
+    private String emergencyContactPhone;
+
+    @TableField("emergency_contact_relationship")
+    private String emergencyContactRelationship;
 
 }

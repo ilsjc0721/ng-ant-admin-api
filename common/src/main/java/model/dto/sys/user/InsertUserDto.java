@@ -23,15 +23,23 @@ public class InsertUserDto {
 
     private List<Integer> roleId;
 
-    @NotNull
-    private Integer sex;
+    private boolean available;
 
-    @NotNull
-    private Long mobile;
+    private String userChName;
 
-    private String telephone;
+    private String userEnName;
 
     private String email;
 
-    private Integer departmentId;
+    private String address;
+
+    private String bankCode;
+
+    private String bankAccount;
+
+    private String emergencyContactPerson;
+
+    private String emergencyContactPhone;
+
+    private String emergencyContactRelationship;
 }
