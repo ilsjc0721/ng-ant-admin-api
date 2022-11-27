@@ -146,6 +146,17 @@ public class UserService {
         return Result.success();
     }
 
+    public Result updateUserPictureFileName(UpdateUserPictureFileNameDto updateUserPictureFileNameDto) {
+        SysUser sysUser = new SysUser();
+        sysUser.setId(updateUserPictureFileNameDto.getId());
+        sysUser.setPictureFileName(updateUserPictureFileNameDto.getPictureFileName());
+        int res = userMapper.updateById(sysUser);
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+        return Result.success();
+    }
+
     public Result delUser(BatchDeleteDto batchDeleteDto) {
         userMapper.deleteBatchIds(batchDeleteDto.getIds());
         return Result.success();

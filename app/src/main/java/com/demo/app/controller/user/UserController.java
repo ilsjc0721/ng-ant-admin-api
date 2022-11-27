@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import model.dto.del.BatchDeleteDto;
 import model.dto.sys.user.InsertUserDto;
 import model.dto.sys.user.UpdateUserDto;
+import model.dto.sys.user.UpdateUserPictureFileNameDto;
 import model.dto.sys.user.UpdateUserPsdDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,6 +64,13 @@ public class UserController {
     @PreAuthorize("@ss.hasPer('default:system:account:edit')")
     public Result updateUserPsd(@RequestBody @Validated UpdateUserPsdDto updateUserPsdDto) {
         return userService.updateUserPsd(updateUserPsdDto);
+    }
+
+    @PutMapping("/picturefilename")
+    @ApiOperation(value = "修改用戶圖片檔案名")
+    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
+    public Result updateUserPictureFileName(@RequestBody @Validated UpdateUserPictureFileNameDto updateUserPictureFileNameDto) {
+        return userService.updateUserPictureFileName(updateUserPictureFileNameDto);
     }
 
     @PostMapping("/del")

@@ -59,4 +59,6 @@ public class SysUser implements Serializable {
     @TableField("emergency_contact_relationship")
     private String emergencyContactRelationship;
 
+    @TableField("picture_file_name")
+    private String pictureFileName;
 }
