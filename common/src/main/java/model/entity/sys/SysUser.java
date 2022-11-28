@@ -32,11 +32,14 @@ public class SysUser implements Serializable {
     @TableField("update_time")
     private Timestamp updateTime;
 
-    private String emergency_contact_person;
+    @TableField("emergency_contact_person")
+    private String emergencyContactPerson;
 
-    private String emergency_contact_relationship;
+    @TableField("emergency_contact_relationship")
+    private String emergencyContactRelationship;
 
-    private String emergency_contact_phone;
+    @TableField("emergency_contact_phone")
+    private String emergencyContactPhone;
 
     private String address;
 

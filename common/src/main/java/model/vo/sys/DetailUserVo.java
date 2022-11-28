@@ -1,38 +1,44 @@
 package model.vo.sys;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.List;
 
-/**
- * @program: fire_control
- * @description:
- * @author: fbl
- * @create: 2021-02-03 10:36
- **/
 @Data
 public class DetailUserVo {
     private Integer id;
 
     private String userName;
 
+    private String userChName;
+
+    private String password;
+
     private Boolean available;
 
-    private List<String> roleName;
+    private Timestamp createTime;
 
-    private Integer sex;
+    private Timestamp updateTime;
 
-    private Long mobile;
+    private String emergencyContactPerson;
 
-    private String email;
+    private String emergencyContactRelationship;
+
+    private String emergencyContactPhone;
+
+    private String address;
+
+    private Timestamp lastLoginTime;
+
+    private Timestamp startTime;
 
     private String telephone;
 
     private List<Integer> roleId;
 
-    private String departmentName;
-
-    private Integer departmentId;
-
-    private String createTime;
+    private List<String> roleName;
 }

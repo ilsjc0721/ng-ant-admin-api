@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -23,15 +24,17 @@ public class InsertUserDto {
 
     private List<Integer> roleId;
 
-    @NotNull
-    private Integer sex;
+    private String userChName;
 
-    @NotNull
-    private Long mobile;
+    private String emergencyContactPerson;
+
+    private String emergencyContactRelationship;
+
+    private String emergencyContactPhone;
+
+    private String address;
+
+    private Timestamp startTime;
 
     private String telephone;
-
-    private String email;
-
-    private Integer departmentId;
 }

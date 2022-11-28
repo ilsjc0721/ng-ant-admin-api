@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -27,14 +28,20 @@ public class UpdateUserDto implements Serializable {
 
     private List<Integer> roleId;
 
-    private Integer sex;
+    private String userChName;
 
-    private Long mobile;
+    private String emergencyContactPerson;
+
+    private String emergencyContactRelationship;
+
+    private String emergencyContactPhone;
+
+    private String address;
+
+    private Timestamp lastLoginTime;
+
+    private Timestamp startTime;
 
     private String telephone;
-
-    private String email;
-
-    private Integer departmentId;
 
 }
