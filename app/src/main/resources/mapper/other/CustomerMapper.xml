@@ -26,10 +26,10 @@
         <if test="name != null and name != ''">
             and name like concat('%',#{name},'%')
         </if>
-        <if test="idNumber != null">
-            and idNumber = #{idNumber}
+        <if test="idNumber != null and idNumber != ''">
+            and id_number = #{idNumber}
         </if>
-        <if test="phone != null">
+        <if test="phone != null and phone != ''">
             and phone = #{phone}
         </if>
         <if test="id != null">

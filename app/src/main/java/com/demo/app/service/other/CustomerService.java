@@ -1,6 +1,8 @@
 package com.demo.app.service.other;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.app.mapper.other.CustomerMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -10,6 +12,7 @@ import model.dto.other.CustomerEntity;
 import model.dto.other.InsertCustomer;
 import model.dto.other.SearchCustomerDto;
 import model.dto.other.UpdateCustomer;
+import model.entity.sys.SysUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,11 @@ public class CustomerService {
 
     @Transactional(rollbackFor = Exception.class)
     public Result insertCustomer(InsertCustomer insertCustomer) {
+        // 驗證身分證號是否重複
+        if (isUniqueIdNumber(insertCustomer.getIdNumber())) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_ADD_CUSTOMER_DUPLICATE);
+        }
+
         CustomerEntity customer = new CustomerEntity();
         BeanUtils.copyProperties(insertCustomer, customer);
         int res = customerMapper.insert(customer);
@@ -81,6 +89,12 @@ public class CustomerService {
     public Result delCustomer(BatchDeleteDto batchDeleteDto) {
         customerMapper.deleteBatchIds(batchDeleteDto.getIds());
         return Result.success();
+    }
+
+    private boolean isUniqueIdNumber(String idNumber) {
+        QueryWrapper<CustomerEntity> idNumberQuery = new QueryWrapper<CustomerEntity>().eq("id_number", idNumber);
+        List<CustomerEntity> CustomerEntitys = customerMapper.selectList(idNumberQuery);
+        return CollectionUtil.isNotEmpty(CustomerEntitys);
     }
 
     private SearchCustomerDto getSearchCustomerDto(JSONObject jsonObject) {
