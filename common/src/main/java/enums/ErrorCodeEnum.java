@@ -52,7 +52,7 @@ ErrorCodeEnum {
     SYS_ERR_LOGIN_FAIL(3006, "登录失败，用户名密码错误或该账号已被禁用！"),
     SYS_ERR_PHONE(3007, "座机格式错误"),
     SYS_ERR_DEL_ACCOUNT(3010, "用户不能删除自己的账号！"),
-    SYS_ERR_ACCOUNT(3011, "该账号已存在！"),
+    SYS_ERR_ACCOUNT(3011, "該帳號已經存在"),
     SYS_ERR_EXPIRE_CAPTCHA(3012, "验证码已过期！"),
     SYS_ERR_CAPTCHA(3013, "验证码输入错误！"),
     SYS_ERR_PASSWORD_ERROR(3014, "原密码输入错误！"),

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.CustomerMapper">
+
+    <select id="selectCustomer" resultType="model.dto.other.CustomerEntity">
+        SELECT
+            id,
+            name,
+            id_number AS idNumber,
+            id_type AS idType,
+            adr,
+            phone,
+            other1,
+            other2,
+            memo,
+            em_name AS emName,
+            em_phone AS emPhone,
+            em_relation AS emRelation,
+            update_user AS updateUser,
+            update_time AS updateTime,
+            car_number AS carNumber
+        FROM
+            ly_customer
+        WHERE
+        1 = 1
+        <if test="name != null and name != ''">
+            and name like concat('%',#{name},'%')
+        </if>
+        <if test="idNumber != null">
+            and idNumber = #{idNumber}
+        </if>
+        <if test="phone != null">
+            and phone = #{phone}
+        </if>
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        ORDER BY
+            update_time desc
+    </select>
+</mapper>
