@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.OrderMapper">
+    <select id="selectOrder" resultType="model.dto.other.OrderEntity">
+        SELECT
+        A.id,
+        A.room_id AS roomId,
+        C.name AS roomName,
+        A.type,
+        A.in_date AS inDate,
+        A.out_date AS outDate,
+        A.price,
+        A.deposit,
+        A.price-A.deposit AS unPaid,
+        A.customer_id AS customerId,
+        B.name AS customerName,
+        A.status,
+        A.update_user AS updateUser,
+        A.update_time AS updateTime
+        FROM ly_order AS A
+        INNER JOIN ly_customer AS B
+        ON A.customer_id = B.id
+        INNER JOIN ly_room AS C
+        ON A.room_id = C.id
+        WHERE
+        1 = 1
+        <if test="roomId != null and roomId != ''">
+            and A.room_id = #{idNumber}
+        </if>
+        <if test="inDate != null and inDate != ''">
+            and A.in_date = #{inDate}
+        </if>
+        <if test="customerId != null and customerId != ''">
+            and A.customer_id = #{customerId}
+        </if>
+        ORDER BY
+        A.update_time desc
+    </select>
+</mapper>
