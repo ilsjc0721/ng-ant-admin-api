@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.RoomMapper">
+
+    <select id="selectRooms" resultType="model.dto.other.SearchRoomDto">
+        SELECT
+            id,
+            name,
+            status,
+            room_price1 AS roomPrice1,
+            room_price2 AS roomPrice2,
+            room_price3 AS roomPrice3,
+            room_price4 AS roomPrice4,
+            rest_price1 AS restPrice1,
+            rest_price2 AS restPrice2,
+            rest_price3 AS restPrice3,
+            rest_price4 AS restPrice4,
+            overtime_price1 AS overtimePrice1,
+            overtime_price2 AS overtimePrice2,
+            overtime_price3 AS overtimePrice3,
+            overtime_price4 AS overtimePrice4,
+            update_user AS updateUser,
+            update_time AS updateTime
+        FROM
+            ly_room
+        WHERE
+        1 = 1
+        <if test="name != null and name != ''">
+            and name like concat('%',#{name},'%')
+        </if>
+        <if test="status != null and status != ''">
+            and status = #{status}
+        </if>
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        ORDER BY name
+    </select>
+
+    <select id="selectRoomStatus" resultType="model.dto.other.RoomStatusResponse">
+        SELECT
+            id,
+            name,
+            status
+        FROM
+            ly_room
+        WHERE
+        1 = 1
+        <if test="name != null and name != ''">
+            and name like concat('%',#{name},'%')
+        </if>
+        <if test="status != null and status != ''">
+            and status = #{status}
+        </if>
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        ORDER BY name
+    </select>
+</mapper>

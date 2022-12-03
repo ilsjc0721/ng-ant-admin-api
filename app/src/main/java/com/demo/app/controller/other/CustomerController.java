@@ -25,7 +25,7 @@ public class CustomerController {
     @PostMapping("/list")
     @ApiOperation(value = "取得客戶清單")
 //    @PreAuthorize("@ss.hasPer('default:system:customer')")
-    public Result listUser(@RequestBody @Validated SearchFilter searchFilter) {
+    public Result listCustomer(@RequestBody @Validated SearchFilter searchFilter) {
         return customerService.listCustomer(searchFilter);
     }
 
