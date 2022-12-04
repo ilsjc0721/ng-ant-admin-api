@@ -28,4 +28,12 @@ public class OrderController {
     public Result listOrder(@RequestBody @Validated SearchFilter searchFilter) {
         return orderService.listOrder(searchFilter);
     }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "取得訂單明細")
+//    @PreAuthorize("@ss.hasPer('default:system:customer')")
+    public Result orderDetail(@PathVariable Integer id) {
+        return orderService.orderDetail(id);
+    }
+
 }

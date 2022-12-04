@@ -25,13 +25,16 @@
         WHERE
         1 = 1
         <if test="roomId != null and roomId != ''">
-            and A.room_id = #{idNumber}
+            and A.room_id = #{roomId}
         </if>
         <if test="inDate != null and inDate != ''">
             and A.in_date = #{inDate}
         </if>
         <if test="customerId != null and customerId != ''">
             and A.customer_id = #{customerId}
+        </if>
+        <if test="id != null">
+            and id = #{id}
         </if>
         ORDER BY
         A.update_time desc

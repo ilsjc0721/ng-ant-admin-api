@@ -1,22 +1,19 @@
 package com.demo.app.service.other;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.app.mapper.other.OrderMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import enums.ErrorCodeEnum;
-import model.dto.del.BatchDeleteDto;
-import model.dto.other.*;
-import model.entity.sys.SysUser;
-import org.springframework.beans.BeanUtils;
+import model.dto.other.CustomerEntity;
+import model.dto.other.OrderEntity;
+import model.dto.other.SearchCustomerDto;
+import model.dto.other.SearchOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import result.CommonConstants;
 import result.Result;
 import util.SearchFilter;
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,19 +38,35 @@ public class OrderService {
         return Result.success(selectOrderPageInfo);
     }
 
+    public Result orderDetail(Integer id) {
+        SearchOrderDto searchOrderDto = new SearchOrderDto();
+        searchOrderDto.setId(id);
+        List<OrderEntity> orderList = orderMapper.selectOrder(searchOrderDto);
+        Optional<OrderEntity> order = orderList.stream().findFirst();
+        if (order.isPresent()){
+            return Result.success(order.get());
+        } else {
+            return Result.success(new CustomerEntity());
+        }
+    }
+
     private SearchOrderDto getSearchOrderDto(JSONObject jsonObject) {
         SearchOrderDto searchOrderDto = new SearchOrderDto();
         Integer roomId = jsonObject.getInteger("roomId");
-        String inDate = jsonObject.getString("inDate");
+        Timestamp inDate = jsonObject.getTimestamp("inDate");
         Integer customerId = jsonObject.getInteger("customerId");
+        System.out.println("-----------");
 
         if (Objects.nonNull(roomId)) {
+            System.out.println(roomId);
             searchOrderDto.setRoomId(roomId);
         }
         if (Objects.nonNull(inDate)) {
+            System.out.println(inDate);
             searchOrderDto.setInDate(inDate);
         }
         if (Objects.nonNull(customerId)) {
+            System.out.println(customerId);
             searchOrderDto.setCustomerId(customerId);
         }
 
