@@ -32,7 +32,7 @@
                 AND ur.role_id = #{roleID} )
         </if>
         ORDER BY
-            su.create_time desc
+            su.user_name_ch
     </select>
 
     <select id="selectUserVoById" resultType="model.vo.sys.DetailUserVo">
