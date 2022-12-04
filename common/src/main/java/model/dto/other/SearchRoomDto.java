@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class SearchRoomDto {
@@ -42,4 +43,10 @@ public class SearchRoomDto {
     private Integer updateUser;
 
     private Timestamp updateTime;
+
+    private List<PriceEntity> roomPrice;
+
+    private List<PriceEntity> restPrice;
+
+    private List<PriceEntity> overtimePrice;
 }

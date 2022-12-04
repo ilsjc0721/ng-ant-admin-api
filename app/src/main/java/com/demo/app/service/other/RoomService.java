@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
 import model.dto.other.*;
+import model.vo.sys.SelectUserVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,9 @@ public class RoomService {
         }
 
         List<SearchRoomDto> roomList = roomMapper.selectRooms(searchRoomEntity);
-
+        for (SearchRoomDto room : roomList) {
+            room= preparePriceDetail(room);
+        }
         PageInfo<SearchRoomDto> selectRoomPageInfo = new PageInfo<>(roomList);
         return Result.success(selectRoomPageInfo);
     }
@@ -63,10 +66,8 @@ public class RoomService {
         RoomResponse roomResponse = new RoomResponse();
         if (room.isPresent()){
             BeanUtils.copyProperties(room.get(), roomResponse);
-            return Result.success(preparePriceDetail(roomResponse));
-        } else {
-            return Result.success(roomResponse);
         }
+        return Result.success(roomResponse);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -129,63 +130,63 @@ public class RoomService {
         return searchRoomEntity;
     }
 
-    private RoomResponse preparePriceDetail(RoomResponse roomResponse) {
+    private SearchRoomDto preparePriceDetail(SearchRoomDto searchRoomDto) {
         List<PriceEntity> roomPriceList = new ArrayList<>();
         PriceEntity roomPrice1 =new PriceEntity();
         roomPrice1.setName("原價");
-        roomPrice1.setPrice(roomResponse.getRoomPrice1());
+        roomPrice1.setPrice(searchRoomDto.getRoomPrice1());
         roomPriceList.add(roomPrice1);
         PriceEntity roomPrice2 =new PriceEntity();
         roomPrice2.setName("優惠價");
-        roomPrice2.setPrice(roomResponse.getRoomPrice2());
+        roomPrice2.setPrice(searchRoomDto.getRoomPrice2());
         roomPriceList.add(roomPrice2);
         PriceEntity roomPrice3 =new PriceEntity();
         roomPrice3.setName("平日");
-        roomPrice3.setPrice(roomResponse.getRoomPrice3());
+        roomPrice3.setPrice(searchRoomDto.getRoomPrice3());
         roomPriceList.add(roomPrice3);
         PriceEntity roomPrice4 =new PriceEntity();
         roomPrice4.setName("假日");
-        roomPrice4.setPrice(roomResponse.getRoomPrice4());
+        roomPrice4.setPrice(searchRoomDto.getRoomPrice4());
         roomPriceList.add(roomPrice4);
-        roomResponse.setRoomPrice(roomPriceList);
+        searchRoomDto.setRoomPrice(roomPriceList);
 
         List<PriceEntity> restPriceList = new ArrayList<>();
         PriceEntity restPrice1 =new PriceEntity();
         restPrice1.setName("原價");
-        restPrice1.setPrice(roomResponse.getRestPrice1());
+        restPrice1.setPrice(searchRoomDto.getRestPrice1());
         restPriceList.add(restPrice1);
         PriceEntity restPrice2 =new PriceEntity();
         restPrice2.setName("優惠價");
-        restPrice2.setPrice(roomResponse.getRestPrice2());
+        restPrice2.setPrice(searchRoomDto.getRestPrice2());
         restPriceList.add(restPrice2);
         PriceEntity restPrice3 =new PriceEntity();
         restPrice3.setName("平日");
-        restPrice3.setPrice(roomResponse.getRestPrice3());
+        restPrice3.setPrice(searchRoomDto.getRestPrice3());
         restPriceList.add(restPrice3);
         PriceEntity restPrice4 =new PriceEntity();
         restPrice4.setName("假日");
-        restPrice4.setPrice(roomResponse.getRestPrice4());
+        restPrice4.setPrice(searchRoomDto.getRestPrice4());
         restPriceList.add(restPrice4);
-        roomResponse.setRestPrice(restPriceList);
+        searchRoomDto.setRestPrice(restPriceList);
 
         List<PriceEntity> overtimePriceList = new ArrayList<>();
         PriceEntity overtimePrice1 =new PriceEntity();
         overtimePrice1.setName("原價");
-        overtimePrice1.setPrice(roomResponse.getOvertimePrice1());
+        overtimePrice1.setPrice(searchRoomDto.getOvertimePrice1());
         overtimePriceList.add(overtimePrice1);
         PriceEntity overtimePrice2 =new PriceEntity();
         overtimePrice2.setName("優惠價");
-        overtimePrice2.setPrice(roomResponse.getOvertimePrice2());
+        overtimePrice2.setPrice(searchRoomDto.getOvertimePrice2());
         overtimePriceList.add(overtimePrice2);
         PriceEntity overtimePrice3 =new PriceEntity();
         overtimePrice3.setName("平日");
-        overtimePrice3.setPrice(roomResponse.getOvertimePrice3());
+        overtimePrice3.setPrice(searchRoomDto.getOvertimePrice3());
         overtimePriceList.add(overtimePrice3);
         PriceEntity overtimePrice4 =new PriceEntity();
         overtimePrice4.setName("假日");
-        overtimePrice4.setPrice(roomResponse.getOvertimePrice4());
+        overtimePrice4.setPrice(searchRoomDto.getOvertimePrice4());
         overtimePriceList.add(overtimePrice4);
-        roomResponse.setOvertimePrice(overtimePriceList);
-        return roomResponse;
+        searchRoomDto.setOvertimePrice(overtimePriceList);
+        return searchRoomDto;
     }
 }
