@@ -40,7 +40,7 @@ public class RoomResponse implements Serializable {
     private Integer updateUser;
 
     private Timestamp updateTime;
-    
+
 //    private List<PriceEntity> roomPrice;
 
 //    private List<PriceEntity> restPrice;

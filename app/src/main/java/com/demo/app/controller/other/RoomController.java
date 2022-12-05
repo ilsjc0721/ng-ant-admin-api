@@ -52,6 +52,13 @@ public class RoomController {
         return roomService.updateRoom(room);
     }
 
+    @PutMapping("/clean")
+    @ApiOperation(value = "設定房間清潔")
+//    @PreAuthorize("@ss.hasPer('default:system:room:edit')")
+    public Result setRoomClean(@RequestBody @Validated SetRoomClean setRoomClean) {
+        return roomService.setRoomClean(setRoomClean);
+    }
+
     @PostMapping("/del")
     @ApiOperation(value = "刪除房間")
 //    @PreAuthorize("@ss.hasPer('default:system:room:del')")

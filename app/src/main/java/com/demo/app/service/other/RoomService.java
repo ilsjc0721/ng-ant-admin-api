@@ -3,6 +3,7 @@ package com.demo.app.service.other;
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.demo.app.mapper.other.CleanMapper;
 import com.demo.app.mapper.other.RoomMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -14,6 +15,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import result.CommonConstants;
 import result.Result;
 import util.SearchFilter;
@@ -27,6 +30,9 @@ import java.util.Optional;
 public class RoomService {
     @Autowired
     RoomMapper roomMapper;
+
+    @Autowired
+    CleanMapper cleanMapper;
 
     public Result listRoom(SearchFilter searchFilter) {
         PageHelper.startPage(searchFilter.getPageNum(), searchFilter.getPageSize());
@@ -103,6 +109,28 @@ public class RoomService {
         if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
             return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
         }
+        return Result.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Result setRoomClean(SetRoomClean setRoomClean) {
+        CleanEntity cleanEntity = new CleanEntity();
+        BeanUtils.copyProperties(setRoomClean, cleanEntity);
+        int res = cleanMapper.insert(cleanEntity);
+
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+
+        RoomEntity room = new RoomEntity();
+        room.setId(setRoomClean.getRoomId());
+        room.setStatus("打掃");
+        int res1 = roomMapper.updateById(room);
+
+        if (res1 == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+
         return Result.success();
     }
 
