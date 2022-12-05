@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -16,7 +17,7 @@ public class OrderEntity implements Serializable {
     private Integer id;
 
     @TableField("room_id")
-    private Integer roomID;
+    private Integer roomId;
 
     private String roomName;
 
@@ -28,11 +29,11 @@ public class OrderEntity implements Serializable {
     @TableField("out_date")
     private Timestamp outDate;
 
-    private String price;
+    private Integer price;
 
-    private String deposit;
+    private Integer deposit;
 
-    private String unPaid;
+    private Integer unPaid;
 
     @TableField("customer_id")
     private Integer customerId;

@@ -88,7 +88,6 @@ public class OrderService {
         Integer roomId = jsonObject.getInteger("roomId");
         Timestamp inDate = jsonObject.getTimestamp("inDate");
         Integer customerId = jsonObject.getInteger("customerId");
-        System.out.println("-----------");
 
         if (Objects.nonNull(roomId)) {
             System.out.println(roomId);
