@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.demo.app.mapper.other.OrderMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import model.dto.other.CustomerEntity;
-import model.dto.other.OrderEntity;
-import model.dto.other.SearchCustomerDto;
-import model.dto.other.SearchOrderDto;
+import enums.ErrorCodeEnum;
+import model.dto.del.BatchDeleteDto;
+import model.dto.other.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import result.CommonConstants;
 import result.Result;
 import util.SearchFilter;
 
@@ -50,6 +52,37 @@ public class OrderService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public Result insertOrder(InsertOrder insertOrder) {
+
+        OrderEntity order = new OrderEntity();
+        BeanUtils.copyProperties(insertOrder, order);
+        int res = orderMapper.insert(order);
+        Number ids = order.getId();
+
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_CREATE_FAILED);
+        }
+        return Result.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Result updateOrder(UpdateOrder updateOrder) {
+        OrderEntity order = new OrderEntity();
+        BeanUtils.copyProperties(updateOrder, order);
+
+        int res = orderMapper.updateById(order);
+
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+        return Result.success();
+    }
+
+    public Result delOrder(BatchDeleteDto batchDelete) {
+        orderMapper.deleteBatchIds(batchDelete.getIds());
+        return Result.success();
+    }
     private SearchOrderDto getSearchOrderDto(JSONObject jsonObject) {
         SearchOrderDto searchOrderDto = new SearchOrderDto();
         Integer roomId = jsonObject.getInteger("roomId");
