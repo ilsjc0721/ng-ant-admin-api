@@ -12,6 +12,8 @@ public class InsertOrder {
 
     private String type;
 
+    private String payment;
+
     private Timestamp inDate;
 
     private Timestamp outDate;
@@ -25,4 +27,6 @@ public class InsertOrder {
     private String status;
 
     private Integer updateUser;
+
+    private Timestamp updateTime;
 }

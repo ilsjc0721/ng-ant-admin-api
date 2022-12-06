@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
 import model.dto.other.*;
+import model.dto.sys.user.InsertUserRoleDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import result.Result;
 import util.SearchFilter;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -58,12 +60,61 @@ public class OrderService {
         OrderEntity order = new OrderEntity();
         BeanUtils.copyProperties(insertOrder, order);
         int res = orderMapper.insert(order);
-        Number ids = order.getId();
 
         if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
             return Result.failure(ErrorCodeEnum.SYS_ERR_CREATE_FAILED);
+        } else {
+            ArrayList<InsertRevenue> InsertRevenueList = new ArrayList<>();
+            if (order.getStatus().equals("入住")) {
+                InsertRevenue revenue = new InsertRevenue();
+                revenue.setOrderId(order.getId());
+                revenue.setPayment(insertOrder.getPayment());
+                revenue.setType("房費");
+                revenue.setRevenue(order.getPrice());
+                revenue.setRevenueUser(order.getUpdateUser());
+                revenue.setRevenueDate(order.getUpdateTime());
+                InsertRevenueList.add(revenue);
+                //ToDo: update room.status
+            } else {
+                if (order.getDeposit().equals(0)) {
+                    InsertRevenue revenue = new InsertRevenue();
+                    revenue.setOrderId(order.getId());
+                    revenue.setPayment(insertOrder.getPayment());
+                    revenue.setType("未付款");
+                    revenue.setRevenue(order.getPrice());
+                    revenue.setRevenueUser(order.getUpdateUser());
+                    revenue.setRevenueDate(order.getUpdateTime());
+                    InsertRevenueList.add(revenue);
+                } else {
+                    InsertRevenue revenue = new InsertRevenue();
+                    revenue.setOrderId(order.getId());
+                    revenue.setPayment(insertOrder.getPayment());
+                    revenue.setType("未付款");
+                    revenue.setRevenue(order.getPrice() - order.getDeposit());
+                    revenue.setRevenueUser(order.getUpdateUser());
+                    revenue.setRevenueDate(order.getUpdateTime());
+                    InsertRevenueList.add(revenue);
+
+                    InsertRevenue revenue1 = new InsertRevenue();
+                    revenue1.setOrderId(order.getId());
+                    revenue1.setPayment(insertOrder.getPayment());
+                    revenue1.setType("訂金");
+                    revenue1.setRevenue(order.getDeposit());
+                    revenue1.setRevenueUser(order.getUpdateUser());
+                    revenue1.setRevenueDate(order.getUpdateTime());
+                    InsertRevenueList.add(revenue1);
+                }
+            }
+
+            int resRevenue = orderMapper.insertRevenue(InsertRevenueList);
+            if (resRevenue == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+                ArrayList<Integer> delIds = new ArrayList<>();
+                delIds.add(order.getId());
+                orderMapper.deleteBatchIds(delIds);
+                return Result.failure(ErrorCodeEnum.SYS_ERR_CREATE_FAILED);
+            }
+            return Result.success();
         }
-        return Result.success();
     }
 
     @Transactional(rollbackFor = Exception.class)

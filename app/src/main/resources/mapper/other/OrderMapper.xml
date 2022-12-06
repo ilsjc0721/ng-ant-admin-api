@@ -11,17 +11,23 @@
         A.out_date AS outDate,
         A.price,
         A.deposit,
-        A.price-A.deposit AS unPaid,
+        CASE
+            WHEN A.status = '預訂' THEN A.price-A.deposit
+            ELSE 0
+        END AS 'unPaid',
         A.customer_id AS customerId,
         B.name AS customerName,
         A.status,
         A.update_user AS updateUser,
+        D.user_name_ch AS updateUserName,
         A.update_time AS updateTime
         FROM ly_order AS A
         INNER JOIN ly_customer AS B
         ON A.customer_id = B.id
         INNER JOIN ly_room AS C
         ON A.room_id = C.id
+        LEFT JOIN sys_user AS D
+        ON A.update_user = D.id
         WHERE
         1 = 1
         <if test="roomId != null and roomId != ''">
@@ -39,4 +45,12 @@
         ORDER BY
         A.update_time desc
     </select>
+
+    <insert id="insertRevenue" parameterType="list" >
+        insert into ly_order_revenue
+        (order_id, payment, type, revenue, revenue_user, revenue_date) values
+        <foreach collection="list" item="item"  separator=",">
+            (#{item.orderId}, #{item.payment}, #{item.type}, #{item.revenue}, #{item.revenueUser}, #{item.revenueDate})
+        </foreach>
+    </insert>
 </mapper>

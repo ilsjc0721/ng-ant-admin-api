@@ -45,6 +45,8 @@ public class OrderEntity implements Serializable {
     @TableField("update_user")
     private Integer updateUser;
 
+    private String updateUserName;
+
     @TableField("update_time")
     private Timestamp updateTime;
 }
