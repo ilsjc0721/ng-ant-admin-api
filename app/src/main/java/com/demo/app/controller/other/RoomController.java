@@ -52,12 +52,7 @@ public class RoomController {
         return roomService.updateRoom(room);
     }
 
-    @PutMapping("/clean")
-    @ApiOperation(value = "設定房間清潔")
-//    @PreAuthorize("@ss.hasPer('default:system:room:edit')")
-    public Result setRoomClean(@RequestBody @Validated SetRoomClean setRoomClean) {
-        return roomService.setRoomClean(setRoomClean);
-    }
+
 
     @PostMapping("/del")
     @ApiOperation(value = "刪除房間")
@@ -65,4 +60,26 @@ public class RoomController {
     public Result delRoom(@RequestBody @Validated BatchDeleteDto batchDeleteDto) {
         return roomService.delRoom(batchDeleteDto);
     }
+
+    @PutMapping("/clean")
+    @ApiOperation(value = "設定房間清潔開始")
+//    @PreAuthorize("@ss.hasPer('default:system:room:edit')")
+    public Result setRoomCleanStart(@RequestBody @Validated SetRoomClean setRoomClean) {
+        return roomService.setRoomClean(setRoomClean);
+    }
+
+    @PutMapping("/clean/end")
+    @ApiOperation(value = "設定房間清潔結束")
+//    @PreAuthorize("@ss.hasPer('default:system:room:edit')")
+    public Result setRoomCleanEnd(@RequestBody @Validated SetRoomCleanEnd setRoomCleanEnd) {
+        return roomService.setRoomCleanEnd(setRoomCleanEnd);
+    }
+    @GetMapping("/clean/{id}")
+    @ApiOperation(value = "取得房間清潔明細")
+//    @PreAuthorize("@ss.hasPer('default:system:room:edit')")
+    public Result roomCleanDetail(@PathVariable Integer id) {
+        return roomService.roomCleanDetail(id);
+    }
+
+
 }

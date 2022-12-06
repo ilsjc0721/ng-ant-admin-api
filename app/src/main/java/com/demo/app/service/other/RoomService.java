@@ -10,13 +10,11 @@ import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
 import model.dto.other.*;
-import model.vo.sys.SelectUserVo;
+import model.entity.sys.UserRole;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import result.CommonConstants;
 import result.Result;
 import util.SearchFilter;
@@ -112,6 +110,11 @@ public class RoomService {
         return Result.success();
     }
 
+    public Result delRoom(BatchDeleteDto batchDeleteDto) {
+        roomMapper.deleteBatchIds(batchDeleteDto.getIds());
+        return Result.success();
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public Result setRoomClean(SetRoomClean setRoomClean) {
         CleanEntity cleanEntity = new CleanEntity();
@@ -134,9 +137,42 @@ public class RoomService {
         return Result.success();
     }
 
-    public Result delRoom(BatchDeleteDto batchDeleteDto) {
-        roomMapper.deleteBatchIds(batchDeleteDto.getIds());
+    @Transactional(rollbackFor = Exception.class)
+    public Result setRoomCleanEnd(SetRoomCleanEnd setRoomCleanEnd) {
+        CleanEntity cleanEntity = new CleanEntity();
+        cleanEntity.setId(setRoomCleanEnd.getCleanId());
+        cleanEntity.setEndDatetime(setRoomCleanEnd.getEndDatetime());
+        cleanEntity.setUpdateUser(setRoomCleanEnd.getUpdateUser());
+        cleanEntity.setCost(setRoomCleanEnd.getCost());
+        int res = cleanMapper.updateById(cleanEntity);
+
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+
+        RoomEntity room = new RoomEntity();
+        room.setId(setRoomCleanEnd.getRoomId());
+        room.setStatus("空房");
+        room.setUpdateUser(setRoomCleanEnd.getUpdateUser());
+        int res1 = roomMapper.updateById(room);
+
+        if (res1 == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+
         return Result.success();
+    }
+
+    public Result roomCleanDetail(Integer id) {
+
+        List<RoomCleanResponse> roomCleanList = roomMapper.roomCleanDetail(id);
+
+        Optional<RoomCleanResponse> roomClean = roomCleanList.stream().findFirst();
+        RoomCleanResponse response = new RoomCleanResponse();
+        if (roomClean.isPresent()){
+            BeanUtils.copyProperties(roomClean.get(), response);
+        }
+        return Result.success(response);
     }
 
     private RoomEntity getSearchRoomEntity(JSONObject jsonObject) {

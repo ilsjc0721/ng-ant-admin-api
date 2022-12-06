@@ -28,7 +28,7 @@ ErrorCodeEnum {
     SYS_ERR_SEARCH_FAILED(1004, "查询数据失败"),
     SYS_ERR_COUNT_FAILED(1005, "查询数据总数失败"),
     SYS_ERR_DUPLICATED_DATA(1006, "数据已存在"),
-    SYS_ERR_RECORD_NOT_FOUND(1007, "数据不存在"),
+    SYS_ERR_RECORD_NOT_FOUND(1007, "數據不存在"),
     SYS_ERR_CRON(1008, "cron表达式错误"),
     SYS_ERR_PRODUCE_CAPTCHA(1009, "验证码生成异常"),
     SYS_ERR_TOKEN_SIGNATURE(1010, "无效的令牌！"),

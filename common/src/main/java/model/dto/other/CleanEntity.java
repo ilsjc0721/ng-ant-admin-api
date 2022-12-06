@@ -30,4 +30,9 @@ public class CleanEntity implements Serializable {
 
     @TableField("end_datetime")
     private Timestamp endDatetime;
+
+    private Integer cost;
+
+    @TableField("update_user")
+    private Integer updateUser;
 }

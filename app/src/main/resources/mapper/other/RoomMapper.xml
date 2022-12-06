@@ -57,4 +57,26 @@
         </if>
         ORDER BY name
     </select>
+
+    <select id="roomCleanDetail" resultType="model.dto.other.RoomCleanResponse">
+        SELECT
+            clean.id AS cleanId,
+            clean.user_id AS userId,
+            clean.room_id AS roomId,
+            clean.type,
+            clean.start_datetime AS startDatetime,
+            clean.end_datetime AS endDatetime,
+            room.status,
+            room.name AS roomName,
+            user.user_name_ch AS userChName
+        FROM
+            ly_clean clean
+        INNER JOIN
+            ly_room room on room.id = clean.room_id
+        LEFT JOIN
+            sys_user user on user.id = clean.user_id
+        WHERE
+            clean.room_id = #{roomId}
+        ORDER BY clean.id DESC
+    </select>
 </mapper>
