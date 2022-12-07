@@ -4,10 +4,7 @@ import com.demo.app.service.other.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import model.dto.del.BatchDeleteDto;
-import model.dto.other.InsertCustomer;
-import model.dto.other.InsertOrder;
-import model.dto.other.UpdateCustomer;
-import model.dto.other.UpdateOrder;
+import model.dto.other.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -59,10 +56,10 @@ public class OrderController {
         return orderService.delOrder(batchDelete);
     }
 
-//    @PostMapping("/checkin")
-//    @ApiOperation(value = "訂房入住")
-////    @PreAuthorize("@ss.hasPer('default:system:customer:del')")
-//    public Result delCustomer(@RequestBody @Validated UpdateOrder checkin) {
-//        return orderService.checkin(checkin);
-//    }
+    @PostMapping("/checkin")
+    @ApiOperation(value = "訂房入住")
+//    @PreAuthorize("@ss.hasPer('default:system:customer:checkin')")
+    public Result checkIn(@RequestBody @Validated CheckIn checkIn) {
+        return orderService.checkIn(checkIn);
+    }
 }

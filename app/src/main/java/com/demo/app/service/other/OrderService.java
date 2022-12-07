@@ -113,6 +113,10 @@ public class OrderService {
                 orderMapper.deleteBatchIds(delIds);
                 return Result.failure(ErrorCodeEnum.SYS_ERR_CREATE_FAILED);
             }
+            UpdateRoom updateRoomStatus = new UpdateRoom();
+            updateRoomStatus.setId(order.getRoomId());
+            updateRoomStatus.setStatus(order.getType());
+            int updateRoom = orderMapper.updateRoomStatus(updateRoomStatus);
             return Result.success();
         }
     }
@@ -123,6 +127,16 @@ public class OrderService {
         BeanUtils.copyProperties(updateOrder, order);
 
         int res = orderMapper.updateById(order);
+
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+        return Result.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Result checkIn(CheckIn checkIn) {
+        int res = orderMapper.checkIn(checkIn);
 
         if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
             return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);

@@ -43,7 +43,7 @@
             and A.id = #{id}
         </if>
         ORDER BY
-        A.update_time desc
+        A.in_date, C.name
     </select>
 
     <insert id="insertRevenue" parameterType="list" >
@@ -53,4 +53,28 @@
             (#{item.orderId}, #{item.payment}, #{item.type}, #{item.revenue}, #{item.revenueUser}, #{item.revenueDate})
         </foreach>
     </insert>
+
+    <update id="updateRoomStatus" parameterType="model.dto.other.UpdateRoom">
+        UPDATE ly_room SET
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <update id="checkIn" parameterType="model.dto.other.CheckIn">
+        UPDATE ly_order_revenue SET
+            payment = #{payment},
+            type = '房費',
+            revenue_user = #{revenueUser},
+            revenue_date = #{revenueDate}
+        WHERE type = '未付款'
+        AND order_id = #{id};
+
+        UPDATE ly_room SET
+            status = #{type}
+        WHERE id = #{roomId};
+
+        UPDATE ly_order SET
+        status = '入住'
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -2,7 +2,6 @@ package model.dto.other;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -17,7 +16,7 @@ public class UpdateOrder {
 
     private Date inDate;
 
-    private String outDate;
+    private Date outDate;
 
     private Integer price;
 
