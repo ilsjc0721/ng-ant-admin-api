@@ -4,37 +4,40 @@
 
     <select id="selectRooms" resultType="model.dto.other.SearchRoomDto">
         SELECT
-            id,
-            name,
-            status,
-            room_price1 AS roomPrice1,
-            room_price2 AS roomPrice2,
-            room_price3 AS roomPrice3,
-            room_price4 AS roomPrice4,
-            rest_price1 AS restPrice1,
-            rest_price2 AS restPrice2,
-            rest_price3 AS restPrice3,
-            rest_price4 AS restPrice4,
-            overtime_price1 AS overtimePrice1,
-            overtime_price2 AS overtimePrice2,
-            overtime_price3 AS overtimePrice3,
-            overtime_price4 AS overtimePrice4,
-            update_user AS updateUser,
-            update_time AS updateTime
+            room.id,
+            room.name,
+            room.status,
+            room.room_price1 AS roomPrice1,
+            room.room_price2 AS roomPrice2,
+            room.room_price3 AS roomPrice3,
+            room.room_price4 AS roomPrice4,
+            room.rest_price1 AS restPrice1,
+            room.rest_price2 AS restPrice2,
+            room.rest_price3 AS restPrice3,
+            room.rest_price4 AS restPrice4,
+            room.overtime_price1 AS overtimePrice1,
+            room.overtime_price2 AS overtimePrice2,
+            room.overtime_price3 AS overtimePrice3,
+            room.overtime_price4 AS overtimePrice4,
+            room.update_user AS updateUser,
+            user.user_name_ch AS updateUserName,
+            room.update_time AS updateTime
         FROM
-            ly_room
+            ly_room room
+        LEFT JOIN
+            sys_user user ON user.id = room.update_user
         WHERE
         1 = 1
         <if test="name != null and name != ''">
-            and name like concat('%',#{name},'%')
+            and room.name like concat('%',#{name},'%')
         </if>
         <if test="status != null and status != ''">
-            and status = #{status}
+            and room.status = #{status}
         </if>
         <if test="id != null">
-            and id = #{id}
+            and room.id = #{id}
         </if>
-        ORDER BY name
+        ORDER BY room.name
     </select>
 
     <select id="selectRoomStatus" resultType="model.dto.other.RoomStatusResponse">
@@ -77,6 +80,7 @@
             sys_user user on user.id = clean.user_id
         WHERE
             clean.room_id = #{roomId}
+            AND clean.end_datetime is NULL
         ORDER BY clean.id DESC
     </select>
 </mapper>

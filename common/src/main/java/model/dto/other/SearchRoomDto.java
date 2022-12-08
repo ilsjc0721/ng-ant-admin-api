@@ -42,6 +42,8 @@ public class SearchRoomDto {
 
     private Integer updateUser;
 
+    private String updateUserName;
+
     private Timestamp updateTime;
 
     private List<PriceEntity> roomPrice;

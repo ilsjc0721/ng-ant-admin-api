@@ -2,40 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.app.mapper.other.CustomerMapper">
 
-    <select id="selectCustomer" resultType="model.dto.other.CustomerEntity">
+    <select id="selectCustomer" resultType="model.dto.other.CustomerResponse">
         SELECT
-            id,
-            name,
-            id_number AS idNumber,
-            id_type AS idType,
-            adr,
-            phone,
-            other1,
-            other2,
-            memo,
-            em_name AS emName,
-            em_phone AS emPhone,
-            em_relation AS emRelation,
-            update_user AS updateUser,
-            update_time AS updateTime,
-            car_number AS carNumber
+            cr.id,
+            cr.name,
+            cr.id_number AS idNumber,
+            cr.id_type AS idType,
+            cr.adr,
+            cr.phone,
+            cr.other1,
+            cr.other2,
+            cr.memo,
+            cr.em_name AS emName,
+            cr.em_phone AS emPhone,
+            cr.em_relation AS emRelation,
+            cr.update_user AS updateUser,
+            user.user_name_ch AS updateUserName,
+            cr.update_time AS updateTime,
+            cr.car_number AS carNumber
         FROM
-            ly_customer
+            ly_customer cr
+        LEFT JOIN
+            sys_user user ON user.id = cr.update_user
         WHERE
         1 = 1
         <if test="name != null and name != ''">
-            and name like concat('%',#{name},'%')
+            and cr.name like concat('%',#{name},'%')
         </if>
         <if test="idNumber != null and idNumber != ''">
-            and id_number = #{idNumber}
+            and cr.id_number = #{idNumber}
         </if>
         <if test="phone != null and phone != ''">
-            and phone = #{phone}
+            and cr.phone = #{phone}
         </if>
         <if test="id != null">
-            and id = #{id}
+            and cr.id = #{id}
         </if>
         ORDER BY
-            update_time desc
+            cr.update_time desc
     </select>
 </mapper>

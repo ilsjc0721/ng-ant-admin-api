@@ -21,4 +21,6 @@ public class SetRoomClean {
     private Timestamp startDatetime;
 
     private Timestamp endDatetime;
+
+    private Integer updateUser;
 }

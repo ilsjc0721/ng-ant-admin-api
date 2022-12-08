@@ -8,10 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
-import model.dto.other.CustomerEntity;
-import model.dto.other.InsertCustomer;
-import model.dto.other.SearchCustomerDto;
-import model.dto.other.UpdateCustomer;
+import model.dto.other.*;
 import model.entity.sys.SysUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,17 +35,17 @@ public class CustomerService {
             searchCustomerDto = getSearchCustomerDto(searchFilter.getFilters());
         }
 
-        List<CustomerEntity> customerList = customerMapper.selectCustomer(searchCustomerDto);
+        List<CustomerResponse> customerList = customerMapper.selectCustomer(searchCustomerDto);
 
-        PageInfo<CustomerEntity> selectCustomerPageInfo = new PageInfo<>(customerList);
+        PageInfo<CustomerResponse> selectCustomerPageInfo = new PageInfo<>(customerList);
         return Result.success(selectCustomerPageInfo);
     }
 
     public Result customerDetail(Integer id) {
         SearchCustomerDto searchCustomerDto = new SearchCustomerDto();
         searchCustomerDto.setId(id);
-        List<CustomerEntity> customerList = customerMapper.selectCustomer(searchCustomerDto);
-        Optional<CustomerEntity> customer = customerList.stream().findFirst();
+        List<CustomerResponse> customerList = customerMapper.selectCustomer(searchCustomerDto);
+        Optional<CustomerResponse> customer = customerList.stream().findFirst();
         if (customer.isPresent()){
             return Result.success(customer.get());
         } else {

@@ -9,4 +9,5 @@ public class SearchCustomerDto {
     private String name;
     private String idNumber;
     private String phone;
+    private String updateUserName;
 }
