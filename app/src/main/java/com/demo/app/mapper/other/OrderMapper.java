@@ -13,4 +13,6 @@ public interface OrderMapper extends BaseMapper<OrderEntity>{
     Integer updateRoomStatus(UpdateRoom updateroom);
 
     Integer checkIn(CheckIn checkIn);
+
+    List<ReportResponse> selectReport(SearchReportDto searchReportDto);
 }

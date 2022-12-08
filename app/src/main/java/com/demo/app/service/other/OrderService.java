@@ -148,6 +148,20 @@ public class OrderService {
         orderMapper.deleteBatchIds(batchDelete.getIds());
         return Result.success();
     }
+
+    public Result report(SearchFilter searchFilter) {
+        PageHelper.startPage(searchFilter.getPageNum(), searchFilter.getPageSize());
+
+        SearchReportDto searchReportDto = new SearchReportDto();
+        if (Objects.nonNull(searchFilter.getFilters())) {
+            searchReportDto = getReportDto(searchFilter.getFilters());
+        }
+
+        List<ReportResponse> reportList = orderMapper.selectReport(searchReportDto);
+
+        PageInfo<ReportResponse> selectReportPageInfo = new PageInfo<>(reportList);
+        return Result.success(selectReportPageInfo);
+    }
     private SearchOrderDto getSearchOrderDto(JSONObject jsonObject) {
         SearchOrderDto searchOrderDto = new SearchOrderDto();
         Integer roomId = jsonObject.getInteger("roomId");
@@ -155,18 +169,50 @@ public class OrderService {
         Integer customerId = jsonObject.getInteger("customerId");
 
         if (Objects.nonNull(roomId)) {
-            System.out.println(roomId);
             searchOrderDto.setRoomId(roomId);
         }
         if (Objects.nonNull(inDate)) {
-            System.out.println(inDate);
             searchOrderDto.setInDate(inDate);
         }
         if (Objects.nonNull(customerId)) {
-            System.out.println(customerId);
             searchOrderDto.setCustomerId(customerId);
         }
 
         return searchOrderDto;
+    }
+
+    private SearchReportDto getReportDto(JSONObject jsonObject) {
+        SearchReportDto searchReportDto = new SearchReportDto();
+
+        Timestamp startDate = jsonObject.getTimestamp("startDate");
+        Timestamp endDate = jsonObject.getTimestamp("endDate");
+        String orderType = jsonObject.getString("orderType");
+        String payment = jsonObject.getString("payment");
+        String revenueType = jsonObject.getString("revenueType");
+        Integer revenueUser = jsonObject.getInteger("revenueUser");
+
+        if (Objects.nonNull(startDate)) {
+            searchReportDto.setStartDate(startDate);
+        }
+        if (Objects.nonNull(endDate)) {
+            searchReportDto.setEndDate(endDate);
+        }
+        if (Objects.nonNull(orderType)) {
+            searchReportDto.setOrderType(orderType);
+        }
+
+        if (Objects.nonNull(payment)) {
+            searchReportDto.setPayment(payment);
+        }
+
+        if (Objects.nonNull(revenueType)) {
+            searchReportDto.setRevenueType(revenueType);
+        }
+
+        if (Objects.nonNull(revenueUser)) {
+            searchReportDto.setRevenueUser(revenueUser);
+        }
+
+        return searchReportDto;
     }
 }

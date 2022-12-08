@@ -77,4 +77,48 @@
         status = '入住'
         WHERE id = #{id}
     </update>
+
+    <select id="selectReport" resultType="model.dto.other.ReportResponse">
+        SELECT
+            B.name AS customerName,
+            C.name AS roomName,
+            A.type AS orderType,
+            D.payment,
+            D.type AS revenueType,
+            D.revenue,
+            E.user_name_ch AS revenueUserName,
+            DATE_FORMAT(D.revenue_date,'%Y-%m-%d') AS revenueDate
+        FROM ly_order AS A
+        INNER JOIN ly_customer AS B
+        ON A.customer_id = B.id
+        INNER JOIN ly_room AS C
+        ON A.room_id = C.id
+        INNER JOIN ly_order_revenue AS D
+        ON A.id = D.order_id
+        LEFT JOIN sys_user AS E
+        ON D.revenue_user = E.id
+        WHERE 1 = 1
+
+        <if test="startDate != null">
+            and DATE_FORMAT(D.revenue_date,'%Y-%m-%d') >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+        </if>
+        <if test="endDate != null">
+            and DATE_FORMAT(D.revenue_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+        </if>
+        <if test="orderType != null and orderType != ''">
+            and A.type = #{orderType}
+        </if>
+        <if test="payment != null and payment != ''">
+            and D.payment = #{payment}
+        </if>
+        <if test="revenueType != null and revenueType != ''">
+            and D.type = #{revenueType}
+        </if>
+        <if test="revenueUser != null">
+            and D.revenue_user = #{revenueUser}
+        </if>
+
+        ORDER BY D.revenue_date, D.revenue_user, C.name
+    </select>
+
 </mapper>
