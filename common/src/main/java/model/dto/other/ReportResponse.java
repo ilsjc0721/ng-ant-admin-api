@@ -7,12 +7,24 @@ import java.sql.Timestamp;
 
 @Data
 public class ReportResponse implements Serializable {
-    private String customerName;
+
+    //common
     private String roomName;
+
+    //order-reort
+    private String customerName;
     private String orderType;
     private String payment;
     private String revenueType;
     private Integer revenue;
     private String revenueUserName;
     private String revenueDate;
+
+    //clean-report
+    private String cleanDate;
+    private String cleanerName;
+    private String startTime;
+    private String endTime;
+    private Integer cost;
+    private String type;
 }
