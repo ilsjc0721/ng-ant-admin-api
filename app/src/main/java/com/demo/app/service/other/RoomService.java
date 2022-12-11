@@ -19,6 +19,7 @@ import result.CommonConstants;
 import result.Result;
 import util.SearchFilter;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -252,5 +253,40 @@ public class RoomService {
         overtimePriceList.add(overtimePrice4);
         searchRoomDto.setOvertimePrice(overtimePriceList);
         return searchRoomDto;
+    }
+
+    public Result report(SearchFilter searchFilter) {
+        PageHelper.startPage(searchFilter.getPageNum(), searchFilter.getPageSize());
+
+        SearchReportDto searchReportDto = new SearchReportDto();
+        if (Objects.nonNull(searchFilter.getFilters())) {
+            searchReportDto = getReportDto(searchFilter.getFilters());
+        }
+
+        List<ReportResponse> reportList = roomMapper.selectReport(searchReportDto);
+
+        PageInfo<ReportResponse> selectReportPageInfo = new PageInfo<>(reportList);
+        return Result.success(selectReportPageInfo);
+    }
+
+    private SearchReportDto getReportDto(JSONObject jsonObject) {
+        SearchReportDto searchReportDto = new SearchReportDto();
+
+        Timestamp startDate = jsonObject.getTimestamp("startDate");
+        Timestamp endDate = jsonObject.getTimestamp("endDate");
+        Integer cleanUser = jsonObject.getInteger("cleanUser");
+
+        if (Objects.nonNull(startDate)) {
+            searchReportDto.setStartDate(startDate);
+        }
+        if (Objects.nonNull(endDate)) {
+            searchReportDto.setEndDate(endDate);
+        }
+
+        if (Objects.nonNull(cleanUser)) {
+            searchReportDto.setCleanUser(cleanUser);
+        }
+
+        return searchReportDto;
     }
 }

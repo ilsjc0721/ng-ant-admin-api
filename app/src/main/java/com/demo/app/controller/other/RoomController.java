@@ -81,5 +81,11 @@ public class RoomController {
         return roomService.roomCleanDetail(id);
     }
 
+    @PostMapping("/clean/report")
+    @ApiOperation(value = "帳款報表")
+//    @PreAuthorize("@ss.hasPer('default:system:customer:report')")
+    public Result report(@RequestBody @Validated SearchFilter searchFilter) {
+        return roomService.report(searchFilter);
+    }
 
 }

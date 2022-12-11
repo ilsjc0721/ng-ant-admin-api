@@ -83,4 +83,34 @@
             AND clean.end_datetime is NULL
         ORDER BY clean.id DESC
     </select>
+
+    <select id="selectReport" resultType="model.dto.other.ReportResponse">
+        SELECT
+            DATE_FORMAT(A.start_datetime,'%Y-%m-%d') AS cleanDate,
+            B.name AS roomName,
+            C.user_name_ch AS cleanerName,
+            DATE_FORMAT(A.start_datetime,'%H:%i') AS startTime,
+            DATE_FORMAT(A.end_datetime,'%H:%i') AS endTime,
+            A.cost,
+            A.type
+        FROM ly_clean AS A
+        INNER JOIN ly_room AS B
+        ON A.room_id = B.id
+        INNER JOIN sys_user AS C
+        ON A.user_id = C.id
+        WHERE 1 = 1
+          AND end_datetime IS NOT NULL
+
+        <if test="startDate != null">
+            and DATE_FORMAT(A.start_datetime,'%Y-%m-%d') >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+        </if>
+        <if test="endDate != null">
+            and DATE_FORMAT(A.start_datetime,'%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+        </if>
+        <if test="cleanUser != null">
+            and A.user_id = #{cleanUser}
+        </if>
+
+        ORDER BY A.start_datetime, A.user_id, A.room_id
+    </select>
 </mapper>

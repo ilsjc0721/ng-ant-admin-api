@@ -95,7 +95,7 @@
         ON A.room_id = C.id
         INNER JOIN ly_order_revenue AS D
         ON A.id = D.order_id
-        LEFT JOIN sys_user AS E
+        INNER JOIN sys_user AS E
         ON D.revenue_user = E.id
         WHERE 1 = 1
 
