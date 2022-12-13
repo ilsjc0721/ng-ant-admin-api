@@ -74,7 +74,8 @@
         WHERE id = #{roomId};
 
         UPDATE ly_order SET
-        status = '入住'
+            status = '入住',
+            in_date = #{revenueDate}
         WHERE id = #{id}
     </update>
 
