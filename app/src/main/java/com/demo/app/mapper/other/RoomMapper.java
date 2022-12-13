@@ -14,4 +14,6 @@ public interface RoomMapper extends BaseMapper<RoomEntity> {
     List<RoomCleanResponse> roomCleanDetail(@Param("roomId") Integer roomId);
 
     List<ReportResponse> selectReport(SearchReportDto searchReportDto);
+
+    Integer updateRoomCheckOut(@Param("roomId") Integer roomId);
 }

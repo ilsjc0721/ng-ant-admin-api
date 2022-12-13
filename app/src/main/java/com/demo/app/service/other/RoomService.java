@@ -135,6 +135,8 @@ public class RoomService {
             return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
         }
 
+        updateRoomCheckOut(setRoomClean.getRoomId());
+
         return Result.success();
     }
 
@@ -161,6 +163,8 @@ public class RoomService {
             return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
         }
 
+        updateRoomCheckOut(setRoomCleanEnd.getRoomId());
+
         return Result.success();
     }
 
@@ -174,6 +178,10 @@ public class RoomService {
             BeanUtils.copyProperties(roomClean.get(), response);
         }
         return Result.success(response);
+    }
+
+    private void updateRoomCheckOut(int roomId){
+        roomMapper.updateRoomCheckOut(roomId);
     }
 
     private RoomEntity getSearchRoomEntity(JSONObject jsonObject) {

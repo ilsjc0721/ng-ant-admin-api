@@ -113,4 +113,12 @@
 
         ORDER BY A.start_datetime, A.user_id, A.room_id
     </select>
+
+    <update id="updateRoomCheckOut" parameterType="int">
+        UPDATE ly_order SET
+            status = '退房',
+            out_date = NOW()
+        WHERE room_id = #{roomId}
+        AND status = '入住'
+    </update>
 </mapper>
