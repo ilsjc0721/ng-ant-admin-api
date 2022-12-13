@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import model.dto.del.BatchDeleteDto;
 import model.dto.sys.user.InsertUserDto;
+import model.dto.sys.user.ResetUserPsdDto;
 import model.dto.sys.user.UpdateUserDto;
 import model.dto.sys.user.UpdateUserPsdDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +61,16 @@ public class UserController {
 
     @PutMapping("/psd")
     @ApiOperation(value = "修改用户密码")
-    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
+//    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
     public Result updateUserPsd(@RequestBody @Validated UpdateUserPsdDto updateUserPsdDto) {
         return userService.updateUserPsd(updateUserPsdDto);
+    }
+
+    @PutMapping("/psd/reset")
+    @ApiOperation(value = "重置用户密码")
+    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
+    public Result resetUserPsd(@RequestBody @Validated ResetUserPsdDto resetUserPsdDto) {
+        return userService.resetUserPsd(resetUserPsdDto);
     }
 
     @PostMapping("/del")
