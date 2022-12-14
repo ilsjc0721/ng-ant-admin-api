@@ -16,13 +16,13 @@
             ELSE 0
         END AS 'unPaid',
         A.customer_id AS customerId,
-        B.name AS customerName,
+        IFNULL(B.name,'休息客人') AS customerName,
         A.status,
         A.update_user AS updateUser,
         D.user_name_ch AS updateUserName,
         A.update_time AS updateTime
         FROM ly_order AS A
-        INNER JOIN ly_customer AS B
+        LEFT JOIN ly_customer AS B
         ON A.customer_id = B.id
         INNER JOIN ly_room AS C
         ON A.room_id = C.id
@@ -81,7 +81,7 @@
 
     <select id="selectReport" resultType="model.dto.other.ReportResponse">
         SELECT
-            B.name AS customerName,
+            IFNULL(B.name,'休息客人') AS customerName,
             C.name AS roomName,
             A.type AS orderType,
             D.payment,
@@ -90,7 +90,7 @@
             E.user_name_ch AS revenueUserName,
             DATE_FORMAT(D.revenue_date,'%Y-%m-%d') AS revenueDate
         FROM ly_order AS A
-        INNER JOIN ly_customer AS B
+        LEFT JOIN ly_customer AS B
         ON A.customer_id = B.id
         INNER JOIN ly_room AS C
         ON A.room_id = C.id
