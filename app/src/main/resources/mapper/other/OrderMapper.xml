@@ -16,7 +16,7 @@
             ELSE 0
         END AS 'unPaid',
         A.customer_id AS customerId,
-        IFNULL(B.name,'休息客人') AS customerName,
+        IFNULL(B.name,'旅客') AS customerName,
         A.status,
         A.update_user AS updateUser,
         D.user_name_ch AS updateUserName,
@@ -81,10 +81,13 @@
 
     <select id="selectReport" resultType="model.dto.other.ReportResponse">
         SELECT
-            IFNULL(B.name,'休息客人') AS customerName,
+            IFNULL(B.name,'旅客') AS customerName,
             C.name AS roomName,
             A.type AS orderType,
-            D.payment,
+            CASE
+                WHEN D.type = '未付款' THEN ''
+                ELSE D.payment
+            END AS 'payment',
             D.type AS revenueType,
             D.revenue,
             E.user_name_ch AS revenueUserName,
@@ -120,6 +123,14 @@
         </if>
 
         ORDER BY D.revenue_date, D.revenue_user, C.name
+    </select>
+
+    <select id="isOverlap" resultType="model.dto.other.OrderEntity">
+        SELECT id FROM ly_order
+            WHERE 1=1
+        AND room_id = #{roomId}
+        AND in_date &lt;= #{outDate}
+        AND out_date >= #{inDate}
     </select>
 
 </mapper>

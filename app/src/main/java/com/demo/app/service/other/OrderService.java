@@ -1,6 +1,8 @@
 package com.demo.app.service.other;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.app.mapper.other.OrderMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -54,8 +56,17 @@ public class OrderService {
         }
     }
 
+    private boolean isOverlap(Integer roomId, Timestamp inDate, Timestamp outDate) {
+        List<OrderEntity> orderList = orderMapper.isOverlap(roomId, inDate, outDate);
+        return CollectionUtil.isNotEmpty(orderList);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public Result insertOrder(InsertOrder insertOrder) {
+        // check overlap
+        if (isOverlap(insertOrder.getRoomId(), insertOrder.getInDate(), insertOrder.getOutDate())) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_ADD_ORDER_DUPLICATE);
+        }
 
         OrderEntity order = new OrderEntity();
         BeanUtils.copyProperties(insertOrder, order);
