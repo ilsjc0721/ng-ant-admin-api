@@ -17,6 +17,7 @@ public class ReportResponse implements Serializable {
     private String payment;
     private String revenueType;
     private Integer revenue;
+    private String memo;
     private String revenueUserName;
     private String revenueDate;
 

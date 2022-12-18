@@ -18,5 +18,7 @@ public interface OrderMapper extends BaseMapper<OrderEntity>{
 
     List<ReportResponse> selectReport(SearchReportDto searchReportDto);
 
-    List<OrderEntity> isOverlap(@Param("roomId") Integer roomId, @Param("inDate") Timestamp inDate, @Param("outDate") Timestamp outDate);
+    List<OrderEntity> isOverlap(@Param("roomId") Integer roomId, @Param("inDate") Timestamp inDate, @Param("outDate") Timestamp outDate, @Param("id") Integer id);
+
+    Integer cancelOrder(CancelOrder cancelOrder);
 }

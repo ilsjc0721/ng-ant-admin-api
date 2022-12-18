@@ -2,14 +2,12 @@ package com.demo.app.service.other;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.demo.app.mapper.other.OrderMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
 import model.dto.other.*;
-import model.dto.sys.user.InsertUserRoleDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,15 +54,15 @@ public class OrderService {
         }
     }
 
-    private boolean isOverlap(Integer roomId, Timestamp inDate, Timestamp outDate) {
-        List<OrderEntity> orderList = orderMapper.isOverlap(roomId, inDate, outDate);
+    private boolean isOverlap(Integer roomId, Timestamp inDate, Timestamp outDate, Integer id) {
+        List<OrderEntity> orderList = orderMapper.isOverlap(roomId, inDate, outDate, id);
         return CollectionUtil.isNotEmpty(orderList);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public Result insertOrder(InsertOrder insertOrder) {
         // check overlap
-        if (isOverlap(insertOrder.getRoomId(), insertOrder.getInDate(), insertOrder.getOutDate())) {
+        if (isOverlap(insertOrder.getRoomId(), insertOrder.getInDate(), insertOrder.getOutDate(), 0)) {
             return Result.failure(ErrorCodeEnum.SYS_ERR_ADD_ORDER_DUPLICATE);
         }
 
@@ -85,7 +83,6 @@ public class OrderService {
                 revenue.setRevenueUser(order.getUpdateUser());
                 revenue.setRevenueDate(order.getUpdateTime());
                 InsertRevenueList.add(revenue);
-                //ToDo: update room.status
             } else {
                 if (order.getDeposit().equals(0)) {
                     InsertRevenue revenue = new InsertRevenue();
@@ -133,11 +130,9 @@ public class OrderService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Result updateOrder(UpdateOrder updateOrder) {
-        OrderEntity order = new OrderEntity();
-        BeanUtils.copyProperties(updateOrder, order);
+    public Result cancelOrder(CancelOrder cancelOrder) {
 
-        int res = orderMapper.updateById(order);
+        int res = orderMapper.cancelOrder(cancelOrder);
 
         if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
             return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
