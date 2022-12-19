@@ -37,20 +37,20 @@ public class SysUser implements Serializable {
     @TableField("update_time")
     private Timestamp updateTime;
 
-    private Integer sex;
-
-    private Long mobile;
+//    private Integer sex;
+//
+//    private Long mobile;
 
     private String email;
 
     @TableField("last_login_time")
     private Timestamp lastLoginTime;
 
-    private Integer education;
+//    private Integer education;
 
-    private String telephone;
+//    private String telephone;
 
-    @TableField("department_id")
-    private Integer departmentId;
+//    @TableField("department_id")
+//    private Integer departmentId;
 
 }
