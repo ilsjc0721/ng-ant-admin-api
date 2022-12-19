@@ -129,6 +129,7 @@
     <select id="isOverlap" resultType="model.dto.other.OrderEntity">
         SELECT id FROM ly_order
             WHERE 1=1
+        AND status NOT IN ('作廢', '退房')
         AND room_id = #{roomId}
         AND in_date &lt;= #{outDate}
         AND out_date >= #{inDate}
