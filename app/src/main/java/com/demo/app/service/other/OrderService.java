@@ -134,9 +134,9 @@ public class OrderService {
 
         int res = orderMapper.cancelOrder(cancelOrder);
 
-        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
-            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
-        }
+//        if (res == CommonConstants.DataBaseOperationStatus.IS_FAILURE) {
+//            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+//        }
         return Result.success();
     }
 

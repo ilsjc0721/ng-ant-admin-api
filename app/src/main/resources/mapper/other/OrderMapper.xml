@@ -160,6 +160,13 @@
                 memo = #{memo}
             WHERE type = '未付款'
               AND order_id = #{id};
+
+            UPDATE ly_order_revenue SET
+                type = '作廢',
+                revenue_date = #{updateTime},
+                memo = #{memo}
+            WHERE type = '房費'
+            AND order_id = #{id};
         </if>
 
         <if test="cash != 0 or card != 0">
