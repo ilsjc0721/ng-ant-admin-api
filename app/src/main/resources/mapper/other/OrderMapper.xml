@@ -142,18 +142,18 @@
         <if test="cash != 0">
             insert into ly_order_revenue
             (order_id, payment, type, revenue, memo, revenue_user, revenue_date) values
-            (#{id}, '現金', '退費', #{cash}, #{memo}, #{updateUser}, #{updateTime});
+            (#{id}, '現金', '作廢', #{cash}, #{memo}, #{updateUser}, #{updateTime});
         </if>
 
         <if test="card != 0">
             insert into ly_order_revenue
             (order_id, payment, type, revenue, memo, revenue_user, revenue_date) values
-            (#{id}, '刷卡', '退費', #{card}, #{memo}, #{updateUser}, #{updateTime});
+            (#{id}, '刷卡', '作廢', #{card}, #{memo}, #{updateUser}, #{updateTime});
         </if>
 
         <if test="cash == 0 and card == 0">
             UPDATE ly_order_revenue SET
-                type = '退費',
+                type = '作廢',
                 revenue = 0,
                 revenue_date = #{updateTime},
                 memo = #{memo}
