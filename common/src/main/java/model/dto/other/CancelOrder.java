@@ -10,6 +10,8 @@ public class CancelOrder {
     @NotNull
     private Integer id;
 
+    private Integer roomId;
+
     private Integer cash;
 
     private Integer card;

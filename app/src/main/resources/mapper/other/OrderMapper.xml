@@ -180,6 +180,12 @@
             update_user = #{updateUser},
             update_time = #{updateTime}
         WHERE id = #{id};
+
+        UPDATE ly_room SET
+            status = '空房',
+            update_user = #{updateUser},
+            update_time = #{updateTime}
+        WHERE id = #{roomId};
     </update>
 
 </mapper>
