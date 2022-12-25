@@ -108,6 +108,7 @@ public class RoomService {
         if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
             return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
         }
+        updateRoomCheckOut(room.getId());
         return Result.success();
     }
 
