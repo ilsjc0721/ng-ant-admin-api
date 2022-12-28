@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.CourseMapper">
+    <select id="selectCourse" resultType="model.dto.other.CourseEntity">
+        SELECT
+            A.name,
+            A.course_type AS courseType,
+            A.status,
+            A.limit,
+            A.apply,
+            A.update_user AS updateUser,
+            D.user_name_en AS updateUserName,
+            A.update_time AS updateTime
+        FROM tsva_course AS A
+        LEFT JOIN sys_user AS D
+        ON A.update_user = D.id
+        WHERE
+        1 = 1
+        <if test="name != null and name != ''">
+            and A.name = #{name}
+        </if>
+        <if test="status != null and status != ''">
+            and A.status = #{status}
+        </if>
+        <if test="id != null">
+            and A.id = #{id}
+        </if>
+        ORDER BY A.name
+    </select>
+</mapper>
