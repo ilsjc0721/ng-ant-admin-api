@@ -3,6 +3,7 @@
 <mapper namespace="com.demo.app.mapper.other.CourseMapper">
     <select id="selectCourse" resultType="model.dto.other.CourseEntity">
         SELECT
+            A.id,
             A.name,
             A.course_type AS courseType,
             A.status,
@@ -26,5 +27,20 @@
             and A.id = #{id}
         </if>
         ORDER BY A.name
+    </select>
+
+    <select id="selectCourseFee" resultType="model.dto.other.CourseFeeEntity">
+        SELECT
+            A.coach_id AS coachId,
+            A.coach_type AS coachType,
+            A.coach_fee  AS coachFee,
+            A.tuition_fee  AS tuitionFee,
+            D.user_name_en AS coachName
+        FROM tsva_course_fee AS A
+        LEFT JOIN sys_user AS D
+        ON A.coach_id = D.id
+        WHERE 1 = 1
+          AND  course_id = #{id}
+        ORDER BY A.id
     </select>
 </mapper>

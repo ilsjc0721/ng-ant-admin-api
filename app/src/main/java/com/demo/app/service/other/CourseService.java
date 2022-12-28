@@ -5,6 +5,7 @@ import com.demo.app.mapper.other.CourseMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import model.dto.other.CourseEntity;
+import model.dto.other.CourseFeeEntity;
 import model.dto.other.SearchCourseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,11 @@ public class CourseService {
         }
 
         List<CourseEntity> courseList = courseMapper.selectCourse(searchCourseDto);
+
+        for (CourseEntity course : courseList) {
+            List<CourseFeeEntity> courseFeeList = courseMapper.selectCourseFee(course.getId());
+            course.setCourseFee(courseFeeList);
+        }
 
         PageInfo<CourseEntity> selectCoursePageInfo = new PageInfo<>(courseList);
         return Result.success(selectCoursePageInfo);

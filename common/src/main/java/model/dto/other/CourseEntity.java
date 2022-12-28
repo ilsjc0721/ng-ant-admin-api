@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @TableName("tsva_course")
@@ -28,4 +29,6 @@ public class CourseEntity implements Serializable {
 
     @TableField("update_time")
     private Timestamp updateTime;
+
+    private List<CourseFeeEntity> courseFee;
 }
