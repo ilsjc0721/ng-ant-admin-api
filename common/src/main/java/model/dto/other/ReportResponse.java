@@ -14,10 +14,11 @@ public class ReportResponse implements Serializable {
     //order-reort
     private String customerName;
     private String orderType;
+    private String orderMemo;
     private String payment;
     private String revenueType;
     private Integer revenue;
-    private String memo;
+    private String revenueMemo;
     private String revenueUserName;
     private String revenueDate;
 

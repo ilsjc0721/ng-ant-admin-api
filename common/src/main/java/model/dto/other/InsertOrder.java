@@ -26,6 +26,8 @@ public class InsertOrder {
 
     private String status;
 
+    private String memo;
+
     private Integer updateUser;
 
     private Timestamp updateTime;

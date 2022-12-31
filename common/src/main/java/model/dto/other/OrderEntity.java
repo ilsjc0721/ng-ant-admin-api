@@ -42,6 +42,8 @@ public class OrderEntity implements Serializable {
 
     private String status;
 
+    private String memo;
+
     @TableField("update_user")
     private Integer updateUser;
 
