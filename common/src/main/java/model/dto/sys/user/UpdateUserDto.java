@@ -1,6 +1,8 @@
 package model.dto.sys.user;
 
 import lombok.Data;
+import model.entity.sys.UserChild;
+import model.vo.sys.UserChildVo;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -44,4 +46,6 @@ public class UpdateUserDto implements Serializable {
     private String emergencyContactPhone;
 
     private String emergencyContactRelationship;
+
+    private List<UserChild> userChildVoList;
 }

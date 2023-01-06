@@ -41,4 +41,6 @@ public class DetailUserVo {
     private String emergencyContactPhone;
 
     private String emergencyContactRelationship;
+
+    private List<UserChildVo> userChildVoList;
 }

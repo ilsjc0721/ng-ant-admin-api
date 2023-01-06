@@ -12,10 +12,13 @@ import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
 import model.dto.sys.role.UpdateRoleDto;
 import model.dto.sys.user.*;
+import model.entity.department.SysDepartment;
 import model.entity.sys.SysUser;
+import model.entity.sys.UserChild;
 import model.entity.sys.UserRole;
 import model.vo.sys.DetailUserVo;
 import model.vo.sys.SelectUserVo;
+import model.vo.sys.UserChildVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -74,6 +77,8 @@ public class UserService {
     public Result userDetail(Integer id) {
         DetailUserVo detailUserVo = userMapper.selectUserVoById(id);
         List<UpdateRoleDto> updateRoleDtos = userRoleMapper.selectRoleName(id);
+        List<UserChildVo> userChildVoList = userMapper.selectUserChildByParentId(id);
+        detailUserVo.setUserChildVoList(userChildVoList);
         List<Integer> ids = updateRoleDtos.stream().map(UpdateRoleDto::getId).collect(Collectors.toList());
         detailUserVo.setRoleId(ids);
         return Result.success(detailUserVo);
@@ -99,6 +104,12 @@ public class UserService {
             uAndDAndIUserRoleDto.setRoleId(insertUserDto.getRoleId());
             insertRoles(uAndDAndIUserRoleDto);
         }
+        if (CollectionUtil.isNotEmpty(insertUserDto.getUserChildVoList())) {
+            for (UserChild userChild : insertUserDto.getUserChildVoList()) {
+                userChild.setParentId(sysUser.getId());
+            }
+            userMapper.insertUserChildByList(insertUserDto.getUserChildVoList());
+        }
         if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
             return Result.failure(ErrorCodeEnum.SYS_ERR_CREATE_FAILED);
         }
@@ -122,6 +133,21 @@ public class UserService {
             uAndDAndIUserRoleDto.setUserId(sysUser.getId());
             uAndDAndIUserRoleDto.setRoleId(updateUserDto.getRoleId());
             insertRoles(uAndDAndIUserRoleDto);
+        }
+        // 修改用戶兒童清單
+        if (CollectionUtil.isNotEmpty(updateUserDto.getUserChildVoList())) {
+            for (UserChild userChild : updateUserDto.getUserChildVoList()) {
+                if (userChild.getId() > 0){
+                    // Update
+                    userMapper.updateUserChild(userChild);
+                } else {
+                    //Insert
+                    userMapper.insertUserChild(userChild);
+                }
+                userChild.setParentId(sysUser.getId());
+            }
+        } else {
+            userMapper.deleteUserChild(updateUserDto.getId());
         }
         if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
             return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);

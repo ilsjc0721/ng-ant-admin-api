@@ -58,4 +58,58 @@
         WHERE
             user.id = #{id}
     </select>
+
+    <select id="selectUserChildByParentId" resultType="model.vo.sys.UserChildVo">
+        SELECT DISTINCT
+            child.id,
+            child.parent_id AS parentId,
+            child.id_number AS idNumber,
+            child.user_name_ch AS userChName,
+            child.user_name_en AS userEnName,
+            child.birth,
+            child.gender,
+            child.phone,
+            child.is_available AS available
+        FROM
+            sys_user_child child
+        WHERE
+            child.parent_id = #{id}
+        ORDER BY
+            child.id
+    </select>
+
+    <delete id="deleteUserChild">
+        DELETE FROM sys_user_child
+        WHERE
+            parent_id = #{id}
+    </delete>
+
+    <insert id="insertUserChildByList" parameterType="list" >
+        INSERT INTO
+        sys_user_child(parent_id, id_number, user_name_ch, user_name_en, birth, gender, phone, is_available) values
+        <foreach collection="list" item="item"  separator=",">
+            (#{item.parentId},#{item.idNumber},#{item.userChName},#{item.userEnName},#{item.birth},#{item.gender},#{item.phone},#{item.available})
+        </foreach>
+    </insert>
+
+    <insert id="insertUserChild" parameterType="model.entity.sys.UserChild" >
+        INSERT INTO
+        sys_user_child(parent_id, id_number, user_name_ch, user_name_en, birth, gender, phone, is_available) values
+            (#{parentId},#{idNumber},#{userChName},#{userEnName},#{birth},#{gender},#{phone},#{available})
+    </insert>
+
+    <update id="updateUserChild" parameterType="model.entity.sys.UserChild" >
+        UPDATE sys_user_child
+        SET
+            id_number = #{idNumber},
+            user_name_ch = #{userChName},
+            user_name_en = #{userEnName},
+            birth = #{birth},
+            gender = #{gender},
+            phone = #{phone},
+            is_available = #{available}
+        WHERE
+            id = #{id}
+    </update>
+
 </mapper>

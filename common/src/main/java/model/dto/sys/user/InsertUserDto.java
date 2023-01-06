@@ -1,6 +1,7 @@
 package model.dto.sys.user;
 
 import lombok.Data;
+import model.entity.sys.UserChild;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -42,4 +43,6 @@ public class InsertUserDto {
     private String emergencyContactPhone;
 
     private String emergencyContactRelationship;
+
+    private List<UserChild> userChildVoList;
 }
