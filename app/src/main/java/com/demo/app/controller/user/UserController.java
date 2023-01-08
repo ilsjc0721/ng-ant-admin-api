@@ -33,7 +33,7 @@ public class UserController {
 
     @PostMapping("/list")
     @ApiOperation(value = "取得用戶清單")
-    @PreAuthorize("@ss.hasPer('default:system:account')")
+//    @PreAuthorize("@ss.hasPer('default:system:account')")
     public Result listUser(@RequestBody @Validated SearchFilter searchFilter) {
         return userService.listUser(searchFilter);
     }
