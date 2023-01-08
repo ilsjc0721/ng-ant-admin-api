@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class CourseFeeEntity {
     private Integer id;
+    private Integer courseId;
     private Integer coachId;
     private String coachName;
     private String coachType;
