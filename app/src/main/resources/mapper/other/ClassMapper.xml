@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.ClassMapper">
+    <select id="selectClass" resultType="model.dto.other.ClassResponse">
+        SELECT
+            A.id,
+            course.name,
+            A.start_datetime AS startDatetime,
+            A.end_datetime AS endDatetime,
+            A.hours,
+            A.course_id AS courseId,
+            A.course_checked AS courseChecked,
+            course.limit,
+            D.user_name_en AS updateUserName,
+            A.update_time AS updateTime
+        FROM tsva_class AS A
+        INNER JOIN tsva_course AS course
+            ON A.course_id = course.id
+        LEFT JOIN sys_user AS D
+            ON A.update_user = D.id
+        WHERE
+            1 = 1
+        <if test="name != null and name != ''">
+            and course.name like concat('%',#{name},'%')
+        </if>
+        <if test="coach != null and coach != ''">
+            and A.status = #{status}
+        </if>
+        <if test="student != null and student != ''">
+            and A.status = #{status}
+        </if>
+        <if test="notConfirm != null">
+            and A.course_checked = #{notConfirm}
+        </if>
+        ORDER BY course.name
+    </select>
+
+    <select id="selectClassCoach" resultType="model.dto.other.ClassCoachResponse">
+        SELECT
+            A.coach_id AS id,
+            D.user_name_en AS name
+        FROM tsva_class_coach AS A
+        LEFT JOIN sys_user AS D
+            ON A.coach_id = D.id
+        WHERE 1 = 1
+        AND  A.class_id = #{classId}
+        ORDER BY A.class_id
+    </select>
+
+    <select id="selectClassStudent" resultType="model.dto.other.ClassStudentResponse">
+        SELECT
+            A.student_id AS id,
+            D.user_name_en AS name
+        FROM tsva_class_student AS A
+        LEFT JOIN sys_user_child AS D
+            ON A.student_id = D.id
+        WHERE 1 = 1
+        AND  A.class_id = #{classId}
+        ORDER BY A.student_id
+    </select>
+
+<!--    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.CourseEntity" >-->
+<!--        insert into tsva_course-->
+<!--        (`name`, `course_type`, `status`, `limit`, `apply`, `update_user`, `update_time`)-->
+<!--        values-->
+<!--        (#{name}, #{courseType}, #{status}, #{limit}, #{apply}, #{updateUser}, #{updateTime})-->
+<!--    </insert>-->
+
+<!--    <update id="updateCourse" parameterType="model.dto.other.CourseEntity" >-->
+<!--        UPDATE tsva_course SET-->
+<!--        `name` = #{name},-->
+<!--        `course_type` = #{courseType},-->
+<!--        `status` = #{status},-->
+<!--        `limit` =  #{limit},-->
+<!--        `apply` = #{apply},-->
+<!--        `update_user` = #{updateUser},-->
+<!--        `update_time` = #{updateTime}-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
+
+<!--    <insert id="insertCourseFee" parameterType="list" >-->
+<!--        insert into tsva_course_fee-->
+<!--        (`course_id`, `coach_id`, `coach_type`, `coach_fee`, `tuition_fee`)-->
+<!--        values-->
+<!--        <foreach collection="list" item="item"  separator=",">-->
+<!--            (#{item.courseId}, #{item.coachId}, #{item.coachType}, #{item.coachFee}, #{item.tuitionFee})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+<!--    <delete id="deleteCourseFee">-->
+<!--        DELETE FROM tsva_course_fee-->
+<!--        WHERE course_id = #{id}-->
+<!--    </delete>-->
+</mapper>
