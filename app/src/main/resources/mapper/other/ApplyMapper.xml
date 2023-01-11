@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.ApplyMapper">
+    <select id="selectApply" resultType="model.dto.other.ApplyEntity">
+        SELECT
+            A.id,
+            A.course_id AS courseId,
+            B.name AS courseName,
+            A.apply_date AS applyDate,
+            A.start_time AS startTime,
+            A.end_time AS endTime,
+            A.hours,
+            A.update_user AS updateUser,
+            D.user_name_en AS updateUserName,
+            A.update_time AS updateTime
+        FROM tsva_apply AS A
+        INNER JOIN tsva_course AS B
+            ON A.course_id = B.id
+        LEFT JOIN sys_user AS D
+            ON A.update_user = D.id
+        WHERE
+        1 = 1
+        <if test="startDate != null">
+            and DATE_FORMAT(A.apply_date,'%Y-%m-%d') >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+        </if>
+        <if test="endDate != null">
+            and DATE_FORMAT(A.apply_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+        </if>
+        <if test="updateUser != null">
+            and A.update_user = #{updateUser}
+        </if>
+        ORDER BY A.apply_date, A.start_time
+    </select>
+
+    <select id="selectApplyStudent" resultType="model.dto.other.ApplyStudentEntity">
+        SELECT
+            A.id,
+            A.apply_id AS applyId,
+            A.student_id AS studentId,
+            D.user_name_en AS studentName
+        FROM tsva_apply_student AS A
+        LEFT JOIN sys_user_child AS D
+            ON A.student_id = D.id
+        WHERE 1 = 1
+        AND apply_id = #{id}
+        ORDER BY A.id
+    </select>
+
+    <select id="selectApplyStudentShow" resultType="String">
+        SELECT GROUP_CONCAT(D.user_name_en) as studentName
+        FROM tsva_apply_student AS A
+        LEFT JOIN sys_user_child AS D
+        ON A.student_id = D.id
+        WHERE apply_id = #{id}
+        GROUP BY A.apply_id;
+    </select>
+
+    <insert id="insertApply" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.ApplyEntity" >
+        insert into tsva_apply
+        (`course_id`, `start_datetime`, `end_datetime`, `hours`, `update_user`, `update_time`)
+        values
+        (#{courseId}, #{startDatetime}, #{endDatetime}, #{hours}, #{updateUser}, #{updateTime})
+    </insert>
+
+    <update id="updateApply" parameterType="model.dto.other.ApplyEntity" >
+        UPDATE tsva_apply SET
+            `course_id` = #{courseId},
+            `start_datetime` = #{startDatetime},
+            `end_datetime` = #{endDatetime},
+            `hours` =  #{hours},
+            `update_user` = #{updateUser},
+            `update_time` = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insertApplyStudent" parameterType="list" >
+        insert into tsva_apply_student
+        (`apply_id`, `student_id`)
+        values
+        <foreach collection="list" item="item"  separator=",">
+            (#{item.applyId}, #{item.studentId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteApplyStudent">
+        DELETE FROM tsva_apply_student
+        WHERE apply_id = #{id}
+    </delete>
+</mapper>
