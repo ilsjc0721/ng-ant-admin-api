@@ -23,16 +23,26 @@
         <if test="name != null and name != ''">
             and course.name like concat('%',#{name},'%')
         </if>
-        <if test="coach != null and coach != ''">
-            and A.status = #{status}
+        <if test="coach != null">
+            AND EXISTS ( SELECT 1 FROM tsva_class_coach AS coach
+            WHERE A.id = coach.class_id
+            AND coach.coach_id = #{coach})
         </if>
-        <if test="student != null and student != ''">
-            and A.status = #{status}
+        <if test="student != null">
+            AND EXISTS ( SELECT 1 FROM tsva_class_student AS student
+            WHERE A.id = student.class_id
+            AND student.student_id = #{student})
         </if>
         <if test="notConfirm != null">
             and A.course_checked = #{notConfirm}
         </if>
-        ORDER BY course.name
+        <if test="startDate != null">
+            AND (#{startDate} &lt; A.start_datetime OR #{startDate} &lt; A.end_datetime)
+        </if>
+        <if test="endDate != null">
+            AND (#{endDate} &gt; A.start_datetime OR #{endDate} &gt; A.end_datetime)
+        </if>
+<!--        ORDER BY A.start_datetime-->
     </select>
 
     <select id="selectClassCoach" resultType="model.dto.other.ClassCoachResponse">
@@ -58,6 +68,23 @@
         AND  A.class_id = #{classId}
         ORDER BY A.student_id
     </select>
+
+    <select id="listClassStudent" resultType="model.dto.other.ClassStudentResponse">
+        SELECT DISTINCT
+            A.student_id AS id,
+            D.user_name_en AS name
+        FROM tsva_class_student AS A
+        INNER JOIN tsva_class AS class
+            ON A.class_id = class.id
+        LEFT JOIN sys_user_child AS D
+            ON A.student_id = D.id
+        WHERE 1 = 1
+        <if test="_parameter != null and _parameter != ''">
+            AND (D.user_name_en like concat('%',#{name},'%') OR D.user_name_ch like concat('%',#{name},'%'))
+        </if>
+        ORDER BY D.user_name_en
+    </select>
+
 
 <!--    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.CourseEntity" >-->
 <!--        insert into tsva_course-->

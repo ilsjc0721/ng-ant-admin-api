@@ -56,6 +56,20 @@ public class ClassService {
         return Result.success(selectClaseePageInfo);
     }
 
+    public Result listClassStudent(SearchFilter searchFilter){
+        PageHelper.startPage(searchFilter.getPageNum(), searchFilter.getPageSize());
+
+        String name = "";
+        if (Objects.nonNull(searchFilter.getFilters())) {
+            JSONObject filters = searchFilter.getFilters();
+            name = filters.getString("name");
+        }
+
+        List<ClassStudentResponse> classStudentResponseList = classMapper.listClassStudent(name);
+        PageInfo<ClassStudentResponse> selectClassStudentPageInfo = new PageInfo<>(classStudentResponseList);
+        return Result.success(selectClassStudentPageInfo);
+    }
+
     private SearchClassDto getSearchClassDto(JSONObject jsonObject) {
         SearchClassDto searchClassDto = new SearchClassDto();
         String name = jsonObject.getString("name");
