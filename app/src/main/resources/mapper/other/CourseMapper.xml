@@ -23,6 +23,9 @@
         <if test="status != null and status != ''">
             and A.status = #{status}
         </if>
+        <if test="apply != null and apply != false">
+            and A.apply = #{apply}
+        </if>
         <if test="id != null">
             and A.id = #{id}
         </if>

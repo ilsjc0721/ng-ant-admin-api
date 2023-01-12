@@ -29,7 +29,7 @@ public class ApplyEntity implements Serializable {
     @TableField("end_time")
     private Timestamp endTime;
 
-    private Integer hours;
+    private Float hours;
 
     @TableField("update_user")
     private Integer updateUser;

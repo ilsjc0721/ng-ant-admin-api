@@ -49,12 +49,16 @@ public class CourseService {
         SearchCourseDto searchCourseDto = new SearchCourseDto();
         String name = jsonObject.getString("name");
         String status = jsonObject.getString("status");
+        Boolean apply = jsonObject.getBoolean("apply");
 
         if (Objects.nonNull(name)) {
             searchCourseDto.setName(name);
         }
         if (Objects.nonNull(status)) {
             searchCourseDto.setStatus(status);
+        }
+        if (Objects.nonNull(apply)) {
+            searchCourseDto.setApply(apply);
         }
 
         return searchCourseDto;

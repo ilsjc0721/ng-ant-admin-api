@@ -57,16 +57,17 @@
 
     <insert id="insertApply" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.ApplyEntity" >
         insert into tsva_apply
-        (`course_id`, `start_datetime`, `end_datetime`, `hours`, `update_user`, `update_time`)
+        (`course_id`,`apply_date`, `start_time`, `end_time`, `hours`, `update_user`, `update_time`)
         values
-        (#{courseId}, #{startDatetime}, #{endDatetime}, #{hours}, #{updateUser}, #{updateTime})
+        (#{courseId}, #{applyDate}, #{startTime}, #{endTime}, #{hours}, #{updateUser}, #{updateTime})
     </insert>
 
     <update id="updateApply" parameterType="model.dto.other.ApplyEntity" >
         UPDATE tsva_apply SET
+            `apply_date` = #{applyDate},
             `course_id` = #{courseId},
-            `start_datetime` = #{startDatetime},
-            `end_datetime` = #{endDatetime},
+            `start_time` = #{startTime},
+            `end_time` = #{endTime},
             `hours` =  #{hours},
             `update_user` = #{updateUser},
             `update_time` = #{updateTime}
