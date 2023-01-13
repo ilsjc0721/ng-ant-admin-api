@@ -7,5 +7,5 @@ public class SearchCourseDto {
     private Integer id;
     private String name;
     private String status;
-    private boolean apply;
+    private Boolean apply;
 }
