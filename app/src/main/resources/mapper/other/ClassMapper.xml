@@ -60,7 +60,8 @@
     <select id="selectClassStudent" resultType="model.dto.other.ClassStudentResponse">
         SELECT
             A.student_id AS id,
-            D.user_name_en AS name
+            D.user_name_en AS name,
+            D.user_name_ch AS nameCh
         FROM tsva_class_student AS A
         LEFT JOIN sys_user_child AS D
             ON A.student_id = D.id

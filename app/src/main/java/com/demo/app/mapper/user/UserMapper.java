@@ -23,6 +23,7 @@ public interface UserMapper extends BaseMapper<SysUser> {
 
     DetailUserVo selectUserVoById(Integer id);
 
+    List<UserChildVo> listUserChild(String name);
     List<UserChildVo> selectUserChildByParentId(Integer id);
 
     void deleteUserChild(Integer id);

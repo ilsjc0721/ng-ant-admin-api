@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
+import model.dto.other.ClassStudentResponse;
 import model.dto.sys.role.UpdateRoleDto;
 import model.dto.sys.user.*;
 import model.entity.department.SysDepartment;
@@ -187,6 +188,21 @@ public class UserService {
         userMapper.deleteBatchIds(batchDeleteDto.getIds());
         return Result.success();
     }
+
+    public Result listUserChild(SearchFilter searchFilter){
+        PageHelper.startPage(searchFilter.getPageNum(), searchFilter.getPageSize());
+
+        String name = "";
+        if (Objects.nonNull(searchFilter.getFilters())) {
+            JSONObject filters = searchFilter.getFilters();
+            name = filters.getString("name");
+        }
+
+        List<UserChildVo> userChildList = userMapper.listUserChild(name);
+        PageInfo<UserChildVo> userChildVoPageInfo = new PageInfo<>(userChildList);
+        return Result.success(userChildVoPageInfo);
+    }
+
 
     /**
      * @return

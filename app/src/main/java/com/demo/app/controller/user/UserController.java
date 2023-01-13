@@ -80,5 +80,10 @@ public class UserController {
         return userService.delUser(batchDeleteDto);
     }
 
-
+    @PostMapping("/child")
+    @ApiOperation(value = "取得學生清單")
+    //@PreAuthorize("@ss.hasPer('default:system:course')")
+    public Result listUserChild(@RequestBody @Validated SearchFilter searchFilter) {
+        return userService.listUserChild(searchFilter);
+    }
 }

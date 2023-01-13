@@ -3,6 +3,7 @@ package model.dto.other;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Data
@@ -11,7 +12,7 @@ public class ClassResponse implements Serializable {
     private String name;
     private String startDatetime;
     private String endDatetime;
-    private Integer hours;
+    private BigDecimal hours;
     private Integer limit;
     private String coach;
     private String student;

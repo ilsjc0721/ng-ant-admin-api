@@ -112,4 +112,21 @@
             id = #{id}
     </update>
 
+    <select id="listUserChild" resultType="model.vo.sys.UserChildVo">
+        SELECT DISTINCT
+            child.id,
+            child.user_name_ch AS userChName,
+            child.user_name_en AS userEnName
+        FROM sys_user_child AS child
+        INNER JOIN sys_user AS user
+            ON child.parent_id = user.id
+            AND user.is_available = 1
+        WHERE 1 = 1
+        AND child.is_available = 1
+        <if test="_parameter != null and _parameter != ''">
+            AND (child.user_name_en like concat('%',#{name},'%') OR child.user_name_ch like concat('%',#{name},'%'))
+        </if>
+        ORDER BY child.user_name_en
+    </select>
+
 </mapper>

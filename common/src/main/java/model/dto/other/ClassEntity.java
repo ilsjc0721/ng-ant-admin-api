@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @TableName("tsva_class")
@@ -22,7 +23,7 @@ public class ClassEntity implements Serializable {
     @TableField("end_datetime")
     private String endDatetime;
 
-    private Integer hours;
+    private BigDecimal hours;
 
     @TableField("course_id")
     private Integer courseId;
