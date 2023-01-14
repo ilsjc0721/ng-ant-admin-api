@@ -11,10 +11,16 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Data
-@TableName("tsva_class")
-public class ClassEntity implements Serializable {
+@TableName("tsva_class_student")
+public class ClassStudentEntity implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
+
+    @TableField("class_id")
+    private Integer classId;
+
+    @TableField("student_id")
+    private Integer studentId;
 
     @TableField("start_datetime")
     private Timestamp startDatetime;
@@ -24,12 +30,9 @@ public class ClassEntity implements Serializable {
 
     private BigDecimal hours;
 
-    @TableField("course_id")
-    private Integer courseId;
+    @TableField("tuition_fee")
+    private Integer tuitionFee;
 
-    @TableField("course_checked")
-    private Boolean courseChecked;
-
-    @TableField("update_user")
-    private Integer updateUser;
+    @TableField("tuition_total")
+    private Integer tuitionTotal;
 }

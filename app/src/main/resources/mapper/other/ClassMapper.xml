@@ -86,6 +86,21 @@
         ORDER BY D.user_name_en
     </select>
 
+    <insert id="insertClassCoachByList" parameterType="list" >
+        INSERT INTO
+        tsva_class_coach(class_id, coach_id) values
+        <foreach collection="list" item="item"  separator=",">
+            (#{item.classId},#{item.coachId})
+        </foreach>
+    </insert>
+
+    <insert id="insertClassStudentByList" parameterType="list" >
+        INSERT INTO
+        tsva_class_student(class_id, student_id) values
+        <foreach collection="list" item="item"  separator=",">
+            (#{item.classId},#{item.studentId})
+        </foreach>
+    </insert>
 
 <!--    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.CourseEntity" >-->
 <!--        insert into tsva_course-->

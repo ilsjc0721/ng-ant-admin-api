@@ -2,6 +2,7 @@ package com.demo.app.mapper.other;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import model.dto.other.*;
+import model.entity.sys.UserChild;
 import result.Result;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface ClassMapper extends BaseMapper<ClassEntity> {
     List<ClassStudentResponse> selectClassStudent(Integer classId);
 
     List<ClassStudentResponse> listClassStudent(String name);
+
+    Integer insertClassCoachByList(List<ClassCoachEntity> classCoachList);
+
+    Integer insertClassStudentByList(List<ClassStudentEntity> classStudentList);
 }
