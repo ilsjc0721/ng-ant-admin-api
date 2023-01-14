@@ -102,25 +102,25 @@
         </foreach>
     </insert>
 
-<!--    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.CourseEntity" >-->
-<!--        insert into tsva_course-->
-<!--        (`name`, `course_type`, `status`, `limit`, `apply`, `update_user`, `update_time`)-->
-<!--        values-->
-<!--        (#{name}, #{courseType}, #{status}, #{limit}, #{apply}, #{updateUser}, #{updateTime})-->
-<!--    </insert>-->
+    <delete id="deleteClassCoach">
+        DELETE FROM tsva_class_coach
+        WHERE class_id = #{id}
+    </delete>
 
-<!--    <update id="updateCourse" parameterType="model.dto.other.CourseEntity" >-->
-<!--        UPDATE tsva_course SET-->
-<!--        `name` = #{name},-->
-<!--        `course_type` = #{courseType},-->
-<!--        `status` = #{status},-->
-<!--        `limit` =  #{limit},-->
-<!--        `apply` = #{apply},-->
-<!--        `update_user` = #{updateUser},-->
-<!--        `update_time` = #{updateTime}-->
-<!--        WHERE id = #{id}-->
-<!--    </update>-->
+    <delete id="deleteClassStudent">
+        DELETE FROM tsva_class_student
+        WHERE class_id = #{id}
+    </delete>
 
+    <update id="updateClassById" parameterType="model.dto.other.ClassRequest" >
+        UPDATE tsva_class SET
+        `start_datetime` = #{startDatetime},
+        `end_datetime` = #{endDatetime},
+        `hours` = #{hours},
+        `course_id` =  #{courseId},
+        `update_user` = #{updateUser}
+        WHERE id = #{id}
+    </update>
 <!--    <insert id="insertCourseFee" parameterType="list" >-->
 <!--        insert into tsva_course_fee-->
 <!--        (`course_id`, `coach_id`, `coach_type`, `coach_fee`, `tuition_fee`)-->

@@ -5,6 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class ClassResponse implements Serializable {
@@ -18,4 +19,7 @@ public class ClassResponse implements Serializable {
     private String student;
     private String updateUserName;
     private Timestamp updateTime;
+    private Integer courseId;
+    private List<Integer> coachId;
+    private List<Integer> studentId;
 }

@@ -3,9 +3,11 @@ package com.demo.app.service.other;
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.demo.app.mapper.other.ClassMapper;
+import com.demo.app.mapper.other.CourseMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
+import model.dto.del.BatchDeleteDto;
 import model.dto.other.*;
 import model.dto.sys.user.UAndDAndIUserRoleDto;
 import model.entity.sys.SysUser;
@@ -29,6 +31,9 @@ public class ClassService {
     @Autowired
     ClassMapper classMapper;
 
+    @Autowired
+    CourseMapper courseMapper;
+
     public Result list(SearchFilter searchFilter) {
         PageHelper.startPage(searchFilter.getPageNum(), searchFilter.getPageSize());
 
@@ -40,6 +45,8 @@ public class ClassService {
         List<ClassResponse> classResponseList = classMapper.selectClass(searchClassDto);
 
         for (ClassResponse classResponse : classResponseList) {
+            classResponse.setCoachId(new ArrayList<>());
+            classResponse.setStudentId(new ArrayList<>());
             List<ClassCoachResponse> classCoachResponseList = classMapper.selectClassCoach(classResponse.getId());
             for (ClassCoachResponse classCoachResponse : classCoachResponseList){
                 if (!classCoachResponse.getName().equals("")){
@@ -48,6 +55,7 @@ public class ClassService {
                     } else {
                         classResponse.setCoach(classCoachResponse.getName());
                     }
+                    classResponse.getCoachId().add(classCoachResponse.getId());
                 }
             }
             List<ClassStudentResponse> classStudentResponseList = classMapper.selectClassStudent(classResponse.getId());
@@ -58,6 +66,7 @@ public class ClassService {
                     } else {
                         classResponse.setStudent(classStudentResponse.getName());
                     }
+                    classResponse.getStudentId().add(classStudentResponse.getId());
                 }
             }
         }
@@ -84,6 +93,7 @@ public class ClassService {
 //        if (isUniqueUserName(insertUserDto.getUserName())) {
 //            return Result.failure(ErrorCodeEnum.SYS_ERR_ACCOUNT);
 //        }
+        List<CourseFeeEntity> courseFeeList = courseMapper.selectCourseFee(classRequest.getCourseId());
         List<ClassStudentEntity>  classStudentList = new ArrayList<>();
         List<ClassCoachEntity>  classCoachList = new ArrayList<>();
         for (ClassDateEntity classDateEntity : classRequest.getClassDateList()){
@@ -115,31 +125,57 @@ public class ClassService {
         if (classStudentList.size() > 0){
             classMapper.insertClassStudentByList(classStudentList);
         }
-//        SysUser sysUser = new SysUser();
-//        // 密码加密
-//        String encodePassword = passwordEncoder.encode(insertUserDto.getPassword());
-//        BeanUtils.copyProperties(insertUserDto, sysUser);
-//        sysUser.setPassword(encodePassword);
-//        // 插入用户
-//        int res = userMapper.insert(sysUser);
-//
-//        if (CollectionUtil.isNotEmpty(insertUserDto.getRoleId())) {
-//            // 插入用户角色
-//            UAndDAndIUserRoleDto uAndDAndIUserRoleDto = new UAndDAndIUserRoleDto();
-//            uAndDAndIUserRoleDto.setUserId(sysUser.getId());
-//            uAndDAndIUserRoleDto.setRoleId(insertUserDto.getRoleId());
-//            insertRoles(uAndDAndIUserRoleDto);
-//        }
-//        if (CollectionUtil.isNotEmpty(insertUserDto.getUserChildVoList())) {
-//            for (UserChild userChild : insertUserDto.getUserChildVoList()) {
-//                userChild.setParentId(sysUser.getId());
-//            }
-//            userMapper.insertUserChildByList(insertUserDto.getUserChildVoList());
-//        }
 //        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
 //            return Result.failure(ErrorCodeEnum.SYS_ERR_CREATE_FAILED);
 //        }
         return Result.success();
+    }
+
+    public Result updateClass(@RequestBody @Validated ClassRequest classRequest){
+//        if (isUniqueUserName(insertUserDto.getUserName())) {
+//            return Result.failure(ErrorCodeEnum.SYS_ERR_ACCOUNT);
+//        }
+        classMapper.updateClassById(classRequest);
+        classMapper.deleteClassCoach(classRequest.getId());
+        classMapper.deleteClassStudent(classRequest.getId());
+
+        List<ClassStudentEntity>  classStudentList = new ArrayList<>();
+        List<ClassCoachEntity>  classCoachList = new ArrayList<>();
+        // Coach
+        for (Integer coachId : classRequest.getCoachId()){
+            ClassCoachEntity classCoach = new ClassCoachEntity();
+            classCoach.setClassId(classRequest.getId());
+            classCoach.setCoachId(coachId);
+            classCoachList.add(classCoach);
+        }
+        // Student
+        for (Integer childId : classRequest.getChildId()){
+            ClassStudentEntity classStudent = new ClassStudentEntity();
+            classStudent.setClassId(classRequest.getId());
+            classStudent.setStudentId(childId);
+            classStudentList.add(classStudent);
+        }
+        if (classCoachList.size() > 0){
+            classMapper.insertClassCoachByList(classCoachList);
+        }
+        if (classStudentList.size() > 0){
+            classMapper.insertClassStudentByList(classStudentList);
+        }
+        return Result.success();
+    }
+
+    public Result delClass(BatchDeleteDto batchDeleteDto) {
+        classMapper.deleteBatchIds(batchDeleteDto.getIds());
+        for (Integer id : batchDeleteDto.getIds()){
+            classMapper.deleteClassCoach(id);
+            classMapper.deleteClassStudent(id);
+        }
+        return Result.success();
+    }
+
+    public Result getClassStudentDetail(Integer id) {
+        List<ClassStudentResponse> classStudentResponseList = classMapper.selectClassStudent(id);
+        return Result.success(classStudentResponseList);
     }
 
     private SearchClassDto getSearchClassDto(JSONObject jsonObject) {

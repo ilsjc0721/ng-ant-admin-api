@@ -5,15 +5,16 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
 public class ClassRequest implements Serializable {
     private Integer id;
 
-    private String startDatetime;
+    private Timestamp startDatetime;
 
-    private String endDatetime;
+    private Timestamp endDatetime;
 
     private BigDecimal hours;
 

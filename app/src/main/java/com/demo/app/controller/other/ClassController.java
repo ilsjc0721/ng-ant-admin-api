@@ -3,6 +3,7 @@ package com.demo.app.controller.other;
 import com.demo.app.service.other.ClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import model.dto.del.BatchDeleteDto;
 import model.dto.other.ClassRequest;
 import model.dto.sys.user.InsertUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,30 @@ public class ClassController {
         return classService.insertClass(classRequest);
     }
 
+    @PutMapping
+    @ApiOperation(value = "修改排課")
+//    @PreAuthorize("@ss.hasPer('default:system:account:add')")
+    public Result updateClass(@RequestBody @Validated ClassRequest classRequest) {
+        return classService.updateClass(classRequest);
+    }
+    @PostMapping("/del")
+    @ApiOperation(value = "删除排課")
+//    @PreAuthorize("@ss.hasPer('default:system:account:del')")
+    public Result delClass(@RequestBody @Validated BatchDeleteDto batchDeleteDto) {
+        return classService.delClass(batchDeleteDto);
+    }
+
     @PostMapping("/student")
     @ApiOperation(value = "取得學生清單")
     //@PreAuthorize("@ss.hasPer('default:system:course')")
     public Result listClassStudent(@RequestBody @Validated SearchFilter searchFilter) {
         return classService.listClassStudent(searchFilter);
+    }
+
+    @GetMapping("/student/{id}")
+    @ApiOperation(value = "取得學生明細")
+//    @PreAuthorize("@ss.hasPer('default:system:account')")
+    public Result getClassStudentDetail(@PathVariable Integer id) {
+        return classService.getClassStudentDetail(id);
     }
 }
