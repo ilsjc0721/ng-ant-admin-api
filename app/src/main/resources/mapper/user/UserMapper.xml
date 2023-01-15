@@ -52,7 +52,8 @@
             user.emergency_contact_relationship AS emergencyContactRelationship,
             user.emergency_contact_phone AS emergencyContactPhone,
             user.last_login_time AS lastLoginTime,
-            user.create_time AS createTime
+            user.create_time AS createTime,
+            user.picture_file_name AS pictureFileName
         FROM
             sys_user user
         WHERE

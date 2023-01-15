@@ -43,4 +43,6 @@ public class DetailUserVo {
     private String emergencyContactRelationship;
 
     private List<UserChildVo> userChildVoList;
+
+    private String pictureFileName;
 }
