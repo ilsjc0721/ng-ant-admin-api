@@ -69,4 +69,11 @@ public class ClassController {
         return classService.getClassFee(id);
     }
 
+    @GetMapping("/calendar")
+    @ApiOperation(value = "取得月曆")
+//    @PreAuthorize("@ss.hasPer('default:system:account')")
+    public Result getClassCalendar(@RequestParam Integer id, @RequestParam String classMonth, @RequestParam String classType) {
+        return classService.getClassCalendar(id, classMonth, classType);
+    }
+
 }

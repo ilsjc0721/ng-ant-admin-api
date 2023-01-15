@@ -224,6 +224,57 @@ public class ClassService {
         return Result.success(classFeeResponseList);
     }
 
+    public Result getClassCalendar(Integer id, String classMonth, String classType) {
+        List<ClassCalendar> classCalendar = new ArrayList<>();
+
+        switch(classType){
+            case "all" :
+                classCalendar = classMapper.getClassCalendar_All(classMonth);
+                break;
+            case "coach" :
+                classCalendar = classMapper.getClassCalendar_Coach(id, classMonth);
+                break;
+            case "student" :
+                classCalendar = classMapper.getClassCalendar_Student(id, classMonth);
+                break;
+        }
+        ClassCalendarResponse classCalendarResponse= new ClassCalendarResponse();
+
+        classCalendarResponse.setOne(classCalendar.stream().filter(p -> p.getDays().equals(1)).collect(Collectors.toList()));
+        classCalendarResponse.setTwo(classCalendar.stream().filter(p -> p.getDays().equals(2)).collect(Collectors.toList()));
+        classCalendarResponse.setThree(classCalendar.stream().filter(p -> p.getDays().equals(3)).collect(Collectors.toList()));
+        classCalendarResponse.setFour(classCalendar.stream().filter(p -> p.getDays().equals(4)).collect(Collectors.toList()));
+        classCalendarResponse.setFive(classCalendar.stream().filter(p -> p.getDays().equals(5)).collect(Collectors.toList()));
+        classCalendarResponse.setSix(classCalendar.stream().filter(p -> p.getDays().equals(6)).collect(Collectors.toList()));
+        classCalendarResponse.setSeven(classCalendar.stream().filter(p -> p.getDays().equals(7)).collect(Collectors.toList()));
+        classCalendarResponse.setEight(classCalendar.stream().filter(p -> p.getDays().equals(8)).collect(Collectors.toList()));
+        classCalendarResponse.setNine(classCalendar.stream().filter(p -> p.getDays().equals(9)).collect(Collectors.toList()));
+        classCalendarResponse.setTen(classCalendar.stream().filter(p -> p.getDays().equals(10)).collect(Collectors.toList()));
+        classCalendarResponse.setEleven(classCalendar.stream().filter(p -> p.getDays().equals(11)).collect(Collectors.toList()));
+        classCalendarResponse.setTwelve(classCalendar.stream().filter(p -> p.getDays().equals(12)).collect(Collectors.toList()));
+        classCalendarResponse.setThirteen(classCalendar.stream().filter(p -> p.getDays().equals(13)).collect(Collectors.toList()));
+        classCalendarResponse.setFourteen(classCalendar.stream().filter(p -> p.getDays().equals(14)).collect(Collectors.toList()));
+        classCalendarResponse.setFifteen(classCalendar.stream().filter(p -> p.getDays().equals(15)).collect(Collectors.toList()));
+        classCalendarResponse.setSixteen(classCalendar.stream().filter(p -> p.getDays().equals(16)).collect(Collectors.toList()));
+        classCalendarResponse.setSeventeen(classCalendar.stream().filter(p -> p.getDays().equals(17)).collect(Collectors.toList()));
+        classCalendarResponse.setEighteen(classCalendar.stream().filter(p -> p.getDays().equals(18)).collect(Collectors.toList()));
+        classCalendarResponse.setNineteen(classCalendar.stream().filter(p -> p.getDays().equals(19)).collect(Collectors.toList()));
+        classCalendarResponse.setTwenty(classCalendar.stream().filter(p -> p.getDays().equals(20)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentyOne(classCalendar.stream().filter(p -> p.getDays().equals(21)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentyTwo(classCalendar.stream().filter(p -> p.getDays().equals(22)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentyThree(classCalendar.stream().filter(p -> p.getDays().equals(23)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentyFour(classCalendar.stream().filter(p -> p.getDays().equals(24)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentyFive(classCalendar.stream().filter(p -> p.getDays().equals(25)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentySix(classCalendar.stream().filter(p -> p.getDays().equals(26)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentySeven(classCalendar.stream().filter(p -> p.getDays().equals(27)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentyEight(classCalendar.stream().filter(p -> p.getDays().equals(28)).collect(Collectors.toList()));
+        classCalendarResponse.setTwentyNine(classCalendar.stream().filter(p -> p.getDays().equals(29)).collect(Collectors.toList()));
+        classCalendarResponse.setThirty(classCalendar.stream().filter(p -> p.getDays().equals(30)).collect(Collectors.toList()));
+        classCalendarResponse.setThirtyOne(classCalendar.stream().filter(p -> p.getDays().equals(31)).collect(Collectors.toList()));
+
+        return Result.success(classCalendarResponse);
+    }
+
 
     private SearchClassDto getSearchClassDto(JSONObject jsonObject) {
         SearchClassDto searchClassDto = new SearchClassDto();

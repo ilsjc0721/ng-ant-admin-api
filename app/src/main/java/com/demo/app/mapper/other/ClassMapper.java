@@ -27,4 +27,8 @@ public interface ClassMapper extends BaseMapper<ClassEntity> {
 
     void deleteClassCoach(Integer id);
     void deleteClassStudent(Integer id);
+
+    List<ClassCalendar> getClassCalendar_All(String classMonth);
+    List<ClassCalendar> getClassCalendar_Coach(Integer id, String classMonth);
+    List<ClassCalendar> getClassCalendar_Student(Integer id, String classMonth);
 }

@@ -174,4 +174,19 @@
 <!--        DELETE FROM tsva_course_fee-->
 <!--        WHERE course_id = #{id}-->
 <!--    </delete>-->
+    <select id="getClassCalendar_All" resultType="model.dto.other.ClassCalendar">
+        SELECT
+        DATE_FORMAT(A.start_datetime,'%d') AS days,
+        CASE
+        WHEN B.course_type = "Personal" THEN "orange"
+        ELSE "geekblue"
+        END AS color,
+        CONCAT("(", DATE_FORMAT(A.start_datetime,'%H:%i'), "  ", B.name, ")  ", sp_GetCoach(A.id), " - ", sp_GetStudent(A.id)) AS content
+        FROM `tsva_class` A
+        INNER JOIN `tsva_course` B
+        ON A.course_id = B.id
+        WHERE 1=1
+        AND DATE_FORMAT(A.start_datetime,'%Y%m') = #{classMonth}
+        ORDER BY DATE_FORMAT(A.start_datetime,'%H:%i');
+    </select>
 </mapper>
