@@ -23,6 +23,9 @@ public class ClassCoachEntity implements Serializable {
     @TableField("coach_fee")
     private Integer coachFee;
 
+    @TableField("coach_type")
+    private String coachType;
+
     @TableField("coach_total")
     private Integer coachTotal;
 }

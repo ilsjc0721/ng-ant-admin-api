@@ -61,4 +61,12 @@ public class ClassController {
     public Result getClassStudentDetail(@PathVariable Integer id) {
         return classService.getClassStudentDetail(id);
     }
+
+    @GetMapping("/fee/{id}")
+    @ApiOperation(value = "取得費用明細")
+//    @PreAuthorize("@ss.hasPer('default:system:account')")
+    public Result getClassFee(@PathVariable Integer id) {
+        return classService.getClassFee(id);
+    }
+
 }

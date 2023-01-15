@@ -10,6 +10,7 @@ import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
 import model.dto.other.*;
 import model.dto.sys.user.UAndDAndIUserRoleDto;
+import model.entity.department.SysDepartment;
 import model.entity.sys.SysUser;
 import model.entity.sys.UserChild;
 import org.springframework.beans.BeanUtils;
@@ -25,6 +26,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassService {
@@ -93,7 +96,20 @@ public class ClassService {
 //        if (isUniqueUserName(insertUserDto.getUserName())) {
 //            return Result.failure(ErrorCodeEnum.SYS_ERR_ACCOUNT);
 //        }
+        Integer tuitionFee = 0;
+        SearchCourseDto searchCourseDto = new SearchCourseDto();
+        searchCourseDto.setId(classRequest.getCourseId());
+        List<CourseEntity> courseEntityList = courseMapper.selectCourse(searchCourseDto);
+        Optional<CourseEntity> courseEntity = courseEntityList.stream().findFirst();
         List<CourseFeeEntity> courseFeeList = courseMapper.selectCourseFee(classRequest.getCourseId());
+        if (courseEntity.isPresent()){
+            for(CourseFeeEntity courseFeeEntity : courseFeeList) {
+                tuitionFee += courseFeeEntity.getTuitionFee();
+            }
+            if (courseEntity.get().getCourseType().equals("Team")) {
+                tuitionFee = tuitionFee / courseFeeList.size();
+            }
+        }
         List<ClassStudentEntity>  classStudentList = new ArrayList<>();
         List<ClassCoachEntity>  classCoachList = new ArrayList<>();
         for (ClassDateEntity classDateEntity : classRequest.getClassDateList()){
@@ -109,6 +125,11 @@ public class ClassService {
                 ClassCoachEntity classCoach = new ClassCoachEntity();
                 classCoach.setClassId(classEntity.getId());
                 classCoach.setCoachId(coachId);
+                Optional<CourseFeeEntity> courseFeeEntity = courseFeeList.stream().filter(e -> e.getCoachId() == coachId).findFirst();
+                if (courseFeeEntity.isPresent()){
+                    classCoach.setCoachFee(courseFeeEntity.get().getCoachFee());
+                    classCoach.setCoachType(courseFeeEntity.get().getCoachType());
+                }
                 classCoachList.add(classCoach);
             }
             // Student
@@ -116,6 +137,7 @@ public class ClassService {
                 ClassStudentEntity classStudent = new ClassStudentEntity();
                 classStudent.setClassId(classEntity.getId());
                 classStudent.setStudentId(childId);
+                classStudent.setTuitionFee(tuitionFee);
                 classStudentList.add(classStudent);
             }
         }
@@ -139,6 +161,21 @@ public class ClassService {
         classMapper.deleteClassCoach(classRequest.getId());
         classMapper.deleteClassStudent(classRequest.getId());
 
+        Integer tuitionFee = 0;
+        SearchCourseDto searchCourseDto = new SearchCourseDto();
+        searchCourseDto.setId(classRequest.getCourseId());
+        List<CourseEntity> courseEntityList = courseMapper.selectCourse(searchCourseDto);
+        Optional<CourseEntity> courseEntity = courseEntityList.stream().findFirst();
+        List<CourseFeeEntity> courseFeeList = courseMapper.selectCourseFee(classRequest.getCourseId());
+        if (courseEntity.isPresent()){
+            for(CourseFeeEntity courseFeeEntity : courseFeeList) {
+                tuitionFee += courseFeeEntity.getTuitionFee();
+            }
+            if (courseEntity.get().getCourseType().equals("Team")) {
+                tuitionFee = tuitionFee / courseFeeList.size();
+            }
+        }
+
         List<ClassStudentEntity>  classStudentList = new ArrayList<>();
         List<ClassCoachEntity>  classCoachList = new ArrayList<>();
         // Coach
@@ -146,6 +183,11 @@ public class ClassService {
             ClassCoachEntity classCoach = new ClassCoachEntity();
             classCoach.setClassId(classRequest.getId());
             classCoach.setCoachId(coachId);
+            Optional<CourseFeeEntity> courseFeeEntity = courseFeeList.stream().filter(e -> e.getCoachId() == coachId).findFirst();
+            if (courseFeeEntity.isPresent()){
+                classCoach.setCoachFee(courseFeeEntity.get().getCoachFee());
+                classCoach.setCoachType(courseFeeEntity.get().getCoachType());
+            }
             classCoachList.add(classCoach);
         }
         // Student
@@ -153,6 +195,7 @@ public class ClassService {
             ClassStudentEntity classStudent = new ClassStudentEntity();
             classStudent.setClassId(classRequest.getId());
             classStudent.setStudentId(childId);
+            classStudent.setTuitionFee(tuitionFee);
             classStudentList.add(classStudent);
         }
         if (classCoachList.size() > 0){
@@ -177,6 +220,12 @@ public class ClassService {
         List<ClassStudentResponse> classStudentResponseList = classMapper.selectClassStudent(id);
         return Result.success(classStudentResponseList);
     }
+
+    public Result getClassFee(Integer id) {
+        List<ClassFeeResponse> classFeeResponseList = classMapper.getClassFee(id);
+        return Result.success(classFeeResponseList);
+    }
+
 
     private SearchClassDto getSearchClassDto(JSONObject jsonObject) {
         SearchClassDto searchClassDto = new SearchClassDto();

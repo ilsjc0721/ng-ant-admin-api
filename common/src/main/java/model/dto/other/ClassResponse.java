@@ -22,4 +22,5 @@ public class ClassResponse implements Serializable {
     private Integer courseId;
     private List<Integer> coachId;
     private List<Integer> studentId;
+    private String courseType;
 }

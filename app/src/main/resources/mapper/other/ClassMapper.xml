@@ -12,7 +12,8 @@
             A.course_checked AS courseChecked,
             course.limit,
             D.user_name_en AS updateUserName,
-            A.update_time AS updateTime
+            A.update_time AS updateTime,
+            course.course_type AS courseType
         FROM tsva_class AS A
         INNER JOIN tsva_course AS course
             ON A.course_id = course.id
@@ -70,6 +71,45 @@
         ORDER BY A.student_id
     </select>
 
+    <select id="getClassFee" resultType="model.dto.other.ClassFeeResponse">
+        SELECT
+            D.user_name_en  AS name,
+            'Student' AS feeType,
+            C.hours AS hours,
+            A.tuition_fee * C.hours AS totalAmount,
+            D.user_name_ch AS nameCh,
+            A.student_id AS studentId,
+            0 AS coachId,
+            0 AS coachFee,
+            A.tuition_fee AS tuitionFee
+        FROM tsva_class_student AS A
+        INNER JOIN tsva_class C
+            ON C.id = A.class_id
+        LEFT JOIN sys_user_child AS D
+            ON A.student_id = D.id
+        WHERE 1 = 1
+        AND  A.class_id = #{classId}
+        UNION ALL
+        SELECT
+            D.user_name_en  AS name,
+            'Coach' AS feeType,
+            C.hours AS hours,
+            A.coach_fee * C.hours AS totalAmount,
+            D.user_name_ch AS nameCh,
+            0 AS studentId,
+            A.coach_id AS coachId,
+            A.coach_fee AS coachFee,
+            0 AS tuitionFee
+        FROM tsva_class_coach AS A
+        INNER JOIN tsva_class C
+            ON C.id = A.class_id
+        LEFT JOIN sys_user AS D
+            ON A.coach_id = D.id
+        WHERE 1 = 1
+        AND  A.class_id = #{classId}
+        ORDER BY feeType,name
+    </select>
+
     <select id="listClassStudent" resultType="model.dto.other.ClassStudentResponse">
         SELECT DISTINCT
             A.student_id AS id,
@@ -88,17 +128,17 @@
 
     <insert id="insertClassCoachByList" parameterType="list" >
         INSERT INTO
-        tsva_class_coach(class_id, coach_id) values
+        tsva_class_coach(class_id, coach_id, coach_type, coach_fee) values
         <foreach collection="list" item="item"  separator=",">
-            (#{item.classId},#{item.coachId})
+            (#{item.classId},#{item.coachId},#{item.coachType},#{item.coachFee})
         </foreach>
     </insert>
 
     <insert id="insertClassStudentByList" parameterType="list" >
         INSERT INTO
-        tsva_class_student(class_id, student_id) values
+        tsva_class_student(class_id, student_id, tuition_fee) values
         <foreach collection="list" item="item"  separator=",">
-            (#{item.classId},#{item.studentId})
+            (#{item.classId}, #{item.studentId}, #{item.tuitionFee})
         </foreach>
     </insert>
 

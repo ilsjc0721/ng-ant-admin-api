@@ -16,6 +16,8 @@ public interface ClassMapper extends BaseMapper<ClassEntity> {
 
     List<ClassStudentResponse> selectClassStudent(Integer classId);
 
+    List<ClassFeeResponse> getClassFee(Integer classId);
+
     List<ClassStudentResponse> listClassStudent(String name);
 
     Integer insertClassCoachByList(List<ClassCoachEntity> classCoachList);
