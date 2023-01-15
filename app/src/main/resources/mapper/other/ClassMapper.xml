@@ -76,7 +76,7 @@
             D.user_name_en  AS name,
             'Student' AS feeType,
             C.hours AS hours,
-            A.tuition_fee * C.hours AS totalAmount,
+            A.tuition_total AS totalAmount,
             D.user_name_ch AS nameCh,
             A.student_id AS studentId,
             0 AS coachId,
@@ -94,7 +94,7 @@
             D.user_name_en  AS name,
             'Coach' AS feeType,
             C.hours AS hours,
-            A.coach_fee * C.hours AS totalAmount,
+            A.coach_total AS totalAmount,
             D.user_name_ch AS nameCh,
             0 AS studentId,
             A.coach_id AS coachId,
@@ -128,17 +128,17 @@
 
     <insert id="insertClassCoachByList" parameterType="list" >
         INSERT INTO
-        tsva_class_coach(class_id, coach_id, coach_type, coach_fee) values
+        tsva_class_coach(class_id, coach_id, coach_type, coach_fee, coach_total) values
         <foreach collection="list" item="item"  separator=",">
-            (#{item.classId},#{item.coachId},#{item.coachType},#{item.coachFee})
+            (#{item.classId},#{item.coachId},#{item.coachType},#{item.coachFee},#{item.coachTotal})
         </foreach>
     </insert>
 
     <insert id="insertClassStudentByList" parameterType="list" >
         INSERT INTO
-        tsva_class_student(class_id, student_id, tuition_fee) values
+        tsva_class_student(class_id, student_id, tuition_fee, tuition_total) values
         <foreach collection="list" item="item"  separator=",">
-            (#{item.classId}, #{item.studentId}, #{item.tuitionFee})
+            (#{item.classId}, #{item.studentId}, #{item.tuitionFee}, #{item.tuitionTotal})
         </foreach>
     </insert>
 
