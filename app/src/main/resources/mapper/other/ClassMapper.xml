@@ -9,16 +9,21 @@
             A.end_datetime AS endDatetime,
             A.hours,
             A.course_id AS courseId,
-            A.course_checked AS courseChecked,
             course.limit,
             D.user_name_en AS updateUserName,
             A.update_time AS updateTime,
-            course.course_type AS courseType
+            course.course_type AS courseType,
+            A.course_checked AS courseChecked,
+            F.status AS calssStatus
         FROM tsva_class AS A
         INNER JOIN tsva_course AS course
             ON A.course_id = course.id
         LEFT JOIN sys_user AS D
             ON A.update_user = D.id
+        LEFT JOIN tsva_fee_detail AS FD
+            ON FD.class_id = A.id
+        LEFT JOIN tsva_fee AS F
+            ON F.id = FD.fee_id
         WHERE
             1 = 1
         <if test="name != null and name != ''">
@@ -62,7 +67,8 @@
         SELECT
             A.student_id AS id,
             D.user_name_en AS name,
-            D.user_name_ch AS nameCh
+            D.user_name_ch AS nameCh,
+            A.id AS keyId
         FROM tsva_class_student AS A
         LEFT JOIN sys_user_child AS D
             ON A.student_id = D.id
@@ -159,6 +165,21 @@
         `hours` = #{hours},
         `course_id` =  #{courseId},
         `update_user` = #{updateUser}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateClassStatus" parameterType="model.dto.other.ClassConfirmRequest" >
+        UPDATE tsva_class SET
+        `course_checked` =  #{courseChecked},
+        `update_user` = #{updateUser}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateClassStudent" parameterType="model.dto.other.ClassStudentEntity" >
+        UPDATE tsva_class_student SET
+        `start_datetime` =  #{startDatetime},
+        `end_datetime` =  #{endDatetime},
+        `hours` =  #{hours}
         WHERE id = #{id}
     </update>
 <!--    <insert id="insertCourseFee" parameterType="list" >-->

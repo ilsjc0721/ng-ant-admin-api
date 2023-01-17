@@ -48,6 +48,14 @@ public class ClassService {
         List<ClassResponse> classResponseList = classMapper.selectClass(searchClassDto);
 
         for (ClassResponse classResponse : classResponseList) {
+            if (classResponse.getCalssStatus() == null){
+                if (classResponse.getCourseChecked()){
+                    classResponse.setCalssStatus("confirm");
+                }
+            } else{
+                classResponse.setCalssStatus("paid");
+            }
+            //
             classResponse.setCoachId(new ArrayList<>());
             classResponse.setStudentId(new ArrayList<>());
             List<ClassCoachResponse> classCoachResponseList = classMapper.selectClassCoach(classResponse.getId());
@@ -275,6 +283,17 @@ public class ClassService {
         return Result.success(classCalendarResponse);
     }
 
+    public Result confirmClass(ClassConfirmRequest classConfirmRequest){
+        for(ClassStudentEntity classStudent : classConfirmRequest.getStudentList()){
+            classMapper.updateClassStudent(classStudent);
+        }
+        classMapper.updateClassStatus(classConfirmRequest);
+        return Result.success();
+    }
+    public Result rollbackConfirmClass(ClassConfirmRequest classConfirmRequest){
+        classMapper.updateClassStatus(classConfirmRequest);
+        return Result.success();
+    }
 
     private SearchClassDto getSearchClassDto(JSONObject jsonObject) {
         SearchClassDto searchClassDto = new SearchClassDto();

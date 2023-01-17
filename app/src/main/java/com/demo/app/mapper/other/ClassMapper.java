@@ -31,4 +31,7 @@ public interface ClassMapper extends BaseMapper<ClassEntity> {
     List<ClassCalendar> getClassCalendar_All(String classMonth);
     List<ClassCalendar> getClassCalendar_Coach(Integer id, String classMonth);
     List<ClassCalendar> getClassCalendar_Student(Integer id, String classMonth);
+
+    Integer updateClassStatus(ClassConfirmRequest classConfirmRequest);
+    Integer updateClassStudent(ClassStudentEntity classStudentEntity);
 }

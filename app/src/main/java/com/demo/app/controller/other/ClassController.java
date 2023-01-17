@@ -4,6 +4,7 @@ import com.demo.app.service.other.ClassService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import model.dto.del.BatchDeleteDto;
+import model.dto.other.ClassConfirmRequest;
 import model.dto.other.ClassRequest;
 import model.dto.sys.user.InsertUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +63,8 @@ public class ClassController {
         return classService.getClassStudentDetail(id);
     }
 
-    @GetMapping("/fee/{id}")
-    @ApiOperation(value = "取得費用明細")
+    @GetMapping("/detail/{id}")
+    @ApiOperation(value = "取得排課明細")
 //    @PreAuthorize("@ss.hasPer('default:system:account')")
     public Result getClassFee(@PathVariable Integer id) {
         return classService.getClassFee(id);
@@ -76,4 +77,15 @@ public class ClassController {
         return classService.getClassCalendar(id, classMonth, classType);
     }
 
+    @PostMapping("/confirm")
+    @ApiOperation(value = "到課確認")
+    public Result confirmClass(@RequestBody @Validated ClassConfirmRequest classConfirmRequest) {
+        return classService.confirmClass(classConfirmRequest);
+    }
+
+    @PostMapping("/rollback-confirm")
+    @ApiOperation(value = "到課取消")
+    public Result rollbackConfirmClass(@RequestBody @Validated ClassConfirmRequest classConfirmRequest) {
+        return classService.rollbackConfirmClass(classConfirmRequest);
+    }
 }
