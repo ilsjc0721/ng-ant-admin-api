@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.FeeMapper">
+    <select id="getFee" resultType="model.dto.other.FeeReportEntity">
+        Select
+            A.id,
+            A.id AS keyId,
+            A.period,
+            A.type,
+            A.user_id AS userID,
+            B.user_name_en AS userName,
+            A.hours,
+            A.amount,
+            A.status,
+            A.update_user AS updateUser,
+            B.user_name_en AS updateUserName,
+            A.update_time AS updateTime,
+            0 AS expand
+        FROM tsva_fee A
+        INNER JOIN sys_user B
+        ON A.user_id = B.id
+        LEFT JOIN sys_user C
+        ON A.update_user = C.id
+        WHERE 1=1
+
+
+    </select>
+
+    <select id="getFeeDetail" resultType="model.dto.other.FeeDetailReportEntity">
+        Select
+            B.id,
+            A.id AS keyId,
+            DATE_FORMAT(B.class_date,'%Y-%m-%d') AS classDate,
+            B.class_hours AS classHours,
+            B.class_name AS className,
+            B.class_fee AS classFee,
+            B.class_coach_name AS classCoachName,
+            B.class_student_name AS classStudentName
+        FROM tsva_fee A
+        INNER JOIN tsva_fee_detail B
+        ON A.id = B.fee_id
+        WHERE 1=1
+        AND A.id = #{id}
+
+    </select>
+</mapper>
