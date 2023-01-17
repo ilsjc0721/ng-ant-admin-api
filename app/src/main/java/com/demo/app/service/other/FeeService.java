@@ -38,8 +38,8 @@ public class FeeService {
             fee.setFeeDetailReport(feeDetailList);
         }
 
-        PageInfo<FeeReportEntity> selectFeeReportPageInfo = new PageInfo<>(feeList);
-        return Result.success(selectFeeReportPageInfo);
+//        PageInfo<FeeReportEntity> selectFeeReportPageInfo = new PageInfo<>(feeList);
+        return Result.success(feeList);
     }
     public Result getTuitionFee(SearchFilter searchFilter) {
         SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
@@ -58,8 +58,8 @@ public class FeeService {
             fee.setFeeDetailReport(feeDetailList);
         }
 
-        PageInfo<FeeReportEntity> selectFeeReportPageInfo = new PageInfo<>(feeList);
-        return Result.success(selectFeeReportPageInfo);
+//        PageInfo<FeeReportEntity> selectFeeReportPageInfo = new PageInfo<>(feeList);
+        return Result.success(feeList);
     }
 
     private SearchFeeReportDto getSearchFeeReportDto(JSONObject jsonObject) {
