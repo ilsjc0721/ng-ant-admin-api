@@ -21,11 +21,11 @@ public class FeeService {
     @Autowired
     FeeMapper feeMapper;
 
-    public Result getCoachFee(SearchFilter searchFilter) {
-        SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
-        if (Objects.nonNull(searchFilter.getFilters())) {
-            searchFeeReportDto = getSearchFeeReportDto(searchFilter.getFilters());
-        }
+    public Result getCoachFee(SearchFeeReportDto searchFeeReportDto) {
+//        SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
+//        if (Objects.nonNull(searchFilter.getFilters())) {
+//            searchFeeReportDto = getSearchFeeReportDto(searchFilter.getFilters());
+//        }
 
         if(searchFeeReportDto.getType().equals(null)){
             return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("type"));
@@ -41,11 +41,11 @@ public class FeeService {
 //        PageInfo<FeeReportEntity> selectFeeReportPageInfo = new PageInfo<>(feeList);
         return Result.success(feeList);
     }
-    public Result getTuitionFee(SearchFilter searchFilter) {
-        SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
-        if (Objects.nonNull(searchFilter.getFilters())) {
-            searchFeeReportDto = getSearchFeeReportDto(searchFilter.getFilters());
-        }
+    public Result getTuitionFee(SearchFeeReportDto searchFeeReportDto) {
+//        SearchFeeReportDto SearchFeeReportDto = new SearchFeeReportDto();
+//        if (Objects.nonNull(searchFilter.getFilters())) {
+//            searchFeeReportDto = getSearchFeeReportDto(searchFilter.getFilters());
+//        }
 
         if(searchFeeReportDto.getType().equals(null)){
             return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("type"));
