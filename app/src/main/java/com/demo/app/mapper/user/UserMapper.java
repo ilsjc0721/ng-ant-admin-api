@@ -34,4 +34,6 @@ public interface UserMapper extends BaseMapper<SysUser> {
 
     Integer updateUserChild(UserChild userChild);
 
+    List<Integer> getParentId(Integer studentId);
+
 }

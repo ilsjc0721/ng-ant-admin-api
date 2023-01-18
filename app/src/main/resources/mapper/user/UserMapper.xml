@@ -130,4 +130,12 @@
         ORDER BY child.user_name_en
     </select>
 
+    <select id="getParentId" resultType="java.lang.Integer">
+        SELECT parent_id
+        FROM
+            sys_user_child
+        WHERE
+            id = #{studentId}
+    </select>
+
 </mapper>

@@ -13,4 +13,6 @@ public class FeeDetailReportEntity {
     private Integer classFee;
     private String classCoachName;
     private String classStudentName;
+    private Integer feeId;
+    private Integer classId;
 }

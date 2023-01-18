@@ -27,9 +27,10 @@
         WHERE
             1 = 1
         <if test="name != null and name != ''">
-            and course.name like concat('%',#{name},'%')
+            AND course.name like concat('%',#{name},'%')
         </if>
-        <if test="coach != null">
+        <if test="coach != null and coach != ''">
+            AND course.name like concat('%',#{name},'%')
             AND EXISTS ( SELECT 1 FROM tsva_class_coach AS coach
             WHERE A.id = coach.class_id
             AND coach.coach_id = #{coach})
@@ -68,7 +69,8 @@
             A.student_id AS id,
             D.user_name_en AS name,
             D.user_name_ch AS nameCh,
-            A.id AS keyId
+            A.id AS keyId,
+            A.tuition_total AS tuitionFee
         FROM tsva_class_student AS A
         LEFT JOIN sys_user_child AS D
             ON A.student_id = D.id
@@ -175,7 +177,7 @@
         WHERE id = #{id}
     </update>
 
-    <update id="updateClassStudent" parameterType="model.dto.other.ClassStudentEntity" >
+    <update id="updateClassStudent" parameterType="model.dto.other.ClassStudentRequest" >
         UPDATE tsva_class_student SET
         `start_datetime` =  #{startDatetime},
         `end_datetime` =  #{endDatetime},

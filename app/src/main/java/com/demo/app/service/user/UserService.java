@@ -33,6 +33,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -279,5 +280,14 @@ public class UserService {
         return searchUserDto;
     }
 
-
+    public Integer getParentId(Integer studentId){
+        List<Integer> parentIdList = userMapper.getParentId(studentId);
+        Optional<Integer> getParentId = parentIdList.stream().findFirst();
+        if (getParentId.isPresent()){
+            return getParentId.get();
+        }
+        else {
+            return 0;
+        }
+    }
 }

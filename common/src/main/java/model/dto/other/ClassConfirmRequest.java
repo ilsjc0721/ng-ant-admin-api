@@ -9,6 +9,7 @@ import java.util.List;
 public class ClassConfirmRequest implements Serializable {
     private Integer id;
     private Boolean courseChecked;
-    private List<ClassStudentEntity> studentList;
+    private List<ClassStudentRequest> studentList;
     private Integer updateUser;
+    private String className;
 }

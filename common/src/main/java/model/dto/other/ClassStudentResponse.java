@@ -8,4 +8,5 @@ public class ClassStudentResponse {
     private Integer keyId;
     private String name;
     private String nameCh;
+    private Integer tuitionFee;
 }

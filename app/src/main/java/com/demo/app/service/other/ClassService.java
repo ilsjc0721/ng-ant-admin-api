@@ -4,6 +4,10 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.demo.app.mapper.other.ClassMapper;
 import com.demo.app.mapper.other.CourseMapper;
+import com.demo.app.mapper.other.FeeDetailMapper;
+import com.demo.app.mapper.other.FeeMapper;
+import com.demo.app.mapper.user.UserMapper;
+import com.demo.app.service.user.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
@@ -23,10 +27,9 @@ import result.Result;
 import util.SearchFilter;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +40,14 @@ public class ClassService {
     @Autowired
     CourseMapper courseMapper;
 
+    @Autowired
+    FeeMapper feeMapper;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    FeeDetailMapper feeDetailMapper;
     public Result list(SearchFilter searchFilter) {
         PageHelper.startPage(searchFilter.getPageNum(), searchFilter.getPageSize());
 
@@ -284,10 +295,46 @@ public class ClassService {
     }
 
     public Result confirmClass(ClassConfirmRequest classConfirmRequest){
-        for(ClassStudentEntity classStudent : classConfirmRequest.getStudentList()){
+        DateFormat dateFormat = new  SimpleDateFormat("yyyyMM");
+
+        List<FeeDetailReportEntity> feeDetailList = new ArrayList<>();
+        for(ClassStudentRequest classStudent : classConfirmRequest.getStudentList()){
             classMapper.updateClassStudent(classStudent);
+            // student fees
+            Date date = new Date(classStudent.getStartDatetime().getTime());
+            String ym = dateFormat.format(date);
+            Integer parentId = userService.getParentId(classStudent.getStudentId());
+            SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
+            searchFeeReportDto.setUserId(parentId);
+            searchFeeReportDto.setPeriod(ym);
+
+            Integer feeId = 0;
+            List<FeeReportEntity> feeList = feeMapper.getFee(searchFeeReportDto);
+            Optional<FeeReportEntity> feeReportEntity = feeList.stream().findFirst();
+            if(!feeReportEntity.isPresent()){
+                // add fee
+                FeeEntity newFee = new FeeEntity();
+                newFee.setPeriod(ym);
+                newFee.setUserID(parentId);
+                newFee.setType("tuition");
+                newFee.setStatus("new");
+                feeMapper.insert(newFee);
+                feeId = newFee.getId();
+            } else {
+                feeId = feeReportEntity.get().getId();
+            }
+            // add feeDetail
+            FeeDetailEntity feeDetail = new FeeDetailEntity();
+            feeDetail.setFeeId(feeId);
+            feeDetail.setClassId(classConfirmRequest.getId());
+            feeDetail.setClassDate(classStudent.getStartDatetime());
+            feeDetail.setClassHours(classStudent.getHours());
+            feeDetail.setClassFee(classStudent.getTuitionFee());
+            feeDetail.setClassName(classConfirmRequest.getClassName());
+            feeDetail.setClassStudentName(classStudent.getStudentName());
+            feeDetailMapper.insert(feeDetail);
         }
-        classMapper.updateClassStatus(classConfirmRequest);
+//        classMapper.updateClassStatus(classConfirmRequest);
         return Result.success();
     }
     public Result rollbackConfirmClass(ClassConfirmRequest classConfirmRequest){

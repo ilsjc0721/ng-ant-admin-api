@@ -22,8 +22,18 @@
         LEFT JOIN sys_user C
         ON A.update_user = C.id
         WHERE 1=1
-
-
+        <if test="period != null and period != ''">
+            and A.period = #{period}
+        </if>
+        <if test="type != null and type != ''">
+            and A.type = #{type}
+        </if>
+        <if test="status != null and status != ''">
+            and A.status = #{status}
+        </if>
+        <if test="userId != null">
+            and A.user_id = #{userId}
+        </if>
     </select>
 
     <select id="getFeeDetail" resultType="model.dto.other.FeeDetailReportEntity">
@@ -41,6 +51,11 @@
         ON A.id = B.fee_id
         WHERE 1=1
         AND A.id = #{id}
-
     </select>
+
+    <insert id="insertFee" parameterType="model.dto.other.FeeReportEntity" >
+        INSERT INTO
+        tsva_fee(period, type, user_id, status) values
+        (#{period}, #{type}, #{userID}, 'new')
+    </insert>
 </mapper>
