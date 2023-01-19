@@ -411,10 +411,6 @@ public class ClassService {
         if (Objects.nonNull(student)) {
             searchClassDto.setStudent(student);
         }
-        searchClassDto.setJoinFee(false);
-        if (Objects.nonNull(joinFee)) {
-            searchClassDto.setJoinFee(joinFee);
-        }
 
         return searchClassDto;
     }
