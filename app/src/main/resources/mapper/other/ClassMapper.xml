@@ -13,17 +13,12 @@
             D.user_name_en AS updateUserName,
             A.update_time AS updateTime,
             course.course_type AS courseType,
-            A.course_checked AS courseChecked,
-            F.status AS calssStatus
+            A.course_checked AS courseChecked
         FROM tsva_class AS A
         INNER JOIN tsva_course AS course
             ON A.course_id = course.id
         LEFT JOIN sys_user AS D
             ON A.update_user = D.id
-        LEFT JOIN tsva_fee_detail AS FD
-            ON FD.class_id = A.id
-        LEFT JOIN tsva_fee AS F
-            ON F.id = FD.fee_id
         WHERE
             1 = 1
         <if test="name != null and name != ''">
@@ -50,6 +45,17 @@
             AND (#{endDate} &gt; A.start_datetime OR #{endDate} &gt; A.end_datetime)
         </if>
 <!--        ORDER BY A.start_datetime-->
+    </select>
+
+    <select id="getClassStatusById" resultType="String">
+        SELECT IFNULL(F.status, '') AS classStatus
+        FROM tsva_class AS A
+        LEFT JOIN tsva_fee_detail AS FD
+            ON FD.class_id = A.id
+        LEFT JOIN tsva_fee AS F
+            ON F.id = FD.fee_id
+        WHERE A.id = #{classId}
+        LIMIT 1
     </select>
 
     <select id="selectClassCoach" resultType="model.dto.other.ClassCoachResponse">

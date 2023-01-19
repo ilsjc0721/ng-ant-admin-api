@@ -3,6 +3,7 @@ package model.dto.other;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -12,4 +13,5 @@ public class ClassConfirmRequest implements Serializable {
     private List<ClassStudentRequest> studentList;
     private Integer updateUser;
     private String className;
+    private Timestamp classDate;
 }

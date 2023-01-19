@@ -8,4 +8,11 @@ import java.util.List;
 public interface FeeMapper extends BaseMapper<FeeEntity> {
     List<FeeReportEntity> getFee(SearchFeeReportDto searchFeeReportDto);
     List<FeeDetailReportEntity> getFeeDetail(Integer id);
+
+    Integer calculateFeeById(Integer id, Integer updateUser);
+
+    Integer deleteFeeDetailByClassId(Integer classId);
+
+    List<Integer> getFeeIdByClassId(Integer classId);
+
 }

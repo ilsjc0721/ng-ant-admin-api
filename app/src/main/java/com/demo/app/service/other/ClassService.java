@@ -57,14 +57,14 @@ public class ClassService {
         }
 
         List<ClassResponse> classResponseList = classMapper.selectClass(searchClassDto);
-
         for (ClassResponse classResponse : classResponseList) {
-            if (classResponse.getCalssStatus() == null){
+             String ClassStatus = classMapper.getClassStatusById(classResponse.getId());
+            if (ClassStatus.equals("") || ClassStatus.equals("new")){
                 if (classResponse.getCourseChecked()){
-                    classResponse.setCalssStatus("confirm");
+                    classResponse.setClassStatus("confirm");
                 }
             } else{
-                classResponse.setCalssStatus("paid");
+                classResponse.setClassStatus("paid");
             }
             //
             classResponse.setCoachId(new ArrayList<>());
@@ -298,18 +298,19 @@ public class ClassService {
         DateFormat dateFormat = new  SimpleDateFormat("yyyyMM");
 
         List<FeeDetailReportEntity> feeDetailList = new ArrayList<>();
+        Date date = new Date(classConfirmRequest.getClassDate().getTime());
+        String ym = dateFormat.format(date);
+        // Student
         for(ClassStudentRequest classStudent : classConfirmRequest.getStudentList()){
             classMapper.updateClassStudent(classStudent);
             // student fees
-            Date date = new Date(classStudent.getStartDatetime().getTime());
-            String ym = dateFormat.format(date);
             Integer parentId = userService.getParentId(classStudent.getStudentId());
             SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
             searchFeeReportDto.setUserId(parentId);
             searchFeeReportDto.setPeriod(ym);
+            List<FeeReportEntity> feeList = feeMapper.getFee(searchFeeReportDto);
 
             Integer feeId = 0;
-            List<FeeReportEntity> feeList = feeMapper.getFee(searchFeeReportDto);
             Optional<FeeReportEntity> feeReportEntity = feeList.stream().findFirst();
             if(!feeReportEntity.isPresent()){
                 // add fee
@@ -327,18 +328,59 @@ public class ClassService {
             FeeDetailEntity feeDetail = new FeeDetailEntity();
             feeDetail.setFeeId(feeId);
             feeDetail.setClassId(classConfirmRequest.getId());
-            feeDetail.setClassDate(classStudent.getStartDatetime());
+            feeDetail.setClassDate(classConfirmRequest.getClassDate());
             feeDetail.setClassHours(classStudent.getHours());
             feeDetail.setClassFee(classStudent.getTuitionFee());
             feeDetail.setClassName(classConfirmRequest.getClassName());
             feeDetail.setClassStudentName(classStudent.getStudentName());
             feeDetailMapper.insert(feeDetail);
+            feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
         }
-//        classMapper.updateClassStatus(classConfirmRequest);
+        // coach
+        List<ClassFeeResponse> classFeeResponseList = classMapper.getClassFee(classConfirmRequest.getId());
+        for(ClassFeeResponse ClassFee : classFeeResponseList){
+            if (ClassFee.getCoachId() > 0){
+                SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
+                searchFeeReportDto.setUserId(ClassFee.getCoachId());
+                searchFeeReportDto.setPeriod(ym);
+                List<FeeReportEntity> feeList = feeMapper.getFee(searchFeeReportDto);
+                Integer feeId = 0;
+                Optional<FeeReportEntity> feeReportEntity = feeList.stream().findFirst();
+                if(!feeReportEntity.isPresent()){
+                    // add fee
+                    FeeEntity newFee = new FeeEntity();
+                    newFee.setPeriod(ym);
+                    newFee.setUserID(ClassFee.getCoachId());
+                    newFee.setType("coach");
+                    newFee.setStatus("new");
+                    feeMapper.insert(newFee);
+                    feeId = newFee.getId();
+                } else {
+                    feeId = feeReportEntity.get().getId();
+                }
+
+                FeeDetailEntity newFeeDetail = new FeeDetailEntity();
+                newFeeDetail.setFeeId(feeId);
+                newFeeDetail.setClassId(classConfirmRequest.getId());
+                newFeeDetail.setClassDate(classConfirmRequest.getClassDate());
+                newFeeDetail.setClassHours(ClassFee.getHours());
+                newFeeDetail.setClassFee(ClassFee.getCoachFee());
+                newFeeDetail.setClassName(classConfirmRequest.getClassName());
+                newFeeDetail.setClassCoachName(ClassFee.getName());
+                feeDetailMapper.insert(newFeeDetail);
+                feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
+            }
+        }
+        classMapper.updateClassStatus(classConfirmRequest);
         return Result.success();
     }
     public Result rollbackConfirmClass(ClassConfirmRequest classConfirmRequest){
         classMapper.updateClassStatus(classConfirmRequest);
+        List<Integer> feeIdList = feeMapper.getFeeIdByClassId(classConfirmRequest.getId());
+        feeMapper.deleteFeeDetailByClassId(classConfirmRequest.getId());
+        for(Integer feeId : feeIdList){
+            feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
+        }
         return Result.success();
     }
 
@@ -350,6 +392,7 @@ public class ClassService {
         Integer coach = jsonObject.getInteger("coach");
         Integer student = jsonObject.getInteger("student");
         Boolean notConfirm = jsonObject.getBoolean("notConfirm");
+        Boolean joinFee = jsonObject.getBoolean("joinFee");
         if (Objects.nonNull(name)) {
             searchClassDto.setName(name);
         }
@@ -367,6 +410,10 @@ public class ClassService {
         }
         if (Objects.nonNull(student)) {
             searchClassDto.setStudent(student);
+        }
+        searchClassDto.setJoinFee(false);
+        if (Objects.nonNull(joinFee)) {
+            searchClassDto.setJoinFee(joinFee);
         }
 
         return searchClassDto;

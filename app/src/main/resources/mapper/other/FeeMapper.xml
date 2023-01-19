@@ -58,4 +58,25 @@
         tsva_fee(period, type, user_id, status) values
         (#{period}, #{type}, #{userID}, 'new')
     </insert>
+
+    <update id="calculateFeeById">
+        UPDATE tsva_fee F,
+            (SELECT SUM(FD.class_fee) AS fee, SUM(FD.class_hours) AS hours FROM tsva_fee_detail FD WHERE FD.fee_id = #{id}) A
+        SET
+            F.amount = A.fee,
+            F.hours = A.hours,
+            F.update_user = 1
+        WHERE F.id = #{id}
+    </update>
+
+    <update id="deleteFeeDetailByClassId">
+        DELETE FROM tsva_fee_detail
+        WHERE class_id = #{classId}
+    </update>
+
+    <select id="getFeeIdByClassId" resultType="java.lang.Integer">
+        SELECT DISTINCT fee_id
+        FROM tsva_fee_detail
+        WHERE class_id = #{classId}
+    </select>
 </mapper>

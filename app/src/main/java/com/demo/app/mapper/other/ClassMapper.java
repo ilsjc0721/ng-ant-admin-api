@@ -12,6 +12,8 @@ import java.util.List;
 public interface ClassMapper extends BaseMapper<ClassEntity> {
     List<ClassResponse> selectClass(SearchClassDto searchClassDto);
 
+    String getClassStatusById(Integer classId);
+
     List<ClassCoachResponse> selectClassCoach(Integer classId);
 
     List<ClassStudentResponse> selectClassStudent(Integer classId);
