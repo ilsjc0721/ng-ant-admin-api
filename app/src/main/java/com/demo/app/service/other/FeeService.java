@@ -22,11 +22,6 @@ public class FeeService {
     FeeMapper feeMapper;
 
     public Result getCoachFee(SearchFeeReportDto searchFeeReportDto) {
-//        SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
-//        if (Objects.nonNull(searchFilter.getFilters())) {
-//            searchFeeReportDto = getSearchFeeReportDto(searchFilter.getFilters());
-//        }
-
         if(searchFeeReportDto.getType().equals(null)){
             return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("type"));
         }
@@ -38,15 +33,9 @@ public class FeeService {
             fee.setFeeDetailReport(feeDetailList);
         }
 
-//        PageInfo<FeeReportEntity> selectFeeReportPageInfo = new PageInfo<>(feeList);
         return Result.success(feeList);
     }
     public Result getTuitionFee(SearchFeeReportDto searchFeeReportDto) {
-//        SearchFeeReportDto SearchFeeReportDto = new SearchFeeReportDto();
-//        if (Objects.nonNull(searchFilter.getFilters())) {
-//            searchFeeReportDto = getSearchFeeReportDto(searchFilter.getFilters());
-//        }
-
         if(searchFeeReportDto.getType().equals(null)){
             return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("type"));
         }
@@ -58,30 +47,7 @@ public class FeeService {
             fee.setFeeDetailReport(feeDetailList);
         }
 
-//        PageInfo<FeeReportEntity> selectFeeReportPageInfo = new PageInfo<>(feeList);
         return Result.success(feeList);
     }
 
-    private SearchFeeReportDto getSearchFeeReportDto(JSONObject jsonObject) {
-        SearchFeeReportDto searchFeeReportDto = new SearchFeeReportDto();
-        String period = jsonObject.getString("period");
-        String type = jsonObject.getString("type");
-        Integer userId = jsonObject.getInteger("userId");
-        String status = jsonObject.getString("status");
-
-        if (Objects.nonNull(period)) {
-            searchFeeReportDto.setPeriod(period);
-        }
-        if (Objects.nonNull(type)) {
-            searchFeeReportDto.setType(type);
-        }
-        if (Objects.nonNull(userId)) {
-            searchFeeReportDto.setUserId(userId);
-        }
-        if (Objects.nonNull(status)) {
-            searchFeeReportDto.setStatus(status);
-        }
-
-        return searchFeeReportDto;
-    }
 }
