@@ -65,7 +65,7 @@
         SET
             F.amount = A.fee,
             F.hours = A.hours,
-            F.update_user = 1
+            F.update_user = #{updateUser}
         WHERE F.id = #{id}
     </update>
 
