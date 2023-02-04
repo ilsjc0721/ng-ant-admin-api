@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "取得用戶明細")
-    @PreAuthorize("@ss.hasPer('default:system:account')")
+//    @PreAuthorize("@ss.hasPer('default:system:account')")
     public Result userDetail(@PathVariable Integer id) {
         return userService.userDetail(id);
     }

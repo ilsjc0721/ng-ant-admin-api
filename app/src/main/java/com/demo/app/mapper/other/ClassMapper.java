@@ -3,6 +3,7 @@ package com.demo.app.mapper.other;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import model.dto.other.*;
 import model.entity.sys.UserChild;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import result.Result;
@@ -32,7 +33,7 @@ public interface ClassMapper extends BaseMapper<ClassEntity> {
 
     List<ClassCalendar> getClassCalendar_All(String classMonth);
     List<ClassCalendar> getClassCalendar_Coach(Integer id, String classMonth);
-    List<ClassCalendar> getClassCalendar_Student(Integer id, String classMonth);
+    List<ClassCalendar> getClassCalendar_Student(@Param("id") Integer id,@Param("classMonth") String classMonth);
 
     Integer updateClassStatus(ClassConfirmRequest classConfirmRequest);
     Integer updateClassStudent(ClassStudentRequest classStudentEntity);
