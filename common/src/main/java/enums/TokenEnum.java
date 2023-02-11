@@ -27,7 +27,7 @@ public enum TokenEnum {
     /**
      * token过期时间 一个小时
      */
-    EXPIRATION(3600),
+    EXPIRATION(43200),
 
     /**
      * 毫秒数
