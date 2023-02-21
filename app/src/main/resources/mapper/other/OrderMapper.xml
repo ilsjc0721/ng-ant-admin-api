@@ -34,7 +34,8 @@
             and A.room_id = #{roomId}
         </if>
         <if test="inDate != null">
-            and DATE_FORMAT(A.in_date,'%Y-%m-%d') = DATE_FORMAT(#{inDate},'%Y-%m-%d')
+            and DATE_FORMAT(A.in_date,'%Y-%m-%d') >= DATE_FORMAT(#{inDate},'%Y-%m-%d')
+            and DATE_FORMAT(A.out_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{inDate},'%Y-%m-%d')
         </if>
         <if test="customerId != null and customerId != ''">
             and A.customer_id = #{customerId}
