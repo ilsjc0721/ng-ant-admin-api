@@ -332,8 +332,9 @@ public class ClassService {
             feeDetail.setClassHours(classStudent.getHours());
             feeDetail.setClassFee(classStudent.getTuitionFee());
             feeDetail.setClassName(classConfirmRequest.getClassName());
-            feeDetail.setClassStudentName(classStudent.getStudentName());
-            feeDetailMapper.insert(feeDetail);
+            feeDetailMapper.insertByEntity(feeDetail);
+//            feeDetail.setClassStudentName(classStudent.getStudentName());
+//            feeDetailMapper.insert(feeDetail);
             feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
         }
         // coach
@@ -366,8 +367,9 @@ public class ClassService {
                 newFeeDetail.setClassHours(ClassFee.getHours());
                 newFeeDetail.setClassFee(ClassFee.getCoachFee());
                 newFeeDetail.setClassName(classConfirmRequest.getClassName());
-                newFeeDetail.setClassCoachName(ClassFee.getName());
-                feeDetailMapper.insert(newFeeDetail);
+                feeDetailMapper.insertByEntity(newFeeDetail);
+//                newFeeDetail.setClassCoachName(ClassFee.getName());
+//                feeDetailMapper.insert(newFeeDetail);
                 feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
             }
         }

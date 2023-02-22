@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.FeeDetailMapper">
+    <insert id="insertByEntity" parameterType="model.dto.other.FeeDetailEntity" >
+        INSERT INTO
+        tsva_fee_detail(fee_id, class_id, class_date, class_hours, class_name, class_fee, class_coach_name, class_student_name) values
+                       (#{feeId}, #{classId}, #{classDate}, #{classHours}, #{className}, #{classFee}, sp_GetCoach(#{classId}), sp_GetStudent(#{classId}))
+    </insert>
+</mapper>
