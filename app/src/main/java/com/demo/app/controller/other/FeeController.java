@@ -6,13 +6,11 @@ import io.swagger.annotations.ApiOperation;
 import model.dto.other.ClassRequest;
 import model.dto.other.FeeMailRequest;
 import model.dto.other.SearchFeeReportDto;
+import model.dto.other.UpdateFeeStatusDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import result.Result;
 import util.SearchFilter;
 
@@ -26,10 +24,17 @@ public class FeeController {
     FeeService feeService;
 
     @PostMapping
-    @ApiOperation(value = "費用")
+    @ApiOperation(value = "費用總表")
     @PreAuthorize("@ss.hasPer('default:system:fee')")
     public Result getFee(@RequestBody @Validated SearchFeeReportDto searchFeeReportDto) {
         return feeService.getFee(searchFeeReportDto);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "更新費用總表狀態")
+    @PreAuthorize("@ss.hasPer('default:system:fee')")
+    public Result updateFeeStatus(@RequestBody @Validated UpdateFeeStatusDto updateFeeStatusDto) {
+        return feeService.updateFeeStatus(updateFeeStatusDto);
     }
 
     @PostMapping("/coach")
