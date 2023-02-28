@@ -365,7 +365,7 @@ public class ClassService {
                 newFeeDetail.setClassId(classConfirmRequest.getId());
                 newFeeDetail.setClassDate(classConfirmRequest.getClassDate());
                 newFeeDetail.setClassHours(ClassFee.getHours());
-                newFeeDetail.setClassFee(ClassFee.getCoachFee());
+                newFeeDetail.setClassFee(ClassFee.getTotalAmount());
                 newFeeDetail.setClassName(classConfirmRequest.getClassName());
                 feeDetailMapper.insertByEntity(newFeeDetail);
 //                newFeeDetail.setClassCoachName(ClassFee.getName());
