@@ -16,7 +16,7 @@
             B.user_name_en AS updateUserName,
             A.update_time AS updateTime,
             0 AS expand,
-            A.memo,
+            IFNULL(A.memo, '') AS memo,
             B.email
         FROM tsva_fee A
         INNER JOIN sys_user B
