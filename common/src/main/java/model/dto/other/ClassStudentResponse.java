@@ -9,4 +9,6 @@ public class ClassStudentResponse {
     private String name;
     private String nameCh;
     private Integer tuitionFee;
+    private String parentName;
+    private String parentNameCh;
 }

@@ -90,6 +90,14 @@ public class ClassService {
                     }
                     classResponse.getStudentId().add(classStudentResponse.getId());
                 }
+                if (!classStudentResponse.getParentName().equals("")){
+                    if (classResponse.getParent() != null){
+                        classResponse.setParent(classResponse.getParent() + "," + classStudentResponse.getParentName());
+                    } else {
+                        classResponse.setParent(classStudentResponse.getParentName());
+                    }
+//                    classResponse.getStudentId().add(classStudentResponse.getId());
+                }
             }
         }
 
