@@ -20,5 +20,6 @@ public class FeeReportEntity {
     private Timestamp updateTime;
     private boolean expand;
     private String memo;
+    private String email;
     private List<FeeDetailReportEntity> feeDetailReport;
 }

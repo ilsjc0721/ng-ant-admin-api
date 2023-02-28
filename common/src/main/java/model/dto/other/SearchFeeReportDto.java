@@ -8,4 +8,5 @@ public class SearchFeeReportDto {
     private String type;
     private Integer userId;
     private String status;
+    private Integer feeId;
 }

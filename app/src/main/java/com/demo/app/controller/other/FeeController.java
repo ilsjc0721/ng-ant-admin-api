@@ -4,6 +4,7 @@ import com.demo.app.service.other.FeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import model.dto.other.ClassRequest;
+import model.dto.other.FeeMailRequest;
 import model.dto.other.SearchFeeReportDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,4 +45,12 @@ public class FeeController {
     public Result getTuitionFee(@RequestBody @Validated SearchFeeReportDto searchFeeReportDto) {
         return feeService.getTuitionFee(searchFeeReportDto);
     }
+
+    @PostMapping("/mail")
+    @ApiOperation(value = "費用郵件")
+    //@PreAuthorize("@ss.hasPer('default:system:fee-tuition')")
+    public Result sendFeeMail(@RequestBody @Validated FeeMailRequest feeMailRequest) {
+        return feeService.sendFeeMail(feeMailRequest);
+    }
+
 }
