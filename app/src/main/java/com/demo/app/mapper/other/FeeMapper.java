@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface FeeMapper extends BaseMapper<FeeEntity> {
+
+    Integer updateFeeStatus(@Param("id") Integer id, @Param("status") String status, @Param("userId") Integer userId, @Param("memo") String memo);
     List<FeeReportEntity> getFee(SearchFeeReportDto searchFeeReportDto);
     List<FeeDetailReportEntity> getFeeDetail(Integer id);
 

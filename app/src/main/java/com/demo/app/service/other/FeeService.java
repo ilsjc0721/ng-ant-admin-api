@@ -21,6 +21,29 @@ public class FeeService {
     @Autowired
     FeeMapper feeMapper;
 
+    public Result updateFeeStatus(UpdateFeeStatusDto updateFeeStatusDto) {
+        if(updateFeeStatusDto.getUserId().equals(null)){
+            return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("userId"));
+        }
+
+        if(updateFeeStatusDto.getId().equals(null)){
+            return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("id"));
+        }
+
+        if(updateFeeStatusDto.getStatus().equals(null)){
+            return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("status"));
+        }
+
+        if (feeMapper.updateFeeStatus(
+                updateFeeStatusDto.getId(),
+                updateFeeStatusDto.getStatus(),
+                updateFeeStatusDto.getUserId(),
+                updateFeeStatusDto.getMemo()) > 0) {
+            return Result.success();
+        } else {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+    }
     public Result getFee(SearchFeeReportDto searchFeeReportDto) {
         searchFeeReportDto.setUserId(null);
         List<FeeReportEntity> feeList = feeMapper.getFee(searchFeeReportDto);

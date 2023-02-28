@@ -72,6 +72,15 @@
         WHERE F.id = #{id}
     </update>
 
+    <update id="updateFeeStatus">
+        UPDATE tsva_fee
+        SET
+            status = #{status},
+            memo = #{memo},
+            update_user = #{userId}
+        WHERE id = #{id}
+    </update>
+
     <update id="deleteFeeDetailByClassId">
         DELETE FROM tsva_fee_detail
         WHERE class_id = #{classId}
