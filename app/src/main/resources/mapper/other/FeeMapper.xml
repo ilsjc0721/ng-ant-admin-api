@@ -15,7 +15,8 @@
             A.update_user AS updateUser,
             B.user_name_en AS updateUserName,
             A.update_time AS updateTime,
-            0 AS expand
+            0 AS expand,
+            A.memo
         FROM tsva_fee A
         INNER JOIN sys_user B
         ON A.user_id = B.id
@@ -34,6 +35,7 @@
         <if test="userId != null">
             and A.user_id = #{userId}
         </if>
+        ORDER BY A.Period DESC
     </select>
 
     <select id="getFeeDetail" resultType="model.dto.other.FeeDetailReportEntity">
@@ -51,6 +53,7 @@
         ON A.id = B.fee_id
         WHERE 1=1
         AND A.id = #{id}
+        ORDER BY B.class_date
     </select>
 
     <insert id="insertFee" parameterType="model.dto.other.FeeReportEntity" >

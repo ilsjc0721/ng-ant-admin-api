@@ -21,6 +21,17 @@ public class FeeService {
     @Autowired
     FeeMapper feeMapper;
 
+    public Result getFee(SearchFeeReportDto searchFeeReportDto) {
+        searchFeeReportDto.setUserId(null);
+        List<FeeReportEntity> feeList = feeMapper.getFee(searchFeeReportDto);
+
+        for (FeeReportEntity fee : feeList) {
+            List<FeeDetailReportEntity> feeDetailList = feeMapper.getFeeDetail(fee.getId());
+            fee.setFeeDetailReport(feeDetailList);
+        }
+
+        return Result.success(feeList);
+    }
     public Result getCoachFee(SearchFeeReportDto searchFeeReportDto) {
         if(searchFeeReportDto.getType().equals(null)){
             return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("type"));
