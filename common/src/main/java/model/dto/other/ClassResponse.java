@@ -26,4 +26,6 @@ public class ClassResponse implements Serializable {
     private String courseType;
     private Boolean courseChecked;
     private String classStatus;
+    private Integer coachFeeStatus;
+    private Integer studentFeeStatus;
 }

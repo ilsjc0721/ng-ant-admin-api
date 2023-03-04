@@ -13,7 +13,27 @@
             D.user_name_en AS updateUserName,
             A.update_time AS updateTime,
             course.course_type AS courseType,
-            A.course_checked AS courseChecked
+            A.course_checked AS courseChecked,
+            (
+                SELECT 1
+                FROM tsva_class_coach C
+                INNER JOIN tsva_fee F
+                ON F.period = date_format(A.start_datetime, '%Y%m')
+                AND F.user_id = C.coach_id
+                AND F.status = 'confirm'
+                WHERE C.class_id = A.id
+            ) AS coachFeeStatus,
+            (
+                SELECT 1
+                FROM tsva_class_student S
+                INNER JOIN sys_user_child child
+                ON S.student_id = child.id
+                INNER JOIN tsva_fee F
+                ON F.period = date_format(A.start_datetime, '%Y%m')
+                AND F.user_id = child.parent_id
+                AND F.status = 'confirm'
+                WHERE S.class_id = A.id
+            ) AS studentFeeStatus
         FROM tsva_class AS A
         INNER JOIN tsva_course AS course
             ON A.course_id = course.id
@@ -43,26 +63,26 @@
         <if test="endDate != null">
             AND (#{endDate} &gt; A.start_datetime OR #{endDate} &gt; A.end_datetime)
         </if>
-        AND NOT EXISTS (
-            SELECT 1
-            FROM tsva_class_coach C
-            INNER JOIN tsva_fee F
-                ON F.period = date_format(A.start_datetime, '%Y%m')
-                AND F.user_id = C.coach_id
-                AND F.status = 'confirm'
-            WHERE C.class_id = A.id
-        )
-        AND NOT EXISTS (
-            SELECT 1
-            FROM tsva_class_student S
-            INNER JOIN sys_user_child child
-                ON S.student_id = child.id
-            INNER JOIN tsva_fee F
-                ON F.period = date_format(A.start_datetime, '%Y%m')
-                AND F.user_id = child.parent_id
-                AND F.status = 'confirm'
-            WHERE S.class_id = A.id
-        )
+<!--        AND NOT EXISTS (-->
+<!--            SELECT 1-->
+<!--            FROM tsva_class_coach C-->
+<!--            INNER JOIN tsva_fee F-->
+<!--                ON F.period = date_format(A.start_datetime, '%Y%m')-->
+<!--                AND F.user_id = C.coach_id-->
+<!--                AND F.status = 'confirm'-->
+<!--            WHERE C.class_id = A.id-->
+<!--        )-->
+<!--        AND NOT EXISTS (-->
+<!--            SELECT 1-->
+<!--            FROM tsva_class_student S-->
+<!--            INNER JOIN sys_user_child child-->
+<!--                ON S.student_id = child.id-->
+<!--            INNER JOIN tsva_fee F-->
+<!--                ON F.period = date_format(A.start_datetime, '%Y%m')-->
+<!--                AND F.user_id = child.parent_id-->
+<!--                AND F.status = 'confirm'-->
+<!--            WHERE S.class_id = A.id-->
+<!--        )-->
 <!--        ORDER BY A.start_datetime-->
     </select>
 
