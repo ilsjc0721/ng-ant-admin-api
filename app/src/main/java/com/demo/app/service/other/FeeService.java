@@ -135,8 +135,8 @@ public class FeeService {
                     str.append("</tr>");
                 }
                 str.append("</tbody> </table>");
-//                sendMail(mailFrom, pwd, fee.getEmail(), feeMailRequest.getSubject(), str.toString());
-                sendMail(mailFrom, pwd, "ilsjc0721@gmail.com", feeMailRequest.getSubject(), str.toString());
+                sendMail(mailFrom, pwd, fee.getEmail(), feeMailRequest.getSubject(), str.toString());
+//                sendMail(mailFrom, pwd, "kyle.summer@gmail.com", feeMailRequest.getSubject(), str.toString());
             }
         }
         return Result.success();
