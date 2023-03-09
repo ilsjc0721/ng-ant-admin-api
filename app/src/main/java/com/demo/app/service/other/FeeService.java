@@ -2,6 +2,7 @@ package com.demo.app.service.other;
 
 import com.alibaba.fastjson.JSONObject;
 import com.demo.app.mapper.other.FeeMapper;
+import com.demo.app.service.Auth;
 import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import enums.MenuEnum;
@@ -172,22 +173,5 @@ public class FeeService {
             return Result.failure(566, mex.toString());
         }
         return Result.success();
-    }
-}
-
-class Auth extends Authenticator{
-
-    private String userName;
-    private String password;
-
-    public Auth(String userName, String password){
-        this.userName = userName;
-        this.password = password;
-    }
-
-    @Override
-    protected PasswordAuthentication getPasswordAuthentication() {
-        PasswordAuthentication pa = new PasswordAuthentication(userName, password);
-        return pa;
     }
 }

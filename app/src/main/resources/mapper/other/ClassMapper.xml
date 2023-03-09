@@ -22,6 +22,7 @@
                 AND F.user_id = C.coach_id
                 AND F.status = 'confirm'
                 WHERE C.class_id = A.id
+                limit 1
             ) AS coachFeeStatus,
             (
                 SELECT 1
@@ -33,6 +34,7 @@
                 AND F.user_id = child.parent_id
                 AND F.status = 'confirm'
                 WHERE S.class_id = A.id
+                limit 1
             ) AS studentFeeStatus
         FROM tsva_class AS A
         INNER JOIN tsva_course AS course
