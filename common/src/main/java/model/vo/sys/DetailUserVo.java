@@ -2,6 +2,7 @@ package model.vo.sys;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -45,4 +46,10 @@ public class DetailUserVo {
     private List<UserChildVo> userChildVoList;
 
     private String pictureFileName;
+
+    private String joinTime;
+
+    private String emailAccount;
+
+    private String emailKey;
 }

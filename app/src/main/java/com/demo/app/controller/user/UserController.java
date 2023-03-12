@@ -4,10 +4,7 @@ import com.demo.app.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import model.dto.del.BatchDeleteDto;
-import model.dto.sys.user.InsertUserDto;
-import model.dto.sys.user.UpdateUserDto;
-import model.dto.sys.user.UpdateUserPictureFileNameDto;
-import model.dto.sys.user.UpdateUserPsdDto;
+import model.dto.sys.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -61,7 +58,7 @@ public class UserController {
 
     @PutMapping("/psd")
     @ApiOperation(value = "修改用户密码")
-    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
+//    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
     public Result updateUserPsd(@RequestBody @Validated UpdateUserPsdDto updateUserPsdDto) {
         return userService.updateUserPsd(updateUserPsdDto);
     }
@@ -85,5 +82,12 @@ public class UserController {
     //@PreAuthorize("@ss.hasPer('default:system:course')")
     public Result listUserChild(@RequestBody @Validated SearchFilter searchFilter) {
         return userService.listUserChild(searchFilter);
+    }
+
+    @PutMapping("/psd/reset")
+    @ApiOperation(value = "重置用户密码")
+    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
+    public Result resetUserPsd(@RequestBody @Validated ResetUserPsdDto resetUserPsdDto) {
+        return userService.resetUserPsd(resetUserPsdDto);
     }
 }

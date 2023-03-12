@@ -18,4 +18,6 @@ public interface FeeMapper extends BaseMapper<FeeEntity> {
 
     List<Integer> getFeeIdByClassId(Integer classId);
 
+    MailSettingEntity getMailSetting();
+
 }

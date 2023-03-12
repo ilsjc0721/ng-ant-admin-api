@@ -5,6 +5,7 @@ import model.entity.sys.UserChild;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -45,4 +46,10 @@ public class InsertUserDto {
     private String emergencyContactRelationship;
 
     private List<UserChild> userChildVoList;
+
+    private Timestamp joinTime;
+
+    private String emailAccount;
+
+    private String emailKey;
 }

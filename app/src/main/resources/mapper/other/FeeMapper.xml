@@ -95,4 +95,13 @@
         FROM tsva_fee_detail
         WHERE class_id = #{classId}
     </select>
+
+    <select id="getMailSetting" resultType="model.dto.other.MailSettingEntity">
+        SELECT
+            email_account AS mailFrom,
+            email_key AS pwd
+        FROM sys_user
+        WHERE user_name_en = 'sadmin'
+    </select>
+
 </mapper>

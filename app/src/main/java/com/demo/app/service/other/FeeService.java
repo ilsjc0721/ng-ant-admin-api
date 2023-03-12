@@ -95,8 +95,15 @@ public class FeeService {
     }
 
     public Result sendFeeMail(@RequestBody FeeMailRequest feeMailRequest){
+
         String pwd = "euezgnczlagymohe";
         String mailFrom = "ilsjc0721@gmail.com";
+        // Get mailFrom
+        MailSettingEntity mailSetting = feeMapper.getMailSetting();
+        if (mailSetting != null){
+            mailFrom = mailSetting.getMailFrom();
+            pwd = mailSetting.getPwd();
+        }
         if (!feeMailRequest.getPeriod().isEmpty()){
             SearchFeeReportDto searchFee = new SearchFeeReportDto();
             if (feeMailRequest.getPeriod() != null)

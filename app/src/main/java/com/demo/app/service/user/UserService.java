@@ -290,4 +290,15 @@ public class UserService {
             return 0;
         }
     }
+
+    public Result resetUserPsd(ResetUserPsdDto resetUserPsdDto) {
+        SysUser sysUser = new SysUser();
+        sysUser.setId(resetUserPsdDto.getId());
+        sysUser.setPassword(passwordEncoder.encode("a123456"));
+        int res = userMapper.updateById(sysUser);
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        }
+        return Result.success();
+    }
 }

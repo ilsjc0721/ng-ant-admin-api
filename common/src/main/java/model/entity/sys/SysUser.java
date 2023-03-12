@@ -61,4 +61,13 @@ public class SysUser implements Serializable {
 
     @TableField("picture_file_name")
     private String pictureFileName;
+
+    @TableField("join_time")
+    private Timestamp joinTime;
+
+    @TableField("email_account")
+    private String emailAccount;
+
+    @TableField("email_key")
+    private String emailKey;
 }

@@ -7,6 +7,7 @@ import model.vo.sys.UserChildVo;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -48,4 +49,10 @@ public class UpdateUserDto implements Serializable {
     private String emergencyContactRelationship;
 
     private List<UserChild> userChildVoList;
+
+    private Timestamp joinTime;
+
+    private String emailAccount;
+
+    private String emailKey;
 }
