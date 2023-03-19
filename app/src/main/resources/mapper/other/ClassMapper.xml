@@ -10,7 +10,7 @@
             A.hours,
             A.course_id AS courseId,
             course.limit,
-            D.user_name_en AS updateUserName,
+            IFNULL(D.user_name_en, '') AS updateUserName,
             A.update_time AS updateTime,
             course.course_type AS courseType,
             A.course_checked AS courseChecked,
@@ -114,12 +114,12 @@
     <select id="selectClassStudent" resultType="model.dto.other.ClassStudentResponse">
         SELECT
             A.student_id AS id,
-            D.user_name_en AS name,
-            D.user_name_ch AS nameCh,
+            IFNULL(D.user_name_en,'') AS name,
+            IFNULL(D.user_name_ch,'') AS nameCh,
             A.id AS keyId,
             A.tuition_total AS tuitionFee,
-            U.user_name_en AS parentName,
-            U.user_name_ch AS parentNameCh
+            IFNULL(U.user_name_en,'') AS parentName,
+            IFNULL(U.user_name_ch,'') AS parentNameCh
         FROM tsva_class_student AS A
         INNER JOIN sys_user_child AS D
             ON A.student_id = D.id
