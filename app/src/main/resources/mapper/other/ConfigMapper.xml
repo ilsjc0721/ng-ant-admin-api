@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.other.ConfigMapper">
+    <select id="getValue" resultType="String">
+        INSERT INTO tsva_config (`name`, `value`)
+        SELECT #{name},'' FROM DUAL
+        WHERE NOT EXISTS
+        (SELECT name FROM tsva_config WHERE name=#{name});
+
+        SELECT IFNULL(value, '') AS value
+        FROM tsva_config
+        WHERE name = #{name}
+        LIMIT 1
+    </select>
+
+    <update id="updateValue" parameterType="model.dto.other.ConfigEntity" >
+        UPDATE tsva_config SET
+            `value` = #{value}
+        WHERE name = #{name}
+    </update>
+</mapper>
