@@ -51,7 +51,7 @@ public class UserController {
 
     @PutMapping
     @ApiOperation(value = "修改用戶明細")
-    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
+//    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
     public Result updateUser(@RequestBody @Validated UpdateUserDto updateUserDto) {
         return userService.updateUser(updateUserDto);
     }
@@ -65,7 +65,7 @@ public class UserController {
 
     @PutMapping("/picturefilename")
     @ApiOperation(value = "修改用戶圖片檔案名")
-    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
+//    @PreAuthorize("@ss.hasPer('default:system:account:edit')")
     public Result updateUserPictureFileName(@RequestBody @Validated UpdateUserPictureFileNameDto updateUserPictureFileNameDto) {
         return userService.updateUserPictureFileName(updateUserPictureFileNameDto);
     }

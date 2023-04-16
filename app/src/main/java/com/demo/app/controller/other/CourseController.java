@@ -43,7 +43,7 @@ public class CourseController {
     @PutMapping
     @ApiOperation(value = "修改課程")
 //    @PreAuthorize("@ss.hasPer('default:system:course:edit')")
-    public Result updateCustomer(@RequestBody @Validated CourseEntity updateCourse) {
+    public Result updateCourse(@RequestBody @Validated CourseEntity updateCourse) {
         return courseService.update(updateCourse);
     }
 }
