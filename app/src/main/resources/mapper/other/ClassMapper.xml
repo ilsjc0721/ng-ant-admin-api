@@ -85,7 +85,7 @@
 <!--                AND F.status = 'confirm'-->
 <!--            WHERE S.class_id = A.id-->
 <!--        )-->
-<!--        ORDER BY A.start_datetime-->
+        ORDER BY A.start_datetime DESC
     </select>
 
     <select id="getClassStatusById" resultType="String">
