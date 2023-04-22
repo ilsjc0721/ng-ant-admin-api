@@ -199,6 +199,7 @@ public class ClassService {
         // Coach
         for (Integer coachId : classRequest.getCoachId()){
             ClassCoachEntity classCoach = new ClassCoachEntity();
+            classCoach.setCoachId(coachId);
             classCoach.setClassId(classRequest.getId());
             Optional<CourseFeeEntity> courseFeeEntity = courseFeeList.stream().filter(e -> e.getCoachId() == coachId).findFirst();
             Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getCoachID() == coachId).findFirst();

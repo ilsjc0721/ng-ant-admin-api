@@ -24,7 +24,7 @@ public class RoleController {
     RoleService roleService;
 
     @PostMapping("/list")
-    @PreAuthorize("@ss.hasPer('default:system:role-manager')")
+//    @PreAuthorize("@ss.hasPer('default:system:role-manager')")
     @ApiOperation(value = "取得角色清單")
     public Result roleList(@RequestBody @Validated SearchFilter searchFilter) {
         return roleService.roleList(searchFilter);
