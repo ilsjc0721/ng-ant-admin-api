@@ -23,13 +23,13 @@ public class ApplyEntity implements Serializable {
     @TableField("apply_date")
     private Timestamp applyDate;
 
-    @TableField("start_time")
-    private Timestamp startTime;
-
-    @TableField("end_time")
-    private Timestamp endTime;
-
-    private Float hours;
+//    @TableField("start_time")
+//    private Timestamp startTime;
+//
+//    @TableField("end_time")
+//    private Timestamp endTime;
+//
+//    private Float hours;
 
     @TableField("update_user")
     private Integer updateUser;

@@ -41,10 +41,10 @@ public class ApplyController {
         return applyService.del(batchDelete);
     }
 
-    @PutMapping
-    @ApiOperation(value = "修改報名資料")
-//    @PreAuthorize("@ss.hasPer('default:system:apply:edit')")
-    public Result updateApply(@RequestBody @Validated ApplyEntity updateApply) {
-        return applyService.update(updateApply);
-    }
+//    @PutMapping
+//    @ApiOperation(value = "修改報名資料")
+////    @PreAuthorize("@ss.hasPer('default:system:apply:edit')")
+//    public Result updateApply(@RequestBody @Validated ApplyEntity updateApply) {
+//        return applyService.update(updateApply);
+//    }
 }
