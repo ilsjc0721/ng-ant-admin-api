@@ -18,7 +18,7 @@
         WHERE
         1 = 1
         <if test="userName != null and userName != ''">
-            and user.user_name_ch like concat('%',#{userName},'%')
+            and (user.user_name_ch like concat('%',#{userName},'%') or user.user_name_en like concat('%',#{userName},'%'))
         </if>
         <if test="available != null">
             and is_available = #{available}
