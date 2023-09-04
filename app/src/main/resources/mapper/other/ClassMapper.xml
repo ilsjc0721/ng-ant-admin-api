@@ -117,7 +117,8 @@
             IFNULL(D.user_name_en,'') AS name,
             IFNULL(D.user_name_ch,'') AS nameCh,
             A.id AS keyId,
-            A.tuition_total AS tuitionFee,
+            A.tuition_fee AS tuitionFee,
+            A.tuition_total AS tuitionTotal,
             IFNULL(U.user_name_en,'') AS parentName,
             IFNULL(U.user_name_ch,'') AS parentNameCh
         FROM tsva_class_student AS A

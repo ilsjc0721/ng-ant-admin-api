@@ -26,6 +26,7 @@ import result.CommonConstants;
 import result.Result;
 import util.SearchFilter;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -234,12 +235,22 @@ public class ClassService {
     }
 
     public Result delClass(BatchDeleteDto batchDeleteDto) {
-        classMapper.deleteBatchIds(batchDeleteDto.getIds());
+        String errMsg = "";
         for (Integer id : batchDeleteDto.getIds()){
-            classMapper.deleteClassCoach(id);
-            classMapper.deleteClassStudent(id);
+            Integer feeCount = feeMapper.getFeeCount(id);
+            if (feeCount > 0){
+                errMsg = "課程尚有費用, 不可刪除!";
+            }
         }
-        return Result.success();
+        if (errMsg.equals("")){
+            classMapper.deleteBatchIds(batchDeleteDto.getIds());
+            for (Integer id : batchDeleteDto.getIds()){
+                classMapper.deleteClassCoach(id);
+                classMapper.deleteClassStudent(id);
+            }
+            return Result.success();
+        }
+        return Result.failure(ErrorCodeEnum.FEE_ERR_CLASS_CANNOT_DELETE);
     }
 
     public Result getClassStudentDetail(Integer id) {
@@ -334,17 +345,18 @@ public class ClassService {
                 feeId = feeReportEntity.get().getId();
             }
             // add feeDetail
-            FeeDetailEntity feeDetail = new FeeDetailEntity();
-            feeDetail.setFeeId(feeId);
-            feeDetail.setClassId(classConfirmRequest.getId());
-            feeDetail.setClassDate(classConfirmRequest.getClassDate());
-            feeDetail.setClassHours(classStudent.getHours());
-            feeDetail.setClassFee(classStudent.getTuitionFee());
-            feeDetail.setClassName(classConfirmRequest.getClassName());
-            feeDetailMapper.insertByEntity(feeDetail);
-//            feeDetail.setClassStudentName(classStudent.getStudentName());
-//            feeDetailMapper.insert(feeDetail);
-            feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
+            if (classStudent.getHours().compareTo(BigDecimal.ZERO) > 0){
+                FeeDetailEntity feeDetail = new FeeDetailEntity();
+                feeDetail.setFeeId(feeId);
+                feeDetail.setClassId(classConfirmRequest.getId());
+                feeDetail.setClassDate(classConfirmRequest.getClassDate());
+                feeDetail.setClassHours(classStudent.getHours());
+                int classFee = BigDecimal.valueOf(classStudent.getTuitionFee()).multiply(classStudent.getHours()).intValue();
+                feeDetail.setClassFee(classFee);
+                feeDetail.setClassName(classConfirmRequest.getClassName());
+                feeDetailMapper.insertByEntity(feeDetail);
+                feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
+            }
         }
         // coach
         List<ClassFeeResponse> classFeeResponseList = classMapper.getClassFee(classConfirmRequest.getId());

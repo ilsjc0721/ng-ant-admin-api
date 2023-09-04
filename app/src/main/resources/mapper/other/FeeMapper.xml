@@ -104,4 +104,9 @@
         WHERE user_name_en = 'sadmin'
     </select>
 
+   <select id="getFeeCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) AS feeCount
+        FROM tsva_fee_detail
+        WHERE class_id = #{classId}
+    </select>
 </mapper>
