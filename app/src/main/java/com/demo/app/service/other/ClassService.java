@@ -145,8 +145,8 @@ public class ClassService {
                 ClassCoachEntity classCoach = new ClassCoachEntity();
                 classCoach.setClassId(classEntity.getId());
                 classCoach.setCoachId(coachId);
-                Optional<CourseFeeEntity> courseFeeEntity = courseFeeList.stream().filter(e -> e.getCoachId() == coachId).findFirst();
-                Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getCoachID() == coachId).findFirst();
+                Optional<CourseFeeEntity> courseFeeEntity = courseFeeList.stream().filter(e -> e.getCoachId().equals(coachId)).findFirst();
+                Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getCoachID().equals(coachId)).findFirst();
                 if (courseFeeEntity.isPresent()){
                     classCoach.setCoachType(courseFeeEntity.get().getCoachType());
                 }
@@ -161,7 +161,7 @@ public class ClassService {
                 ClassStudentEntity classStudent = new ClassStudentEntity();
                 classStudent.setClassId(classEntity.getId());
                 classStudent.setStudentId(childId);
-                Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getStudentId() == childId).findFirst();
+                Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getStudentId().equals(childId)).findFirst();
                 if(adjustAmountEntity.isPresent()){
                     classStudent.setTuitionFee(adjustAmountEntity.get().getTuitionFee());
                     classStudent.setTuitionTotal(adjustAmountEntity.get().getAdjustAmount());
@@ -202,8 +202,8 @@ public class ClassService {
             ClassCoachEntity classCoach = new ClassCoachEntity();
             classCoach.setCoachId(coachId);
             classCoach.setClassId(classRequest.getId());
-            Optional<CourseFeeEntity> courseFeeEntity = courseFeeList.stream().filter(e -> e.getCoachId() == coachId).findFirst();
-            Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getCoachID() == coachId).findFirst();
+            Optional<CourseFeeEntity> courseFeeEntity = courseFeeList.stream().filter(e -> e.getCoachId().equals(coachId)).findFirst();
+            Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getCoachID().equals(coachId)).findFirst();
             if (courseFeeEntity.isPresent()){
                 classCoach.setCoachType(courseFeeEntity.get().getCoachType());
             }
@@ -218,7 +218,7 @@ public class ClassService {
             ClassStudentEntity classStudent = new ClassStudentEntity();
             classStudent.setClassId(classRequest.getId());
             classStudent.setStudentId(childId);
-            Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getStudentId() == childId).findFirst();
+            Optional<AdjustAmountEntity> adjustAmountEntity = classRequest.getAdjustAmountList().stream().filter(e -> e.getStudentId().equals(childId)).findFirst();
             if(adjustAmountEntity.isPresent()){
                 classStudent.setTuitionFee(adjustAmountEntity.get().getTuitionFee());
                 classStudent.setTuitionTotal(adjustAmountEntity.get().getAdjustAmount());

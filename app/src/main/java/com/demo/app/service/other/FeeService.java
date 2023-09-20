@@ -55,7 +55,9 @@ public class FeeService {
         }
     }
     public Result getFee(SearchFeeReportDto searchFeeReportDto) {
-        searchFeeReportDto.setUserId(null);
+        if(searchFeeReportDto.getUserId().equals(0)){
+            searchFeeReportDto.setUserId(null);
+        }
         List<FeeReportEntity> feeList = feeMapper.getFee(searchFeeReportDto);
 
         for (FeeReportEntity fee : feeList) {
