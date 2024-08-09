@@ -285,4 +285,10 @@
         AND D.parent_id = #{id}
         ORDER BY DATE_FORMAT(A.start_datetime,'%H:%i');
     </select>
+
+    <select id="getCheckedCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) AS checkedCount
+        FROM tsva_class
+        WHERE id = #{id} AND course_checked = 1;
+    </select>
 </mapper>

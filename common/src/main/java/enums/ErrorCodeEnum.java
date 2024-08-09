@@ -75,7 +75,8 @@ ErrorCodeEnum {
 
 
     /****************************** 分隔符 **************************************/
-    FEE_ERR_CLASS_CANNOT_DELETE(4001, "課程尚有費用, 不可刪除");
+    FEE_ERR_CLASS_CANNOT_DELETE(4001, "課程尚有費用, 不可刪除"),
+    CLASS_ERR_CHECKED_CANNOT_UPDATE(4002, "課程已做到課確認, 不可修改");
 
     private Integer code;
 

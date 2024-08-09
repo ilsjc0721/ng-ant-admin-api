@@ -185,6 +185,15 @@ public class ClassService {
 //        if (isUniqueUserName(insertUserDto.getUserName())) {
 //            return Result.failure(ErrorCodeEnum.SYS_ERR_ACCOUNT);
 //        }
+
+        String errMsg = "";
+        Integer id = classRequest.getId();
+        Integer checkedCount = classMapper.getCheckedCount(id);
+        if (checkedCount > 0){
+            // errMsg = "課程已做到課確認, 不可修改!";
+            return Result.failure(ErrorCodeEnum.CLASS_ERR_CHECKED_CANNOT_UPDATE);
+        }
+
         classMapper.updateClassById(classRequest);
         classMapper.deleteClassCoach(classRequest.getId());
         classMapper.deleteClassStudent(classRequest.getId());

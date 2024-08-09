@@ -37,4 +37,6 @@ public interface ClassMapper extends BaseMapper<ClassEntity> {
 
     Integer updateClassStatus(ClassConfirmRequest classConfirmRequest);
     Integer updateClassStudent(ClassStudentRequest classStudentEntity);
+
+    Integer getCheckedCount(Integer id);
 }
