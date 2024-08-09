@@ -67,10 +67,12 @@ public class UserService {
 
         // 查询所有用户信息
         List<SelectUserVo> selectUserVos = userMapper.listUser(searchUserDto);
-        for (SelectUserVo selectUserVo : selectUserVos) {
-            List<UpdateRoleDto> updateRoleDtos = userRoleMapper.selectRoleName(selectUserVo.getId());
-            List<String> roleNames = updateRoleDtos.stream().map(UpdateRoleDto::getRoleName).collect(Collectors.toList());
-            selectUserVo.setRoleName(roleNames);
+        if (searchUserDto.getWithRole()) {
+            for (SelectUserVo selectUserVo : selectUserVos) {
+                List<UpdateRoleDto> updateRoleDtos = userRoleMapper.selectRoleName(selectUserVo.getId());
+                List<String> roleNames = updateRoleDtos.stream().map(UpdateRoleDto::getRoleName).collect(Collectors.toList());
+                selectUserVo.setRoleName(roleNames);
+            }
         }
         PageInfo<SelectUserVo> selectUserVoPageInfo = new PageInfo<>(selectUserVos);
         return Result.success(selectUserVoPageInfo);
@@ -254,6 +256,7 @@ public class UserService {
         Timestamp endTime = jsonObject.getTimestamp("endTime");
         Integer departmentId = jsonObject.getInteger("departmentId");
         Integer roleID = jsonObject.getInteger("roleID");
+        Boolean withRole = jsonObject.getBoolean("withRole");
 
         if (Objects.nonNull(userName)) {
             searchUserDto.setUserName(userName);
@@ -276,6 +279,12 @@ public class UserService {
         if (Objects.nonNull(roleID)) {
             searchUserDto.setRoleID(roleID);
         }
+        if (Objects.nonNull(withRole)) {
+            searchUserDto.setWithRole(withRole);
+        } else {
+            searchUserDto.setWithRole(false);
+        }
+
 
         return searchUserDto;
     }
