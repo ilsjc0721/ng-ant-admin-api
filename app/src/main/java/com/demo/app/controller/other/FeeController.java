@@ -52,7 +52,7 @@ public class FeeController {
     }
 
     @PostMapping("/mail")
-    @ApiOperation(value = "費用郵件")
+    @ApiOperation(value = "費用郵件通知")
     //@PreAuthorize("@ss.hasPer('default:system:fee-tuition')")
     public Result sendFeeMail(@RequestBody @Validated FeeMailRequest feeMailRequest) {
         return feeService.sendFeeMail(feeMailRequest);
