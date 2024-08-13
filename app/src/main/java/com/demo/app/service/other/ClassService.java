@@ -360,7 +360,7 @@ public class ClassService {
                 feeDetail.setClassId(classConfirmRequest.getId());
                 feeDetail.setClassDate(classConfirmRequest.getClassDate());
                 feeDetail.setClassHours(classStudent.getHours());
-                int classFee = BigDecimal.valueOf(classStudent.getTuitionFee()).multiply(classStudent.getHours()).intValue();
+                int classFee = BigDecimal.valueOf(classStudent.getTuitionFee()).intValue();
                 feeDetail.setClassFee(classFee);
                 feeDetail.setClassName(classConfirmRequest.getClassName());
                 feeDetailMapper.insertByEntity(feeDetail);
