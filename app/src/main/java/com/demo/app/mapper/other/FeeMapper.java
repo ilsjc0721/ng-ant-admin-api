@@ -21,4 +21,12 @@ public interface FeeMapper extends BaseMapper<FeeEntity> {
     MailSettingEntity getMailSetting();
 
     Integer getFeeCount(Integer classId);
+
+    List<DepositEntity> getDeposit(SearchDepositDto searchDepositDto);
+
+    Integer getSummaryDeposit(Integer userId);
+
+    Integer insertDeposit(DepositEntity deposit);
+    Integer updateDeposit(DepositEntity deposit);
+    void delDeposit(Integer id);
 }

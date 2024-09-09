@@ -26,6 +26,9 @@
         <if test="updateUser != null">
             and A.update_user = #{updateUser}
         </if>
+        <if test="courseId != null">
+            and A.course_id = #{courseId}
+        </if>
         ORDER BY A.apply_date, A.start_time
     </select>
 

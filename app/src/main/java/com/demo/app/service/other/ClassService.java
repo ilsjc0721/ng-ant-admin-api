@@ -32,6 +32,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Service
 public class ClassService {
@@ -364,6 +366,7 @@ public class ClassService {
                 feeDetail.setClassFee(classFee);
                 feeDetail.setClassName(classConfirmRequest.getClassName());
                 feeDetailMapper.insertByEntity(feeDetail);
+                feeDetailMapper.insertDeposit(parentId, Timestamp.valueOf(LocalDateTime.now()), "扣款", -classFee, feeId, classConfirmRequest.getId(), "", Timestamp.valueOf(LocalDateTime.now()));
                 feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
             }
         }

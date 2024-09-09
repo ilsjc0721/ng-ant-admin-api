@@ -9,4 +9,5 @@ public class SearchApplyDto {
     private Timestamp startDate;
     private Timestamp endDate;
     private Integer updateUser;
+    private Integer courseId;
 }

@@ -45,6 +45,7 @@ public class CourseService {
         PageInfo<CourseEntity> selectCoursePageInfo = new PageInfo<>(courseList);
         return Result.success(selectCoursePageInfo);
     }
+
     private SearchCourseDto getSearchCourseDto(JSONObject jsonObject) {
         SearchCourseDto searchCourseDto = new SearchCourseDto();
         String name = jsonObject.getString("name");

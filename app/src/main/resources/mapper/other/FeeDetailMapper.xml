@@ -6,4 +6,11 @@
         tsva_fee_detail(fee_id, class_id, class_date, class_hours, class_name, class_fee, class_coach_name, class_student_name) values
                        (#{feeId}, #{classId}, #{classDate}, #{classHours}, #{className}, #{classFee}, sp_GetCoach(#{classId}), sp_GetStudent(#{classId}))
     </insert>
+
+    <update id="insertDeposit">
+        INSERT INTO tsva_deposit
+            (user_id, deposit_date, type, deposit, fee_id, class_id, memo, update_time)
+        values
+            (#{user_id}, #{deposit_date}, #{type}, #{deposit}, #{fee_id}, #{class_id}, #{memo}, #{update_time})
+    </update>
 </mapper>

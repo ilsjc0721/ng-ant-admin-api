@@ -163,6 +163,19 @@
 | name        | varchar(25) | DEFAULT NULL            |         |
 | value       | varchar(2000) | DEFAULT NULL          |         |
 
+13. tsva_deposit (點數管理)
+
+| Column Name | Data Type   | Default Value           | Comment |
+|-------------|-------------|-------------------------|---------|
+| id          | int         | NOT NULL AUTO_INCREMENT |         |
+| user_id     | int 		| DEFAULT NULL            |         |
+| deposit_date| timestamp 	| DEFAULT NULL            |         |
+| type        | varchar(20) | DEFAULT NULL 			  |         |
+| deposit     | int 		| DEFAULT NULL            |         |
+| class_id    | int 		| DEFAULT NULL            |         |
+| memo        | varchar(200)| DEFAULT NULL            |         |
+| update_time | timestamp   | DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP|                       |
+
 #### API List 
 1. 課程管理
 	> 取得課程 <u>POST</u>

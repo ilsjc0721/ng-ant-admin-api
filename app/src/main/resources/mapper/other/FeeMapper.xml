@@ -87,6 +87,9 @@
 
     <update id="deleteFeeDetailByClassId">
         DELETE FROM tsva_fee_detail
+        WHERE class_id = #{classId};
+
+        DELETE FROM tsva_deposit
         WHERE class_id = #{classId}
     </update>
 
@@ -109,4 +112,64 @@
         FROM tsva_fee_detail
         WHERE class_id = #{classId}
     </select>
+
+    <select id="getDeposit" resultType="model.dto.other.DepositEntity">
+        SELECT
+            A.id,
+            A.user_id AS userId,
+            B.user_name_en AS userName,
+            A.deposit_date AS depositDate,
+            A.type,
+            A.deposit,
+            A.fee_id AS feeId,
+            A.class_id AS classId,
+            Course.name AS className,
+            A.memo,
+            A.update_time AS updateTime
+        FROM tsva_deposit AS A
+        INNER JOIN sys_user B ON A.user_id = B.id
+        LEFT JOIN tsva_class AS Class ON A.class_id = Class.id
+        LEFT JOIN tsva_course AS Course ON Class.course_id = Course.id
+        WHERE
+        1 = 1
+        <if test="startDate != null">
+            and DATE_FORMAT(A.deposit_date,'%Y-%m-%d') >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+        </if>
+        <if test="endDate != null">
+            and DATE_FORMAT(A.deposit_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+        </if>
+        <if test="type != null">
+            and A.type = #{type}
+        </if>
+        <if test="userId != null">
+            and A.user_id = #{userId}
+        </if>
+        ORDER BY A.deposit_date, A.update_time
+    </select>
+
+    <select id="getSummaryDeposit" resultType="java.lang.Integer">
+        SELECT IFNULL(SUM(deposit),0) AS deposit
+        FROM tsva_deposit
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insertDeposit" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.DepositEntity" >
+        insert into tsva_deposit
+        (`user_id`,`deposit_date`, `type`, `deposit`, `memo`)
+        values
+        (#{userId}, #{depositDate}, #{type}, #{deposit}, #{memo})
+    </insert>
+
+    <update id="updateDeposit" parameterType="model.dto.other.DepositEntity" >
+        UPDATE tsva_deposit SET
+        `deposit_date` = #{depositDate},
+        `deposit` = #{deposit},
+        `memo` = #{memo}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delDeposit">
+        DELETE FROM tsva_deposit
+        WHERE id = #{id}
+    </delete>
 </mapper>

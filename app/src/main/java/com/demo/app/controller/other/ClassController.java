@@ -79,12 +79,14 @@ public class ClassController {
 
     @PostMapping("/confirm")
     @ApiOperation(value = "到課確認")
+    @PreAuthorize("@ss.hasPer('default:system:class-confirm')")
     public Result confirmClass(@RequestBody @Validated ClassConfirmRequest classConfirmRequest) {
         return classService.confirmClass(classConfirmRequest);
     }
 
     @PostMapping("/rollback-confirm")
     @ApiOperation(value = "到課取消")
+    @PreAuthorize("@ss.hasPer('default:system:class-confirm')")
     public Result rollbackConfirmClass(@RequestBody @Validated ClassConfirmRequest classConfirmRequest) {
         return classService.rollbackConfirmClass(classConfirmRequest);
     }

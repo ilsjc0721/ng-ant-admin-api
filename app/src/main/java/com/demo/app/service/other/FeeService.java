@@ -3,14 +3,20 @@ package com.demo.app.service.other;
 import com.alibaba.fastjson.JSONObject;
 import com.demo.app.mapper.other.FeeMapper;
 import com.demo.app.service.Auth;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import enums.MenuEnum;
+import io.swagger.models.auth.In;
+import model.dto.del.BatchDeleteDto;
 import model.dto.other.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
+import result.CommonConstants;
 import result.Result;
 import util.SearchFilter;
 import util.StringUtils;
@@ -20,10 +26,8 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.net.ssl.SSLSocketFactory;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Properties;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Service
 public class FeeService {
@@ -181,6 +185,81 @@ public class FeeService {
             mex.printStackTrace();
             return Result.failure(566, mex.toString());
         }
+        return Result.success();
+    }
+
+    public Result getDeposit(SearchFilter searchFilter) {
+        PageHelper.startPage(searchFilter.getPageNum(), searchFilter.getPageSize());
+
+        SearchDepositDto searchDepositDto = new SearchDepositDto();
+        if (Objects.nonNull(searchFilter.getFilters())) {
+            searchDepositDto = getSearchDepositDto(searchFilter.getFilters());
+        }
+
+        List<DepositEntity> depositList = feeMapper.getDeposit(searchDepositDto);
+
+        PageInfo<DepositEntity> selectDepositPageInfo = new PageInfo<>(depositList);
+        return Result.success(selectDepositPageInfo);
+    }
+
+    private SearchDepositDto getSearchDepositDto(JSONObject jsonObject) {
+        SearchDepositDto searchDepositDto = new SearchDepositDto();
+        Timestamp startDate = jsonObject.getTimestamp("startDate");
+        Timestamp endDate = jsonObject.getTimestamp("endDate");
+        Integer userId = jsonObject.getInteger("userId");
+        String type = jsonObject.getString("type");
+
+        if (Objects.nonNull(startDate)) {
+            searchDepositDto.setStartDate(startDate);
+        }
+        if (Objects.nonNull(endDate)) {
+            searchDepositDto.setEndDate(endDate);
+        }
+        if (Objects.nonNull(userId)) {
+            searchDepositDto.setUserId(userId);
+        }
+        if (Objects.nonNull(type)) {
+            searchDepositDto.setType(type);
+        }
+
+        return searchDepositDto;
+    }
+
+    public Result getSummaryDeposit(Integer id) {
+        Integer value = feeMapper.getSummaryDeposit(id);
+        return Result.success(value);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Result insertDeposit(DepositEntity insertDeposit) {
+        DepositEntity deposit = new DepositEntity();
+        BeanUtils.copyProperties(insertDeposit, deposit);
+        if (Objects.equals(deposit.getType(), "退費")) {
+            deposit.setDeposit(-deposit.getDeposit());
+        }
+        int res = feeMapper.insertDeposit(deposit);
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_CREATE_FAILED);
+        } else {
+            return Result.success();
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Result updateDeposit(DepositEntity updateDeposit) {
+        DepositEntity deposit = new DepositEntity();
+        BeanUtils.copyProperties(updateDeposit, deposit);
+
+        int res = feeMapper.updateDeposit(deposit);
+
+        if (res == CommonConstants.DeleteCodeStatus.IS_NOT_DELETE) {
+            return Result.failure(ErrorCodeEnum.SYS_ERR_UPDATE_FAILED);
+        } else {
+            return Result.success();
+        }
+    }
+    public Result delDeposit(DepositEntity delDeposit) {
+        feeMapper.delDeposit(delDeposit.getId());
         return Result.success();
     }
 }

@@ -53,6 +53,7 @@ public class ApplyService {
         Timestamp startDate = jsonObject.getTimestamp("startDate");
         Timestamp endDate = jsonObject.getTimestamp("endDate");
         Integer updateUser = jsonObject.getInteger("updateUser");
+        Integer courseId = jsonObject.getInteger("courseId");
 
         if (Objects.nonNull(startDate)) {
             searchApplyDto.setStartDate(startDate);
@@ -63,6 +64,10 @@ public class ApplyService {
 
         if (Objects.nonNull(updateUser)) {
             searchApplyDto.setUpdateUser(updateUser);
+        }
+
+        if (Objects.nonNull(courseId)) {
+            searchApplyDto.setCourseId(courseId);
         }
 
         return searchApplyDto;
