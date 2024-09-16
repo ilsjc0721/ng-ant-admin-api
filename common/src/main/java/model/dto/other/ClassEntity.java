@@ -16,6 +16,9 @@ public class ClassEntity implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
+    @TableField("location")
+    private String location;
+
     @TableField("start_datetime")
     private Timestamp startDatetime;
 

@@ -18,6 +18,8 @@ public class ClassRequest implements Serializable {
 
     private BigDecimal hours;
 
+    private String location;
+
     private Integer courseId;
 
     private Boolean courseChecked;

@@ -8,6 +8,7 @@
             A.start_datetime AS startDatetime,
             A.end_datetime AS endDatetime,
             A.hours,
+            A.location,
             A.course_id AS courseId,
             course.limit,
             IFNULL(D.user_name_en, '') AS updateUserName,
@@ -214,6 +215,7 @@
 
     <update id="updateClassById" parameterType="model.dto.other.ClassRequest" >
         UPDATE tsva_class SET
+        `location` = #{location},
         `start_datetime` = #{startDatetime},
         `end_datetime` = #{endDatetime},
         `hours` = #{hours},

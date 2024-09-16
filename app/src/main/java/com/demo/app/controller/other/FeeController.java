@@ -91,4 +91,11 @@ public class FeeController {
         return feeService.updateDeposit(updateDeposit);
     }
 
+    @PostMapping("/revenue")
+    @ApiOperation(value = "場地營業額")
+    @PreAuthorize("@ss.hasPer('default:system:fee')")
+    public Result getRevenue(@RequestBody @Validated SearchFeeReportDto searchFeeReportDto) {
+        return feeService.getRevenue(searchFeeReportDto);
+    }
+
 }

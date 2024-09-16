@@ -29,4 +29,5 @@ public interface FeeMapper extends BaseMapper<FeeEntity> {
     Integer insertDeposit(DepositEntity deposit);
     Integer updateDeposit(DepositEntity deposit);
     void delDeposit(Integer id);
+    List<RevenueEntity> getRevenue(SearchFeeReportDto searchFeeReportDto);
 }

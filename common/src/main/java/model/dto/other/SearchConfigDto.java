@@ -3,8 +3,7 @@ package model.dto.other;
 import lombok.Data;
 
 @Data
-public class ConfigEntity {
-    private String id;
+public class SearchConfigDto {
+    private Integer id;
     private String name;
-    private String value;
 }

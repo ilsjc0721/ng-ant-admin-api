@@ -13,9 +13,35 @@
         LIMIT 1
     </select>
 
+    <insert id="insertValue" parameterType="model.dto.other.ConfigEntity" >
+        INSERT INTO `tsva_config` (`name`, `value`) VALUES (#{name}, #{value})
+    </insert>
+
     <update id="updateValue" parameterType="model.dto.other.ConfigEntity" >
         UPDATE tsva_config SET
             `value` = #{value}
         WHERE name = #{name}
     </update>
+
+    <select id="selectConfig" resultType="model.dto.other.ConfigEntity">
+        SELECT
+            A.id,
+            A.name,
+            A.value
+        FROM tsva_config AS A
+        WHERE
+        1 = 1
+        <if test="id != null">
+            and A.id = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            and A.name = #{name}
+        </if>
+        ORDER BY A.name
+    </select>
+
+    <delete id="deleteConfig">
+        DELETE FROM tsva_config
+        WHERE id = #{id}
+    </delete>
 </mapper>

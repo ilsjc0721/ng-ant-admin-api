@@ -13,5 +13,6 @@ public class ClassConfirmRequest implements Serializable {
     private List<ClassStudentRequest> studentList;
     private Integer updateUser;
     private String className;
+    private String location;
     private Timestamp classDate;
 }

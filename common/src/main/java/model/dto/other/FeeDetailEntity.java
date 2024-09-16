@@ -25,6 +25,9 @@ public class FeeDetailEntity implements Serializable {
     @TableField("class_date")
     private Timestamp classDate;
 
+    @TableField("class_location")
+    private String classLocation;
+
     @TableField("class_hours")
     private BigDecimal classHours;
 

@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class FeeDetailReportEntity {
     private Integer id;
     private Timestamp classDate;
+    private String classLocation;
     private BigDecimal classHours;
     private String className;
     private Integer classFee;

@@ -136,6 +136,8 @@ public class ClassService {
         List<ClassCoachEntity>  classCoachList = new ArrayList<>();
         for (ClassDateEntity classDateEntity : classRequest.getClassDateList()){
             ClassEntity classEntity = new ClassEntity();
+            classEntity.setLocation(classRequest.getLocation());
+            classEntity.setCourseId(classRequest.getCourseId());
             classEntity.setCourseId(classRequest.getCourseId());
             classEntity.setHours(classRequest.getHours());
             classEntity.setUpdateUser(classRequest.getUpdateUser());
@@ -365,6 +367,7 @@ public class ClassService {
                 int classFee = BigDecimal.valueOf(classStudent.getTuitionFee()).intValue();
                 feeDetail.setClassFee(classFee);
                 feeDetail.setClassName(classConfirmRequest.getClassName());
+                feeDetail.setClassLocation(classConfirmRequest.getLocation());
                 feeDetailMapper.insertByEntity(feeDetail);
                 feeDetailMapper.insertDeposit(parentId, Timestamp.valueOf(LocalDateTime.now()), "扣款", -classFee, feeId, classConfirmRequest.getId(), "", Timestamp.valueOf(LocalDateTime.now()));
                 feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
@@ -400,6 +403,7 @@ public class ClassService {
                 newFeeDetail.setClassHours(ClassFee.getHours());
                 newFeeDetail.setClassFee(ClassFee.getTotalAmount());
                 newFeeDetail.setClassName(classConfirmRequest.getClassName());
+                newFeeDetail.setClassLocation(classConfirmRequest.getLocation());
                 feeDetailMapper.insertByEntity(newFeeDetail);
 //                newFeeDetail.setClassCoachName(ClassFee.getName());
 //                feeDetailMapper.insert(newFeeDetail);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import result.Result;
+import util.SearchFilter;
 
 @RestController
 @Validated
@@ -17,6 +18,12 @@ public class ConfigController {
 
     @Autowired
     ConfigService configService;
+
+    @PostMapping("/list")
+    @ApiOperation(value = "取得設定")
+    public Result list(@RequestBody @Validated SearchFilter searchFilter) {
+        return configService.list(searchFilter);
+    }
 
     @GetMapping("/{name}")
     @ApiOperation(value = "取得Value")
@@ -28,5 +35,17 @@ public class ConfigController {
     @ApiOperation(value = "修改Value")
     public Result updateValue(@RequestBody @Validated ConfigEntity updateConfig) {
         return configService.updateValue(updateConfig);
+    }
+
+    @PostMapping
+    @ApiOperation(value = "新增Value")
+    public Result insertValue(@RequestBody @Validated ConfigEntity updateConfig) {
+        return configService.insertValue(updateConfig);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "刪除Value")
+    public Result deleteConfig(@PathVariable Integer id) {
+        return configService.deleteConfig(id);
     }
 }

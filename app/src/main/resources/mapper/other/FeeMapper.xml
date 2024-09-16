@@ -47,6 +47,7 @@
             B.id,
             A.id AS keyId,
             DATE_FORMAT(B.class_date,'%Y-%m-%d') AS classDate,
+            B.class_location AS classLocation,
             B.class_hours AS classHours,
             B.class_name AS className,
             B.class_fee AS classFee,
@@ -144,7 +145,7 @@
         <if test="userId != null">
             and A.user_id = #{userId}
         </if>
-        ORDER BY A.deposit_date, A.update_time
+        ORDER BY A.deposit_date DESC
     </select>
 
     <select id="getSummaryDeposit" resultType="java.lang.Integer">
@@ -172,4 +173,16 @@
         DELETE FROM tsva_deposit
         WHERE id = #{id}
     </delete>
+
+    <select id="getRevenue" resultType="model.dto.other.RevenueEntity">
+        SELECT
+            d.class_location AS classLocation,
+            sum(d.class_fee) AS revenue FROM tsva_fee f
+        INNER JOIN tsva_fee_detail d ON f.id = d.fee_id
+        WHERE f.type = 'tuition'
+        <if test="period != null and period != ''">
+            and f.period = #{period}
+        </if>
+        GROUP BY d.class_location
+    </select>
 </mapper>

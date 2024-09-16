@@ -15,6 +15,7 @@ public class ClassResponse implements Serializable {
     private String endDatetime;
     private BigDecimal hours;
     private Integer limit;
+    private String location;
     private String coach;
     private String parent;
     private String student;

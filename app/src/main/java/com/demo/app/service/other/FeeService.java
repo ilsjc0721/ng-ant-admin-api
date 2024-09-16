@@ -71,6 +71,7 @@ public class FeeService {
 
         return Result.success(feeList);
     }
+
     public Result getCoachFee(SearchFeeReportDto searchFeeReportDto) {
         if(searchFeeReportDto.getType().equals(null)){
             return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("type"));
@@ -85,6 +86,7 @@ public class FeeService {
 
         return Result.success(feeList);
     }
+
     public Result getTuitionFee(SearchFeeReportDto searchFeeReportDto) {
         if(searchFeeReportDto.getType().equals(null)){
             return Result.failure(ErrorCodeEnum.SYS_ERR_VALIDATION_MISSING_PARAMS.setParam("type"));
@@ -261,5 +263,14 @@ public class FeeService {
     public Result delDeposit(DepositEntity delDeposit) {
         feeMapper.delDeposit(delDeposit.getId());
         return Result.success();
+    }
+
+    public Result getRevenue(SearchFeeReportDto searchFeeReportDto) {
+        if(searchFeeReportDto.getUserId().equals(0)){
+            searchFeeReportDto.setUserId(null);
+        }
+        List<RevenueEntity> revenueList = feeMapper.getRevenue(searchFeeReportDto);
+
+        return Result.success(revenueList);
     }
 }
