@@ -1,28 +1,21 @@
 package com.demo.app.service.other;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.demo.app.mapper.other.ClassMapper;
 import com.demo.app.mapper.other.CourseMapper;
 import com.demo.app.mapper.other.FeeDetailMapper;
 import com.demo.app.mapper.other.FeeMapper;
-import com.demo.app.mapper.user.UserMapper;
 import com.demo.app.service.user.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import enums.ErrorCodeEnum;
 import model.dto.del.BatchDeleteDto;
 import model.dto.other.*;
-import model.dto.sys.user.UAndDAndIUserRoleDto;
-import model.entity.department.SysDepartment;
-import model.entity.sys.SysUser;
-import model.entity.sys.UserChild;
-import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
-import result.CommonConstants;
 import result.Result;
 import util.SearchFilter;
 
@@ -33,7 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class ClassService {
@@ -369,7 +363,13 @@ public class ClassService {
                 feeDetail.setClassName(classConfirmRequest.getClassName());
                 feeDetail.setClassLocation(classConfirmRequest.getLocation());
                 feeDetailMapper.insertByEntity(feeDetail);
-                feeDetailMapper.insertDeposit(parentId, Timestamp.valueOf(LocalDateTime.now()), "扣款", -classFee, feeId, classConfirmRequest.getId(), "", Timestamp.valueOf(LocalDateTime.now()));
+                LocalDate dateToCompare = LocalDate.of(2024, 10, 1);
+                LocalDateTime dateTimeToCompare = dateToCompare.atStartOfDay();
+                LocalDateTime timestampDateTime = classConfirmRequest.getClassDate().toLocalDateTime();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                if (timestampDateTime.isAfter(dateTimeToCompare)) {
+                    feeDetailMapper.insertDeposit(parentId, Timestamp.valueOf(LocalDateTime.now()), "扣款", -classFee, feeId, classConfirmRequest.getId(), "上課日期:" + timestampDateTime.format(formatter), Timestamp.valueOf(LocalDateTime.now()));
+                }
                 feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
             }
         }
