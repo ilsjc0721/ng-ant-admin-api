@@ -11,6 +11,7 @@
             B.user_name_en AS userName,
             A.hours,
             A.amount,
+            A.classroom_fee AS classroomFee,
             A.status,
             A.update_user AS updateUser,
             B.user_name_en AS updateUserName,
@@ -51,6 +52,7 @@
             B.class_hours AS classHours,
             B.class_name AS className,
             B.class_fee AS classFee,
+            B.classroom_fee AS classroomFee,
             B.class_coach_name AS classCoachName,
             B.class_student_name AS classStudentName
         FROM tsva_fee A
@@ -69,10 +71,11 @@
 
     <update id="calculateFeeById">
         UPDATE tsva_fee F,
-            (SELECT SUM(FD.class_fee) AS fee, SUM(FD.class_hours) AS hours FROM tsva_fee_detail FD WHERE FD.fee_id = #{id}) A
+            (SELECT SUM(FD.class_fee) AS fee, SUM(FD.class_hours) AS hours, SUM(FD.classroom_fee) AS classroomFee FROM tsva_fee_detail FD WHERE FD.fee_id = #{id}) A
         SET
             F.amount = A.fee,
             F.hours = A.hours,
+            F.classroom_fee = A.classroomFee,
             F.update_user = #{updateUser}
         WHERE F.id = #{id}
     </update>
@@ -156,7 +159,7 @@
 
     <insert id="insertDeposit" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.DepositEntity" >
         insert into tsva_deposit
-        (`user_id`,`deposit_date`, `type`, `deposit`, `memo`)
+        (`user_id`,`deposit_date`, `type`, `deposit`, `memo`, `update_time`)
         values
         (#{userId}, #{depositDate}, #{type}, #{deposit}, #{memo})
     </insert>

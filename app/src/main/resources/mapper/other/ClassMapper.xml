@@ -120,6 +120,7 @@
             A.id AS keyId,
             A.tuition_fee AS tuitionFee,
             A.tuition_total AS tuitionTotal,
+            A.classroom_fee AS classroomFee,
             IFNULL(U.user_name_en,'') AS parentName,
             IFNULL(U.user_name_ch,'') AS parentNameCh
         FROM tsva_class_student AS A
@@ -142,7 +143,8 @@
             A.student_id AS studentId,
             0 AS coachId,
             0 AS coachFee,
-            A.tuition_fee AS tuitionFee
+            A.tuition_fee AS tuitionFee,
+            A.classroom_fee AS classroomFee
         FROM tsva_class_student AS A
         INNER JOIN tsva_class C
             ON C.id = A.class_id
@@ -160,7 +162,8 @@
             0 AS studentId,
             A.coach_id AS coachId,
             A.coach_fee AS coachFee,
-            0 AS tuitionFee
+            0 AS tuitionFee,
+            A.classroom_fee AS classroomFee
         FROM tsva_class_coach AS A
         INNER JOIN tsva_class C
             ON C.id = A.class_id
@@ -189,17 +192,17 @@
 
     <insert id="insertClassCoachByList" parameterType="list" >
         INSERT INTO
-        tsva_class_coach(class_id, coach_id, coach_type, coach_fee, coach_total) values
+        tsva_class_coach(class_id, coach_id, coach_type, coach_fee, coach_total, classroom_fee) values
         <foreach collection="list" item="item"  separator=",">
-            (#{item.classId},#{item.coachId},#{item.coachType},#{item.coachFee},#{item.coachTotal})
+            (#{item.classId},#{item.coachId},#{item.coachType},#{item.coachFee},#{item.coachTotal},#{item.classroomFee})
         </foreach>
     </insert>
 
     <insert id="insertClassStudentByList" parameterType="list" >
         INSERT INTO
-        tsva_class_student(class_id, student_id, tuition_fee, tuition_total) values
+        tsva_class_student(class_id, student_id, tuition_fee, tuition_total, classroom_fee) values
         <foreach collection="list" item="item"  separator=",">
-            (#{item.classId}, #{item.studentId}, #{item.tuitionFee}, #{item.tuitionTotal})
+            (#{item.classId}, #{item.studentId}, #{item.tuitionFee}, #{item.tuitionTotal}, #{item.classroomFee})
         </foreach>
     </insert>
 

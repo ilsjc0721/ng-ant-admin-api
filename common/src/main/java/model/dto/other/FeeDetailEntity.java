@@ -37,6 +37,9 @@ public class FeeDetailEntity implements Serializable {
     @TableField("class_fee")
     private Integer classFee;
 
+    @TableField("classroom_fee")
+    private Integer classroomFee;
+
     @TableField("class_coach_name")
     private String classCoachName;
 

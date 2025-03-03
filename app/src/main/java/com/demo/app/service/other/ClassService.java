@@ -151,6 +151,7 @@ public class ClassService {
                 if(adjustAmountEntity.isPresent()){
                     classCoach.setCoachFee(adjustAmountEntity.get().getCoachFee());
                     classCoach.setCoachTotal(adjustAmountEntity.get().getAdjustAmount());
+                    classCoach.setClassroomFee(adjustAmountEntity.get().getClassroomFee());
                 }
                 classCoachList.add(classCoach);
             }
@@ -163,6 +164,7 @@ public class ClassService {
                 if(adjustAmountEntity.isPresent()){
                     classStudent.setTuitionFee(adjustAmountEntity.get().getTuitionFee());
                     classStudent.setTuitionTotal(adjustAmountEntity.get().getAdjustAmount());
+                    classStudent.setClassroomFee(adjustAmountEntity.get().getClassroomFee());
                 }
                 classStudentList.add(classStudent);
             }
@@ -217,6 +219,7 @@ public class ClassService {
             if(adjustAmountEntity.isPresent()){
                 classCoach.setCoachFee(adjustAmountEntity.get().getCoachFee());
                 classCoach.setCoachTotal(adjustAmountEntity.get().getAdjustAmount());
+                classCoach.setClassroomFee(adjustAmountEntity.get().getClassroomFee());
             }
             classCoachList.add(classCoach);
         }
@@ -229,6 +232,7 @@ public class ClassService {
             if(adjustAmountEntity.isPresent()){
                 classStudent.setTuitionFee(adjustAmountEntity.get().getTuitionFee());
                 classStudent.setTuitionTotal(adjustAmountEntity.get().getAdjustAmount());
+                classStudent.setClassroomFee(adjustAmountEntity.get().getClassroomFee());
             }
             classStudentList.add(classStudent);
         }
@@ -359,7 +363,9 @@ public class ClassService {
                 feeDetail.setClassDate(classConfirmRequest.getClassDate());
                 feeDetail.setClassHours(classStudent.getHours());
                 int classFee = BigDecimal.valueOf(classStudent.getTuitionFee()).intValue();
+                int classroomFee = BigDecimal.valueOf(classStudent.getClassroomFee()).intValue();
                 feeDetail.setClassFee(classFee);
+                feeDetail.setClassroomFee(classroomFee);
                 feeDetail.setClassName(classConfirmRequest.getClassName());
                 feeDetail.setClassLocation(classConfirmRequest.getLocation());
                 feeDetailMapper.insertByEntity(feeDetail);
@@ -402,6 +408,7 @@ public class ClassService {
                 newFeeDetail.setClassDate(classConfirmRequest.getClassDate());
                 newFeeDetail.setClassHours(ClassFee.getHours());
                 newFeeDetail.setClassFee(ClassFee.getTotalAmount());
+                newFeeDetail.setClassroomFee(ClassFee.getClassroomFee());
                 newFeeDetail.setClassName(classConfirmRequest.getClassName());
                 newFeeDetail.setClassLocation(classConfirmRequest.getLocation());
                 feeDetailMapper.insertByEntity(newFeeDetail);

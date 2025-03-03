@@ -65,6 +65,7 @@
 | coach_type  | varchar(20)    | NOT NULL                                              | 教練類別         |
 | coach_fee   | int            | NOT NULL                                              | 教練費(小時)     |
 | tuition_fee | int            | NOT NULL                                              | 學費(小時)       |
+| classroom_fee | int            | NOT NULL                                              | 場地費(小時)       |
 | update_user | int            | DEFAULT NULL                                          |               |
 | update_time | timestamp      | NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP         |               |
 
@@ -73,6 +74,7 @@
 | Column Name     | Data Type      | Default Value                                         | Comment                   |
 |-----------------|----------------|-------------------------------------------------------|---------------------------|
 | id              | int            | NOT NULL AUTO_INCREMENT                               |                           |
+| location        | varchar(45)    | NULL DEFAULT NULL 		                               | 課程場地                   |
 | start_datetime  | timestamp      | NULL DEFAULT NULL                                     | 課程開始日期時間           |
 | end_datetime    | timestamp      | NULL DEFAULT NULL                                     | 課程結束日期時間           |
 | hours           | decimal(6,2)   | NOT NULL                                              | 課程時間(小時)             |
@@ -90,6 +92,7 @@
 | coach_id    | int            | NOT NULL      | 教練id              |
 | coach_type  | varchar(20)    | NOT NULL      | 教練類別             |
 | coach_fee   | int            | NOT NULL      | 教練費(小時)         |
+| classroom_fee | int            | NOT NULL    | 場地費(小時)       	|
 | coach_total | int            | NOT NULL      | 總教練費             |
 
 7. tsva_class_student (課程排定-學費)
@@ -103,6 +106,7 @@
 | end_datetime    | timestamp      | NULL DEFAULT NULL                                     | 實際結束時間             |
 | hours           | decimal(6,2)   | DEFAULT NULL                                          | 實際課程時間(小時)        |
 | tuition_fee     | int            | NOT NULL                                              | 學費(小時)               |
+| classroom_fee   | int            | NOT NULL                                              | 場地費(小時)       |
 | tuition_total   | int            | NOT NULL                                              | 總學費                  |
 
 8. tsva_fee (費用總表)
@@ -115,6 +119,7 @@
 | user_id     | int            | NOT NULL                                              | 教練id / 家長id                      |
 | hours       | decimal(6,2)   | DEFAULT NULL                                          | 總時數                               |
 | amount      | int            | DEFAULT NULL                                          | 總金額                               |
+| classroom_fee | int          | NOT NULL                                              | 場地費(小時)       					|
 | status      | varchar(20)    | DEFAULT NULL                                          | 狀態 (new/confirm/wrong)            |
 | memo        | varchar(200)   | DEFAULT NULL                                          | 備註說明                             |
 | update_user | int            | DEFAULT NULL                                          |                                    |
@@ -128,9 +133,11 @@
 | fee_id             | int            | NOT NULL      | tsva_fee.id                                                                                  |
 | class_id           | int            | NOT NULL      | tsva_class.id                                                                                |
 | class_date         | timestamp      | NOT NULL      | tsva_class.start_datetime                                                                    |
+| class_location     | varchar(45)    | NULL DEFAULT NULL       | 課程場地                   															|
 | class_hours        | decimal(6,2)   | DEFAULT NULL  | tsva_class.hours                                                                             |
 | class_name         | varchar(20)    | NOT NULL      | tsva_course.name                                                                             |
 | class_fee          | int            | NOT NULL      | coach_total / tuition_total                                                                  |
+| classroom_fee 	 | int            | NOT NULL      | 場地費(小時)       																			|
 | class_coach_name   | varchar(500)   | NOT NULL      | by class_id 把 tsva_class_coach 寫入, 使用Function: sp_GetCoach(class_id)                       |
 | class_student_name | varchar(2000)  | NOT NULL      | by class_id 把 tsva_class_student 寫入, 使用Function: sp_GetStudent(class_id)                    |
 
@@ -248,7 +255,25 @@
 	> 費用郵件通知 <u>POST</u>
 	> > /api/fee/mail
 	
-5. 設定檔
+	> 取得點數歷程 <u>POST</u>
+	> > /api/fee/deposit/list	
+	
+	> 取得點數 <u>GET</u>
+	> > /api/fee/deposit/{id}
+
+	> 新增點數 <u>POST</u>
+	> > /api/fee/deposit
+	
+	> 修改點數 <u>PUT</u>
+	> > /api/fee/deposit	
+	
+	> 刪除點數 <u>POST</u>
+	> > /api/fee/deposit/del
+	
+	> 場地營業額 <u>POST</u>
+	> > /api/fee/revenue	
+	
+6. 設定檔
 	> 取得Value <u>GET</u>
 	> > /api/config/{name}
 	

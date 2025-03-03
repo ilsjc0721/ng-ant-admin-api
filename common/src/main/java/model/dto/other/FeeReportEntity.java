@@ -14,6 +14,7 @@ public class FeeReportEntity {
     private String userName;
     private BigDecimal hours;
     private Integer amount;
+    private Integer classroomFee;
     private String status;
     private Integer updateUser;
     private String updateUserName;

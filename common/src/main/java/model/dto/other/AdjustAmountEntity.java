@@ -10,4 +10,5 @@ public class AdjustAmountEntity implements Serializable {
     private Integer adjustAmount;
     private Integer coachFee;
     private Integer tuitionFee;
+    private Integer classroomFee;
 }

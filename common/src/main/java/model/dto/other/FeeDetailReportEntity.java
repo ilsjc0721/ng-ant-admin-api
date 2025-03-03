@@ -12,6 +12,7 @@ public class FeeDetailReportEntity {
     private BigDecimal classHours;
     private String className;
     private Integer classFee;
+    private Integer classroomFee;
     private String classCoachName;
     private String classStudentName;
     private Integer feeId;

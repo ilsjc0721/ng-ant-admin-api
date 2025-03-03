@@ -25,5 +25,7 @@ public class ClassStudentRequest implements Serializable {
 
     private Integer tuitionFee;
 
+    private Integer classroomFee;
+
     private String studentName;
 }

@@ -39,6 +39,7 @@
             A.coach_type AS coachType,
             A.coach_fee  AS coachFee,
             A.tuition_fee  AS tuitionFee,
+            A.classroom_fee  AS classroomFee,
             D.user_name_en AS coachName
         FROM tsva_course_fee AS A
         LEFT JOIN sys_user AS D
@@ -69,10 +70,10 @@
 
     <insert id="insertCourseFee" parameterType="list" >
         insert into tsva_course_fee
-        (`course_id`, `coach_id`, `coach_type`, `coach_fee`, `tuition_fee`)
+        (`course_id`, `coach_id`, `coach_type`, `coach_fee`, `tuition_fee`, `classroom_fee`)
         values
         <foreach collection="list" item="item"  separator=",">
-            (#{item.courseId}, #{item.coachId}, #{item.coachType}, #{item.coachFee}, #{item.tuitionFee})
+            (#{item.courseId}, #{item.coachId}, #{item.coachType}, #{item.coachFee}, #{item.tuitionFee}, #{item.classroomFee})
         </foreach>
     </insert>
 

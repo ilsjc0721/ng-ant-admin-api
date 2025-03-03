@@ -11,4 +11,5 @@ public class CourseFeeEntity {
     private String coachType;
     private Integer coachFee;
     private Integer tuitionFee;
+    private Integer classroomFee;
 }

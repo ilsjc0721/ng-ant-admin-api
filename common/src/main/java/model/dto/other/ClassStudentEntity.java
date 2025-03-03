@@ -35,4 +35,7 @@ public class ClassStudentEntity implements Serializable {
 
     @TableField("tuition_total")
     private Integer tuitionTotal;
+
+    @TableField("classroom_fee")
+    private Integer classroomFee;
 }
