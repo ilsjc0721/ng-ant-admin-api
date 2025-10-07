@@ -29,4 +29,5 @@ public class ClassResponse implements Serializable {
     private String classStatus;
     private Integer coachFeeStatus;
     private Integer studentFeeStatus;
+    private Integer classroomFee;
 }

@@ -137,6 +137,8 @@ public class ClassService {
             classEntity.setUpdateUser(classRequest.getUpdateUser());
             classEntity.setStartDatetime(classDateEntity.getStartDatetime());
             classEntity.setEndDatetime(classDateEntity.getEndDatetime());
+            classEntity.setClassroomFee(classRequest.getClassroomFee());
+            classEntity.setCourseType(courseEntityList.get(0).getCourseType());
             int res = classMapper.insert(classEntity);
             // Coach
             for (Integer coachId : classRequest.getCoachId()){
@@ -151,7 +153,6 @@ public class ClassService {
                 if(adjustAmountEntity.isPresent()){
                     classCoach.setCoachFee(adjustAmountEntity.get().getCoachFee());
                     classCoach.setCoachTotal(adjustAmountEntity.get().getAdjustAmount());
-                    classCoach.setClassroomFee(adjustAmountEntity.get().getClassroomFee());
                 }
                 classCoachList.add(classCoach);
             }
@@ -164,7 +165,6 @@ public class ClassService {
                 if(adjustAmountEntity.isPresent()){
                     classStudent.setTuitionFee(adjustAmountEntity.get().getTuitionFee());
                     classStudent.setTuitionTotal(adjustAmountEntity.get().getAdjustAmount());
-                    classStudent.setClassroomFee(adjustAmountEntity.get().getClassroomFee());
                 }
                 classStudentList.add(classStudent);
             }
@@ -219,7 +219,6 @@ public class ClassService {
             if(adjustAmountEntity.isPresent()){
                 classCoach.setCoachFee(adjustAmountEntity.get().getCoachFee());
                 classCoach.setCoachTotal(adjustAmountEntity.get().getAdjustAmount());
-                classCoach.setClassroomFee(adjustAmountEntity.get().getClassroomFee());
             }
             classCoachList.add(classCoach);
         }
@@ -232,7 +231,6 @@ public class ClassService {
             if(adjustAmountEntity.isPresent()){
                 classStudent.setTuitionFee(adjustAmountEntity.get().getTuitionFee());
                 classStudent.setTuitionTotal(adjustAmountEntity.get().getAdjustAmount());
-                classStudent.setClassroomFee(adjustAmountEntity.get().getClassroomFee());
             }
             classStudentList.add(classStudent);
         }
@@ -327,7 +325,7 @@ public class ClassService {
 
     public Result confirmClass(ClassConfirmRequest classConfirmRequest){
         DateFormat dateFormat = new  SimpleDateFormat("yyyyMM");
-
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
         List<FeeDetailReportEntity> feeDetailList = new ArrayList<>();
         Date date = new Date(classConfirmRequest.getClassDate().getTime());
         String ym = dateFormat.format(date);
@@ -363,9 +361,7 @@ public class ClassService {
                 feeDetail.setClassDate(classConfirmRequest.getClassDate());
                 feeDetail.setClassHours(classStudent.getHours());
                 int classFee = BigDecimal.valueOf(classStudent.getTuitionFee()).intValue();
-                int classroomFee = BigDecimal.valueOf(classStudent.getClassroomFee()).intValue();
                 feeDetail.setClassFee(classFee);
-                feeDetail.setClassroomFee(classroomFee);
                 feeDetail.setClassName(classConfirmRequest.getClassName());
                 feeDetail.setClassLocation(classConfirmRequest.getLocation());
                 feeDetailMapper.insertByEntity(feeDetail);
@@ -408,7 +404,6 @@ public class ClassService {
                 newFeeDetail.setClassDate(classConfirmRequest.getClassDate());
                 newFeeDetail.setClassHours(ClassFee.getHours());
                 newFeeDetail.setClassFee(ClassFee.getTotalAmount());
-                newFeeDetail.setClassroomFee(ClassFee.getClassroomFee());
                 newFeeDetail.setClassName(classConfirmRequest.getClassName());
                 newFeeDetail.setClassLocation(classConfirmRequest.getLocation());
                 feeDetailMapper.insertByEntity(newFeeDetail);
@@ -418,6 +413,7 @@ public class ClassService {
             }
         }
         classMapper.updateClassStatus(classConfirmRequest);
+        feeMapper.insertClassroomFee(ym, classConfirmRequest.getId());
         return Result.success();
     }
     public Result rollbackConfirmClass(ClassConfirmRequest classConfirmRequest){
@@ -427,6 +423,7 @@ public class ClassService {
         for(Integer feeId : feeIdList){
             feeMapper.calculateFeeById(feeId, classConfirmRequest.getUpdateUser());
         }
+        feeMapper.delClassroomFee(classConfirmRequest.getId());
         return Result.success();
     }
 

@@ -15,8 +15,8 @@ import java.util.List;
 public class CourseEntity implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
-
     private String name;
+    @TableField("course_type")
     private String courseType;
     private String status;
     private Integer limit;

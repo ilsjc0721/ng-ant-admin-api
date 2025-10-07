@@ -33,4 +33,6 @@ public class ClassRequest implements Serializable {
     private List<ClassDateEntity> classDateList;
 
     private List<AdjustAmountEntity> adjustAmountList;
+
+    private Integer classroomFee;
 }

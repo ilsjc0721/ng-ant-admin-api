@@ -113,7 +113,6 @@ public class CourseService {
                 fee.setCoachType(e.getCoachType());
                 fee.setCoachFee(e.getCoachFee());
                 fee.setTuitionFee(e.getTuitionFee());
-                fee.setClassroomFee(e.getClassroomFee());
                 courseFee.add(fee);
             });
             courseMapper.deleteCourseFee(course.getId());

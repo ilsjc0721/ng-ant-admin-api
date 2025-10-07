@@ -11,13 +11,14 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Data
-@TableName("tsva_fee_detail")
-public class FeeDetailEntity implements Serializable {
+@TableName("tsva_classroom_fee")
+public class ClassroomFeeEntity implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    @TableField("fee_id")
-    private Integer feeId;
+    private String period;
+
+    private String type;
 
     @TableField("class_id")
     private Integer classId;
@@ -34,8 +35,8 @@ public class FeeDetailEntity implements Serializable {
     @TableField("class_name")
     private String className;
 
-    @TableField("class_fee")
-    private Integer classFee;
+    @TableField("classroom_fee")
+    private Integer classroomFee;
 
     @TableField("class_coach_name")
     private String classCoachName;

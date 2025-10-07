@@ -98,4 +98,10 @@ public class FeeController {
         return feeService.getRevenue(searchFeeReportDto);
     }
 
+    @PostMapping("/classroom")
+    @ApiOperation(value = "場地費")
+    @PreAuthorize("@ss.hasPer('default:system:fee-classroom')")
+    public Result getClassroomFee(@RequestBody @Validated SearchClassroomFeeDto searchClassroomFeeDto) {
+        return feeService.getClassroomFee(searchClassroomFeeDto);
+    }
 }

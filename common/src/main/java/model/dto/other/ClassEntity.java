@@ -35,4 +35,10 @@ public class ClassEntity implements Serializable {
 
     @TableField("update_user")
     private Integer updateUser;
+
+    @TableField("classroom_fee")
+    private Integer classroomFee;
+
+    @TableField("course_type")
+    private String courseType;
 }

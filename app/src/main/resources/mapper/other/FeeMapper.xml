@@ -11,7 +11,6 @@
             B.user_name_en AS userName,
             A.hours,
             A.amount,
-            A.classroom_fee AS classroomFee,
             A.status,
             A.update_user AS updateUser,
             B.user_name_en AS updateUserName,
@@ -52,7 +51,6 @@
             B.class_hours AS classHours,
             B.class_name AS className,
             B.class_fee AS classFee,
-            B.classroom_fee AS classroomFee,
             B.class_coach_name AS classCoachName,
             B.class_student_name AS classStudentName
         FROM tsva_fee A
@@ -71,11 +69,10 @@
 
     <update id="calculateFeeById">
         UPDATE tsva_fee F,
-            (SELECT SUM(FD.class_fee) AS fee, SUM(FD.class_hours) AS hours, SUM(FD.classroom_fee) AS classroomFee FROM tsva_fee_detail FD WHERE FD.fee_id = #{id}) A
+            (SELECT SUM(FD.class_fee) AS fee, SUM(FD.class_hours) AS hours FROM tsva_fee_detail FD WHERE FD.fee_id = #{id}) A
         SET
             F.amount = A.fee,
             F.hours = A.hours,
-            F.classroom_fee = A.classroomFee,
             F.update_user = #{updateUser}
         WHERE F.id = #{id}
     </update>
@@ -159,7 +156,7 @@
 
     <insert id="insertDeposit" useGeneratedKeys="true" keyProperty="id" parameterType="model.dto.other.DepositEntity" >
         insert into tsva_deposit
-        (`user_id`,`deposit_date`, `type`, `deposit`, `memo`, `update_time`)
+        (`user_id`,`deposit_date`, `type`, `deposit`, `memo`)
         values
         (#{userId}, #{depositDate}, #{type}, #{deposit}, #{memo})
     </insert>
@@ -187,5 +184,36 @@
             and f.period = #{period}
         </if>
         GROUP BY d.class_location
+    </select>
+
+    <update id="insertClassroomFee">
+        INSERT INTO tsva_classroom_fee (period, type, class_id, class_date, class_location, class_hours, class_name, classroom_fee, class_coach_name, class_student_name)
+        SELECT #{ym}, c.course_type, c.id, c.start_datetime, c.location, c.hours, c2.name,  c.classroom_fee, sp_GetCoach(c.id), sp_GetStudent(c.id)
+        FROM tsva_class c
+        INNER JOIN tsva_course c2 ON c.course_id = c2.id
+        WHERE c.id = #{id}
+    </update>
+
+    <delete id="delClassroomFee">
+        DELETE FROM tsva_classroom_fee
+        WHERE class_id = #{id}
+    </delete>
+
+    <select id="getClassroomFee" resultType="model.dto.other.ClassroomFeeEntity">
+        SELECT
+            type,
+            class_date AS classDate,
+            class_location AS classLocation,
+            class_hours AS classHours,
+            class_name AS className,
+            classroom_fee AS classroomFee,
+            class_coach_name AS classCoachName,
+            class_student_name AS classStudentName
+        FROM tsva_classroom_fee
+        WHERE period = #{period}
+          AND type = #{type}
+        <if test="user != null and user != ''">
+            and class_coach_name LIKE CONCAT('%', #{user}, '%')
+        </if>
     </select>
 </mapper>

@@ -28,7 +28,4 @@ public class ClassCoachEntity implements Serializable {
 
     @TableField("coach_total")
     private Integer coachTotal;
-
-    @TableField("classroom_fee")
-    private Integer classroomFee;
 }

@@ -3,8 +3,8 @@
 <mapper namespace="com.demo.app.mapper.other.FeeDetailMapper">
     <insert id="insertByEntity" parameterType="model.dto.other.FeeDetailEntity" >
         INSERT INTO
-        tsva_fee_detail(fee_id, class_id, class_date, class_location, class_hours, class_name, class_fee, classroom_fee, class_coach_name, class_student_name) values
-                       (#{feeId}, #{classId}, #{classDate}, #{classLocation}, #{classHours}, #{className}, #{classFee}, #{classroomFee}, sp_GetCoach(#{classId}), sp_GetStudent(#{classId}))
+        tsva_fee_detail(fee_id, class_id, class_date, class_location, class_hours, class_name, class_fee, class_coach_name, class_student_name) values
+                       (#{feeId}, #{classId}, #{classDate}, #{classLocation}, #{classHours}, #{className}, #{classFee}, sp_GetCoach(#{classId}), sp_GetStudent(#{classId}))
     </insert>
 
     <update id="insertDeposit">

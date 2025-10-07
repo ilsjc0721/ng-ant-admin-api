@@ -15,5 +15,4 @@ public class ClassFeeResponse {
     private Integer coachId;
     private Integer coachFee;
     private Integer tuitionFee;
-    private Integer classroomFee;
 }

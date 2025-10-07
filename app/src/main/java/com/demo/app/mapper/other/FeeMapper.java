@@ -30,4 +30,9 @@ public interface FeeMapper extends BaseMapper<FeeEntity> {
     Integer updateDeposit(DepositEntity deposit);
     void delDeposit(Integer id);
     List<RevenueEntity> getRevenue(SearchFeeReportDto searchFeeReportDto);
+
+    Integer insertClassroomFee(@Param("ym") String ym, @Param("id") Integer id);
+    Integer delClassroomFee(@Param("id") Integer id);
+
+    List<ClassroomFeeEntity> getClassroomFee (SearchClassroomFeeDto searchClassroomFeeDto);
 }

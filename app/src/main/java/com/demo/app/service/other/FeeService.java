@@ -273,4 +273,10 @@ public class FeeService {
 
         return Result.success(revenueList);
     }
+
+    public Result getClassroomFee(SearchClassroomFeeDto searchClassroomFeeDto) {
+        List<ClassroomFeeEntity> list = feeMapper.getClassroomFee(searchClassroomFeeDto);
+
+        return Result.success(list);
+    }
 }
