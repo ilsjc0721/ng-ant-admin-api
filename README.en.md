@@ -4,6 +4,13 @@
 springBoot+JWT+redis+mysql
 里面图片上传下载，excel导入导出，rbac权限校验，aop日志管理都有
 
+#### Dev on VSCode
+讓 Maven 重新下載正確依賴
+mvn clean install -U
+
+重新編譯打包
+mvn clean package
+
 #### Software Architecture
 Software architecture description
 
